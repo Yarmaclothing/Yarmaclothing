@@ -15,13 +15,14 @@
         .panel.active { transform: translateX(0); }
         .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 250; display: none; flex-direction: column; justify-content: center; align-items: center; }
         .menu-overlay.active { display: flex; }
-        .menu-btn { font-family: 'Syncopate', sans-serif; font-size: 2rem; margin: 15px; color: white; transition: 0.3s; }
+        .menu-btn { font-family: 'Syncopate', sans-serif; font-size: 2rem; margin: 15px; color: white; transition: 0.3s; border: none; background: none; cursor: pointer; }
         .menu-btn:hover { color: #ff0000; transform: scale(1.1); }
         .product-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 20px; transition: 0.3s; position: relative; }
         .product-card:hover { border-color: #ff0000; box-shadow: 0 0 30px rgba(255,0,0,0.2); }
         .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 900; text-transform: uppercase; }
         .status-pending { background: #444; } .status-shipped { background: #2563eb; } .status-delivered { background: #16a34a; }
         .input-style { background: #111; border: 1px solid #333; padding: 12px; border-radius: 8px; width: 100%; color: white; margin-bottom: 10px; outline: none; }
+        .input-style:focus { border-color: #ff0000; }
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 150; display: none; }
         .overlay.active { display: block; }
     </style>
@@ -52,9 +53,9 @@
 </nav>
 
 <section id="home" class="min-h-screen flex flex-col items-center justify-center text-center px-4">
-    <h1 style="font-family: 'Syncopate';" class="text-6xl md:text-9xl italic font-bold mb-4">YARMA</h1>
-    <p class="tracking-[0.5em] text-gray-500 text-xs uppercase mb-10">Luxury Collective</p>
-    <button onclick="scrollToSec('shop')" class="bg-white text-black px-10 py-4 rounded-full font-black text-xs uppercase tracking-widest">Shop Now</button>
+    <h1 style="font-family: 'Syncopate';" class="text-6xl md:text-9xl font-bold mb-4">YARMA</h1>
+    <p class="tracking-[0.5em] text-gray-500 text-xs uppercase mb-10 italic">Luxury Collective</p>
+    <button onclick="scrollToSec('shop')" class="bg-white text-black px-10 py-4 rounded-full font-black text-xs uppercase tracking-widest hover:bg-red-600 hover:text-white transition">Shop Now</button>
 </section>
 
 <section id="shop" class="py-20 flex flex-col items-center">
@@ -80,7 +81,7 @@
 <section id="about" class="py-20 px-6 text-center">
     <h2 style="font-family: 'Syncopate';" class="text-2xl mb-8 uppercase tracking-widest">About Us</h2>
     <p class="max-w-xl mx-auto text-gray-400 leading-relaxed text-sm">
-        YARMA is a luxury collective designed for those who seek exclusivity and premium quality. Every piece is crafted with precision, blending bold street aesthetics with high-end fabrics to create a statement that lasts. We believe in quality over quantity, and our limited drops reflect our commitment to true luxury.
+        YARMA is more than just clothing; it's a movement towards redefined luxury. We craft exclusive pieces that blend bold aesthetics with uncompromising quality. Experience the future of street luxe.
     </p>
 </section>
 
@@ -95,19 +96,22 @@
 
 <div id="checkout-panel" class="panel">
     <h2 class="font-bold text-xl mb-6 text-red-600">SHIPPING</h2>
-    <input type="text" id="cName" class="input-style" placeholder="Full Name">
-    <input type="tel" id="cPhone" class="input-style" placeholder="Mobile Number">
-    <input type="text" id="cCity" class="input-style" placeholder="City">
-    <textarea id="cAddress" class="input-style" placeholder="Address & Landmark"></textarea>
-    <input type="text" id="cPin" class="input-style" placeholder="PIN Code">
-    <button onclick="confirmOrder()" class="w-full bg-red-600 py-4 rounded-xl font-black text-xs uppercase">Confirm Order (COD)</button>
-    <button onclick="togglePanel('cart-panel')" class="w-full mt-2 text-[10px] opacity-50 uppercase">Back</button>
+    <div class="flex-grow overflow-y-auto">
+        <input type="text" id="cName" class="input-style" placeholder="Full Name *">
+        <input type="tel" id="cPhone" class="input-style" placeholder="Mobile Number *">
+        <input type="text" id="cCity" class="input-style" placeholder="City *">
+        <textarea id="cAddress" class="input-style" placeholder="Full Address & Landmark *"></textarea>
+        <input type="text" id="cPin" class="input-style" placeholder="PIN Code *">
+        <p class="text-[9px] text-gray-500 mb-4 uppercase">* All fields are mandatory</p>
+        <button onclick="confirmOrder()" class="w-full bg-red-600 py-4 rounded-xl font-black text-xs uppercase hover:bg-white hover:text-black transition">Confirm Order (COD)</button>
+        <button onclick="togglePanel('cart-panel')" class="w-full mt-2 text-[10px] opacity-50 uppercase">Back</button>
+    </div>
 </div>
 
 <div id="track-panel" class="panel">
     <h2 class="font-bold text-xl mb-6 text-red-600">TRACK ORDER</h2>
     <input type="text" id="tInput" class="input-style" placeholder="Order ID (e.g. YRM-1234)">
-    <button onclick="trackNow()" class="w-full bg-white text-black py-3 rounded-lg font-black text-xs uppercase">Track</button>
+    <button onclick="trackNow()" class="w-full bg-white text-black py-3 rounded-lg font-black text-xs uppercase">Track Status</button>
     <div id="tResult" class="mt-6"></div>
 </div>
 
@@ -128,7 +132,7 @@
 
 <footer class="py-10 text-center opacity-50 text-[10px]">
     <p>© 2026 YARMA LUXURY COLLECTIVE</p>
-    <p class="mt-4 cursor-pointer" onclick="openAdmin()">SYSTEM ACCESS</p>
+    <p class="mt-4 cursor-pointer hover:text-red-600 transition" onclick="openAdmin()">SYSTEM ACCESS</p>
 </footer>
 
 <script>
@@ -149,10 +153,7 @@
     }
     function scrollToSec(id) { toggleMenu(); document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
     function openTrack() { toggleMenu(); togglePanel('track-panel'); }
-
-    function openAdmin() {
-        if(prompt("Admin Password:") === pass) { togglePanel('admin-panel'); loadAdmin(); }
-    }
+    function openAdmin() { if(prompt("Admin Password:") === pass) { togglePanel('admin-panel'); loadAdmin(); } }
 
     function addToCart(name, price) {
         cart.push({name, price});
@@ -172,13 +173,26 @@
     }
 
     function confirmOrder() {
+        const n = document.getElementById('cName').value.trim();
+        const p = document.getElementById('cPhone').value.trim();
+        const c = document.getElementById('cCity').value.trim();
+        const a = document.getElementById('cAddress').value.trim();
+        const pin = document.getElementById('cPin').value.trim();
+
+        if(!n || !p || !c || !a || !pin) {
+            alert("INVALID DETAILS! Please fill all required fields to place your order.");
+            return;
+        }
+
         const id = "YRM-" + Math.floor(1000 + Math.random() * 9000);
-        const details = `Name: ${document.getElementById('cName').value}\nPhone: ${document.getElementById('cPhone').value}\nCity: ${document.getElementById('cCity').value}\nAddress: ${document.getElementById('cAddress').value}\nItems: ${cart.map(i=>i.name).join(', ')}`;
+        const details = `NAME: ${n}\nPHONE: ${p}\nCITY: ${c}\nADDRESS: ${a}\nPIN: ${pin}\nITEMS: ${cart.map(i=>i.name).join(', ')}`;
         const order = { id, details, amount: parseInt(document.getElementById('cart-total').innerText.replace(/[₹,]/g, '')), status: 'Pending' };
+        
         let orders = JSON.parse(localStorage.getItem('yrOrders') || '[]');
         orders.unshift(order);
         localStorage.setItem('yrOrders', JSON.stringify(orders));
-        alert("Order Placed! ID: " + id);
+        
+        alert("SUCCESS! Order Placed.\nOrder ID: " + id + "\nScreenshot this for tracking.");
         location.reload();
     }
 
@@ -189,8 +203,8 @@
         document.getElementById('aOrders').innerHTML = orders.map((o, i) => `
             <div class="bg-white/5 p-4 rounded-xl border border-white/10 text-[11px]">
                 <div class="flex justify-between mb-2"><span class="text-red-500 font-bold">${o.id}</span><span class="status-badge status-${o.status.toLowerCase()}">${o.status}</span></div>
-                <pre class="whitespace-pre-wrap mb-3 text-gray-400">${o.details}</pre>
-                <select onchange="updStat(${i}, this.value)" class="bg-black border border-white/20 text-white p-2 rounded w-full text-[10px]">
+                <pre class="whitespace-pre-wrap mb-3 text-gray-400 font-sans">${o.details}</pre>
+                <select onchange="updStat(${i}, this.value)" class="bg-black border border-white/20 text-white p-2 rounded w-full text-[10px] outline-none">
                     <option value="" disabled selected>Update Status</option>
                     <option value="Pending">Pending</option>
                     <option value="Shipped">Shipped</option>
@@ -211,10 +225,10 @@
         const id = document.getElementById('tInput').value.trim().toUpperCase();
         const orders = JSON.parse(localStorage.getItem('yrOrders') || '[]');
         const o = orders.find(x => x.id === id);
-        document.getElementById('tResult').innerHTML = o ? `<div class="bg-red-600/20 p-6 rounded-xl border border-red-600/40 text-center"><p class="text-[10px] uppercase text-gray-400">Status</p><p class="text-2xl font-black">${o.status}</p></div>` : "Not Found";
+        document.getElementById('tResult').innerHTML = o ? `<div class="bg-red-600/20 p-6 rounded-xl border border-red-600/40 text-center"><p class="text-[10px] uppercase text-gray-400 mb-1">Status</p><p class="text-2xl font-black uppercase text-red-600">${o.status}</p></div>` : "<p class='text-center text-xs text-red-500'>Order ID Not Found</p>";
     }
 
-    // Stars
+    // Stars Background
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas3d'), alpha: true });
@@ -223,10 +237,11 @@
     const pos = new Float32Array(1500 * 3);
     for(let i=0; i<4500; i++) pos[i] = (Math.random() - 0.5) * 50;
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ size: 0.03, color: 0xffffff })));
+    scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ size: 0.03, color: 0xffffff, transparent: true, opacity: 0.8 })));
     camera.position.z = 5;
     function anim() { requestAnimationFrame(anim); scene.rotation.y += 0.001; renderer.render(scene, camera); }
     anim();
+    window.addEventListener('resize', () => { camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
 </script>
 </body>
 </html>
