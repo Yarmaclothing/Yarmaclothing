@@ -15,32 +15,29 @@
         .font-mag { font-family: 'Syncopate', sans-serif; letter-spacing: 2px; }
         .glass { background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); }
         
-        /* Menu Alignment Fix */
         .menu-overlay { position: fixed; inset: 0; background: #000; z-index: 500; display: none; flex-direction: column; justify-content: center; align-items: center; gap: 2rem; }
         .menu-overlay.active { display: flex; }
         .menu-btn { font-family: 'Syncopate', sans-serif; font-size: 2.5rem; color: #fff; transition: 0.3s; background: none; border: none; }
-        .menu-btn:hover { color: var(--brand-red); letter-spacing: 8px; }
+        
+        /* Product Page View */
+        #product-detail-view { position: fixed; inset: 0; background: #000; z-index: 600; display: none; overflow-y: auto; padding: 100px 20px 40px; }
+        #product-detail-view.active { display: block; }
 
-        /* Product Card Refinement */
-        .product-card { background: #0a0a0a; border: 1px solid #1a1a1a; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .product-card:hover { border-color: var(--brand-red); transform: translateY(-5px); }
+        .size-box { border: 1px solid #333; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; font-size: 12px; }
+        .size-box.selected { border-color: #fff; background: #fff; color: #000; font-weight: 900; }
+
+        .product-card { background: #0a0a0a; border: 1px solid #1a1a1a; cursor: pointer; transition: 0.4s; }
+        .product-card:hover { border-color: var(--brand-red); }
         .img-container { aspect-ratio: 3/4; background: #111; overflow: hidden; position: relative; }
         .img-container img { width: 100%; height: 100%; object-fit: cover; }
         
-        /* Button Styling */
-        .btn-main { background: #fff; color: #000; padding: 14px; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; width: 100%; transition: 0.3s; border: none; cursor: pointer; }
-        .btn-main:hover:not(:disabled) { background: var(--brand-red); color: #fff; box-shadow: 0 10px 20px rgba(255,0,0,0.2); }
-        .btn-main:disabled { background: #222; color: #444; }
+        .btn-main { background: #fff; color: #000; padding: 16px; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; width: 100%; border: none; cursor: pointer; }
+        .btn-main:hover { background: var(--brand-red); color: #fff; }
 
-        .input-style { background: #080808; border: 1px solid #222; padding: 15px; width: 100%; color: #fff; margin-bottom: 10px; font-size: 13px; outline: none; }
-        .input-style:focus { border-color: var(--brand-red); }
-
-        .panel { position: fixed; top: 0; right: 0; height: 100%; width: 100%; max-width: 450px; background: #080808; z-index: 400; transform: translateX(100%); transition: 0.5s; padding: 30px; border-left: 1px solid #222; display: flex; flex-direction: column; }
+        .panel { position: fixed; top: 0; right: 0; height: 100%; width: 100%; max-width: 450px; background: #080808; z-index: 400; transform: translateX(100%); transition: 0.5s; padding: 30px; border-left: 1px solid #222; }
         .panel.active { transform: translateX(0); }
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 350; display: none; }
         .overlay.active { display: block; }
-
-        .stock-badge { position: absolute; top: 15px; left: 15px; background: var(--brand-red); padding: 4px 10px; font-size: 9px; font-weight: 900; z-index: 10; }
     </style>
 </head>
 <body>
@@ -49,61 +46,82 @@
 <div id="overlay" class="overlay" onclick="closeAllPanels()"></div>
 
 <nav class="fixed top-0 w-full z-[100] px-6 py-5 flex justify-between items-center glass">
-    <div class="font-mag text-xl text-red-600 cursor-pointer" onclick="window.scrollTo(0,0)">YARMA</div>
+    <div class="font-mag text-xl text-red-600 cursor-pointer" onclick="window.location.reload()">YARMA</div>
     <div class="flex gap-6 items-center">
         <button onclick="toggleMenu()" class="text-[10px] font-bold tracking-[3px] uppercase">Menu</button>
         <button onclick="togglePanel('cart-panel')" class="relative">
-            <span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-[8px] w-4 h-4 rounded-full flex items-center justify-center">0</span>
+            <span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-[8px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         </button>
     </div>
 </nav>
 
 <div id="main-menu" class="menu-overlay">
-    <button class="menu-btn" onclick="scrollToSec('home')">HOME</button>
     <button class="menu-btn" onclick="scrollToSec('shop')">SHOP</button>
     <button class="menu-btn" onclick="openTrack()">TRACKING</button>
-    <button onclick="toggleMenu()" class="text-xs tracking-[5px] mt-10 opacity-50 underline">CLOSE</button>
+    <a href="https://instagram.com/yarmaclothingbrand" target="_blank" class="menu-btn">INSTAGRAM</a>
+    <button onclick="toggleMenu()" class="text-xs tracking-[5px] mt-10 opacity-50">CLOSE</button>
 </div>
 
-<section id="home" class="min-h-screen flex flex-col items-center justify-center text-center pt-20">
+<section id="home" class="min-h-screen flex flex-col items-center justify-center text-center">
     <h1 class="font-mag text-5xl md:text-[8rem] mb-4">YARMA</h1>
     <p class="text-[10px] tracking-[0.6em] mb-10 opacity-60">ESSENTIALS FOR THE ELITE</p>
-    <button onclick="scrollToSec('shop')" class="border border-white/30 px-10 py-4 text-[10px] font-bold tracking-[4px] hover:bg-white hover:text-black transition">BROWSE DROPS</button>
+    <button onclick="scrollToSec('shop')" class="border border-white/30 px-10 py-4 text-[10px] font-bold tracking-[4px]">EXPLORE</button>
 </section>
 
 <section id="shop" class="py-20 px-4 max-w-7xl mx-auto">
-    <h2 class="font-mag text-center text-2xl mb-16 text-red-600 uppercase">Current Inventory</h2>
     <div id="product-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
 </section>
 
-<div id="admin-panel" class="panel !max-w-[600px]">
-    <div class="flex gap-4 mb-6 border-b border-white/10 pb-4">
-        <button onclick="switchAdminTab('orders')" class="text-[10px] font-black tracking-widest">ORDERS</button>
-        <button onclick="switchAdminTab('inventory')" class="text-[10px] font-black tracking-widest">INVENTORY</button>
-    </div>
-    
-    <div id="admin-inventory-view" class="hidden overflow-y-auto">
-        <p class="text-[10px] text-red-600 mb-4 font-black">LIST NEW PRODUCT</p>
-        <input type="text" id="pName" class="input-style" placeholder="Product Name">
-        <input type="number" id="pPrice" class="input-style" placeholder="Price (₹)">
-        <input type="number" id="pStock" class="input-style" placeholder="Stock Quantity">
-        <div class="mb-4">
-            <label class="text-[9px] block mb-2 opacity-50">PRODUCT IMAGE (FROM GALLERY)</label>
-            <input type="file" id="pImgFile" accept="image/*" class="text-[10px]">
+<div id="product-detail-view">
+    <button onclick="closeProductView()" class="fixed top-10 left-10 z-[700] text-xs font-black tracking-widest">[ BACK ]</button>
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div id="detail-images" class="space-y-4"></div>
+        <div class="flex flex-col">
+            <h2 id="detail-name" class="font-mag text-3xl mb-4"></h2>
+            <p id="detail-price" class="text-2xl font-black mb-8"></p>
+            <p id="detail-desc" class="text-xs opacity-60 leading-relaxed mb-10"></p>
+            
+            <p class="text-[10px] font-bold mb-4 uppercase tracking-widest">Select Size Range (EUR)</p>
+            <div class="grid grid-cols-3 gap-2 mb-10">
+                <div class="size-box" onclick="selectSize(this, '32-36')">32-36</div>
+                <div class="size-box" onclick="selectSize(this, '38-42')">38-42</div>
+                <div class="size-box" onclick="selectSize(this, '44-48')">44-48</div>
+                <div class="size-box" onclick="selectSize(this, '50-54')">50-54</div>
+                <div class="size-box" onclick="selectSize(this, '56-60')">56-60</div>
+                <div class="size-box" onclick="selectSize(this, '62')">62</div>
+            </div>
+            
+            <button id="add-to-cart-btn" class="btn-main">Add to Bag</button>
+            <div class="mt-10 border-t border-white/10 pt-6">
+                <p class="text-[9px] opacity-40 uppercase">Direct Assistance</p>
+                <a href="https://instagram.com/yarmaclothingbrand" class="text-[10px] font-bold underline">Instagram DM</a>
+            </div>
         </div>
-        <textarea id="pDesc" class="input-style h-20" placeholder="Product Details..."></textarea>
-        <button onclick="addProduct()" class="btn-main mb-8">Confirm Listing</button>
+    </div>
+</div>
+
+<div id="admin-panel" class="panel !max-w-[600px] overflow-y-auto">
+    <div class="flex gap-4 mb-8">
+        <button onclick="switchAdminTab('inventory')" class="text-[10px] font-black">INVENTORY</button>
+        <button onclick="switchAdminTab('orders')" class="text-[10px] font-black">ORDERS</button>
+    </div>
+    <div id="admin-inventory-view">
+        <input type="text" id="pName" class="bg-[#111] border border-[#222] p-4 w-full text-xs mb-2" placeholder="Product Name">
+        <input type="number" id="pPrice" class="bg-[#111] border border-[#222] p-4 w-full text-xs mb-2" placeholder="Price">
+        <textarea id="pDesc" class="bg-[#111] border border-[#222] p-4 w-full text-xs h-20 mb-2" placeholder="Description"></textarea>
+        <label class="text-[9px] opacity-50">Upload Up to 3 Images</label>
+        <input type="file" id="pImgFile" multiple accept="image/*" class="text-[10px] mb-6">
+        <button onclick="addProduct()" class="btn-main mb-8">List Product</button>
         <div id="aInventory" class="space-y-2"></div>
     </div>
-
-    <div id="admin-orders-view" class="overflow-y-auto">
+    <div id="admin-orders-view" class="hidden">
         <div id="aOrders" class="space-y-4"></div>
     </div>
 </div>
 
-<div id="cart-panel" class="panel">
-    <h2 class="font-mag text-lg mb-8">CART</h2>
+<div id="cart-panel" class="panel flex flex-col">
+    <h2 class="font-mag text-lg mb-8">BAG</h2>
     <div id="cart-items" class="flex-grow overflow-y-auto"></div>
     <div class="mt-6 border-t border-white/10 pt-6">
         <div class="flex justify-between text-xl font-bold mb-6"><span>Total</span><span id="cart-total">₹0</span></div>
@@ -113,77 +131,102 @@
 
 <div id="checkout-panel" class="panel">
     <h2 class="font-mag text-lg mb-8 text-red-600">SHIPPING</h2>
-    <input type="text" id="cName" class="input-style" placeholder="Name">
-    <input type="tel" id="cPhone" class="input-style" placeholder="Mobile">
-    <textarea id="cAddress" class="input-style h-24" placeholder="Full Address"></textarea>
-    <button onclick="confirmOrder()" class="btn-main">Place Order</button>
+    <input type="text" id="cName" class="bg-[#111] border border-[#222] p-4 w-full text-xs mb-2" placeholder="Full Name">
+    <input type="tel" id="cPhone" class="bg-[#111] border border-[#222] p-4 w-full text-xs mb-2" placeholder="Phone">
+    <textarea id="cAddress" class="bg-[#111] border border-[#222] p-4 w-full text-xs h-24 mb-4" placeholder="Address"></textarea>
+    <button onclick="confirmOrder()" class="btn-main">Complete COD Order</button>
 </div>
 
 <div id="track-panel" class="panel">
-    <h2 class="font-mag text-lg mb-8">TRACK ORDER</h2>
-    <input type="text" id="tInput" class="input-style" placeholder="Order ID">
+    <h2 class="font-mag text-lg mb-8">TRACKING</h2>
+    <input type="text" id="tInput" class="bg-[#111] border border-[#222] p-4 w-full text-xs mb-4" placeholder="Order ID">
     <button onclick="trackNow()" class="btn-main">Locate</button>
     <div id="tResult" class="mt-8"></div>
 </div>
 
-<footer class="py-20 text-center border-t border-white/5 opacity-40">
+<footer class="py-20 text-center opacity-40 border-t border-white/5">
     <p class="font-mag text-sm mb-2" onclick="openAdmin()">YARMA</p>
     <p class="text-[8px] tracking-[5px]">MANAGEMENT PORTAL</p>
 </footer>
 
 <script>
     let cart = [];
-    const pss = "ishaangund";
+    let selectedSize = null;
     let products = JSON.parse(localStorage.getItem('yrProducts')) || [];
+    const pss = "ishaangund";
 
     function renderProducts() {
         const list = document.getElementById('product-list');
-        list.innerHTML = products.length ? products.map(p => `
-            <div class="product-card">
-                <div class="img-container">
-                    ${p.stock <= 0 ? '<div class="absolute inset-0 bg-black/80 flex items-center justify-center font-mag text-red-600">SOLD OUT</div>' : ''}
-                    ${p.stock > 0 && p.stock < 5 ? '<div class="stock-badge">LOW STOCK</div>' : ''}
-                    <img src="${p.img}" onerror="this.src='https://via.placeholder.com/400x500?text=YARMA'">
-                </div>
+        list.innerHTML = products.map(p => `
+            <div class="product-card" onclick="openProductView(${p.id})">
+                <div class="img-container"><img src="${p.imgs[0]}"></div>
                 <div class="p-6">
                     <h3 class="font-mag text-[12px] mb-2 uppercase">${p.name}</h3>
-                    <p class="text-white font-black text-xl mb-6">₹${p.price.toLocaleString()}</p>
-                    <button onclick="addToCart(${p.id})" class="btn-main" ${p.stock <= 0 ? 'disabled' : ''}>
-                        ${p.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
-                    </button>
+                    <p class="font-black text-xl">₹${p.price.toLocaleString()}</p>
                 </div>
             </div>
-        `).join('') : '<p class="col-span-full text-center opacity-30 uppercase tracking-widest text-xs py-20">New Collection Coming Soon</p>';
+        `).join('');
     }
 
-    // GALLERY UPLOAD LOGIC
+    function openProductView(id) {
+        const p = products.find(x => x.id === id);
+        selectedSize = null;
+        document.getElementById('detail-name').innerText = p.name;
+        document.getElementById('detail-price').innerText = '₹' + p.price.toLocaleString();
+        document.getElementById('detail-desc').innerText = p.desc;
+        document.getElementById('detail-images').innerHTML = p.imgs.map(img => `<img src="${img}" class="w-full">`).join('');
+        
+        const addBtn = document.getElementById('add-to-cart-btn');
+        addBtn.onclick = () => {
+            if(!selectedSize) return alert("Bhai, Size select kar pehle!");
+            cart.push({...p, size: selectedSize});
+            updateUI();
+            closeProductView();
+            togglePanel('cart-panel');
+        };
+
+        document.getElementById('product-detail-view').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function selectSize(el, size) {
+        document.querySelectorAll('.size-box').forEach(b => b.classList.remove('selected'));
+        el.classList.add('selected');
+        selectedSize = size;
+    }
+
+    function closeProductView() {
+        document.getElementById('product-detail-view').classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
     function addProduct() {
-        const fileInput = document.getElementById('pImgFile');
+        const files = document.getElementById('pImgFile').files;
         const name = document.getElementById('pName').value.trim();
         const price = document.getElementById('pPrice').value;
-        const stock = document.getElementById('pStock').value;
         const desc = document.getElementById('pDesc').value.trim();
 
-        if(!fileInput.files[0] || !name || !price) return alert("All fields including Image are required!");
+        if(files.length === 0 || !name || !price) return alert("Details missing!");
 
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            products.unshift({
-                id: Date.now(),
-                name,
-                price: parseInt(price),
-                stock: parseInt(stock),
-                img: e.target.result, // Base64 image string
-                desc
-            });
-            localStorage.setItem('yrProducts', JSON.stringify(products));
-            renderProducts(); loadInventory();
-            alert("Product Live!");
-        };
-        reader.readAsDataURL(fileInput.files[0]);
+        let uploadedImgs = [];
+        let loaded = 0;
+        for(let i=0; i<Math.min(files.length, 3); i++) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                uploadedImgs.push(e.target.result);
+                loaded++;
+                if(loaded === Math.min(files.length, 3)) {
+                    products.unshift({ id: Date.now(), name, price: parseInt(price), imgs: uploadedImgs, desc, stock: 10 });
+                    localStorage.setItem('yrProducts', JSON.stringify(products));
+                    renderProducts(); loadInventory();
+                    alert("Listed!");
+                }
+            };
+            reader.readAsDataURL(files[i]);
+        }
     }
 
-    // Standard Backend Logic
+    // Logic utilities (same as before)
     function toggleMenu() { document.getElementById('main-menu').classList.toggle('active'); }
     function togglePanel(id) { closeAllPanels(); document.getElementById(id).classList.add('active'); document.getElementById('overlay').classList.add('active'); }
     function closeAllPanels() { document.querySelectorAll('.panel').forEach(p => p.classList.remove('active')); document.getElementById('overlay').classList.remove('active'); }
@@ -192,73 +235,54 @@
     function switchAdminTab(t) { 
         document.getElementById('admin-orders-view').classList.toggle('hidden', t !== 'orders');
         document.getElementById('admin-inventory-view').classList.toggle('hidden', t !== 'inventory');
-        if(t === 'inventory') loadInventory();
     }
-
-    function addToCart(id) {
-        const p = products.find(x => x.id === id);
-        if(p.stock > 0) { cart.push(p); updateUI(); togglePanel('cart-panel'); }
-    }
-
     function updateUI() {
         const list = document.getElementById('cart-items');
         let total = 0; list.innerHTML = '';
         cart.forEach((item, i) => {
             total += item.price;
-            list.innerHTML += `<div class="flex gap-4 mb-4 bg-white/5 p-3"><img src="${item.img}" class="w-16 h-20 object-cover"><div><p class="text-[10px] font-black">${item.name}</p><p class="text-sm">₹${item.price}</p><button onclick="cart.splice(${i},1);updateUI()" class="text-red-600 text-[10px]">Remove</button></div></div>`;
+            list.innerHTML += `<div class="flex gap-4 mb-4 bg-white/5 p-3"><img src="${item.imgs[0]}" class="w-12 h-16 object-cover"><div><p class="text-[10px] font-black">${item.name} (${item.size})</p><p class="text-sm">₹${item.price}</p><button onclick="cart.splice(${i},1);updateUI()" class="text-red-600 text-[10px]">Remove</button></div></div>`;
         });
         document.getElementById('cart-count').innerText = cart.length;
         document.getElementById('cart-total').innerText = '₹' + total.toLocaleString();
     }
-
     function confirmOrder() {
         const n = document.getElementById('cName').value.trim();
         const pNum = document.getElementById('cPhone').value.trim();
         const a = document.getElementById('cAddress').value.trim();
-        if(!n || !pNum || !a) return alert("Fill shipping info!");
-
+        if(!n || !pNum || !a) return alert("Details missing!");
         const oid = "YRM-" + Math.floor(1000 + Math.random() * 9000);
-        const order = { id: oid, details: `Client: ${n}\nTel: ${pNum}\nItems: ${cart.map(i=>i.name).join(',')}`, status: 'Processing' };
-        
         let orders = JSON.parse(localStorage.getItem('yrOrders') || '[]');
-        orders.unshift(order);
+        orders.unshift({ id: oid, details: `Client: ${n}\nItems: ${cart.map(i=>i.name + ' [' + i.size + ']').join(',')}`, status: 'Processing' });
         localStorage.setItem('yrOrders', JSON.stringify(orders));
-
-        // Deduct Stock
-        cart.forEach(c => { const pr = products.find(x=>x.id===c.id); if(pr) pr.stock--; });
-        localStorage.setItem('yrProducts', JSON.stringify(products));
-
-        alert("ORDER PLACED! ID: " + oid);
+        alert("SECURED! ID: " + oid);
         location.reload();
     }
-
+    function loadAdmin() {
+        const oList = JSON.parse(localStorage.getItem('yrOrders') || '[]');
+        document.getElementById('aOrders').innerHTML = oList.map(o => `<div class="bg-white/5 p-4 text-[10px]"><p class="text-red-600 font-bold">${o.id}</p><pre class="opacity-50">${o.details}</pre></div>`).join('');
+        loadInventory();
+    }
     function loadInventory() {
         document.getElementById('aInventory').innerHTML = products.map(p => `
             <div class="flex justify-between items-center bg-white/5 p-3 text-[10px]">
-                <span>${p.name} (${p.stock})</span>
-                <button onclick="deleteProduct(${p.id})" class="text-red-600 font-bold">DELETE</button>
+                <span>${p.name}</span>
+                <button onclick="deleteProduct(${p.id})" class="text-red-600">DEL</button>
             </div>
         `).join('');
     }
-
-    function deleteProduct(id) { if(confirm("Delete?")) { products = products.filter(p => p.id !== id); localStorage.setItem('yrProducts', JSON.stringify(products)); renderProducts(); loadInventory(); } }
-
-    function loadAdmin() {
-        const orders = JSON.parse(localStorage.getItem('yrOrders') || '[]');
-        document.getElementById('aOrders').innerHTML = orders.map(o => `<div class="bg-white/5 p-4 border border-white/5 text-[10px]"><p class="text-red-600 font-bold mb-2">${o.id}</p><pre class="opacity-50">${o.details}</pre></div>`).join('');
-    }
-
+    function deleteProduct(id) { if(confirm("Delete?")) { products = products.filter(x=>x.id!==id); localStorage.setItem('yrProducts', JSON.stringify(products)); renderProducts(); loadInventory(); } }
     function openTrack() { toggleMenu(); togglePanel('track-panel'); }
     function trackNow() {
         const id = document.getElementById('tInput').value.trim().toUpperCase();
         const orders = JSON.parse(localStorage.getItem('yrOrders') || '[]');
         const o = orders.find(x => x.id === id);
-        document.getElementById('tResult').innerHTML = o ? `<div class="p-6 bg-red-600/10 text-center border border-red-600/30"><p class="text-2xl font-black text-red-600">${o.status}</p></div>` : "Invalid ID";
+        document.getElementById('tResult').innerHTML = o ? `<div class="p-6 bg-red-600/10 text-center border border-red-600/30 font-black">${o.status}</div>` : "NOT FOUND";
     }
 
     renderProducts();
 
-    // Visuals (3D)
+    // 3D Visuals
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas3d'), alpha: true });
