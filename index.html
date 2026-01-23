@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,144 +10,173 @@
     <style>
         body { font-family: 'Inter', sans-serif; background: #000; color: #fff; scroll-behavior: smooth; margin: 0; overflow-x: hidden; }
         canvas { position: fixed; top: 0; left: 0; z-index: -1; }
-        .glass { background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); }
+        .glass { background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.1); }
         .font-mag { font-family: 'Syncopate', sans-serif; }
         section { min-height: 100vh; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 100px 20px; }
-        .product-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 24px; padding: 24px; width: 100%; transition: 0.4s; position: relative; }
-        .product-card:hover { border-color: #ff0000; transform: translateY(-5px); }
-        
-        /* Cart & Form Panels */
-        #cart-panel, #checkout-panel { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); transform: translateX(100%); }
-        #cart-panel.active, #checkout-panel.active { transform: translateX(0); }
-        
-        .input-style { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 12px; width: 100%; color: white; outline: none; transition: 0.3s; }
-        .input-style:focus { border-color: #ff0000; background: rgba(255,255,255,0.1); }
+        .product-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 24px; padding: 24px; width: 100%; transition: 0.4s; }
+        .panel { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); transform: translateX(100%); position: fixed; top: 0; right: 0; height: 100%; z-[150]; }
+        .panel.active { transform: translateX(0); }
+        .input-style { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 14px; border-radius: 12px; width: 100%; color: white; outline: none; margin-bottom: 10px; font-size: 14px; }
+        .input-style:focus { border-color: #ff0000; }
     </style>
 </head>
 <body>
 
 <canvas id="canvas3d"></canvas>
 
-<nav class="fixed top-0 w-full z-[100] px-6 py-4 flex justify-between items-center glass">
+<nav class="fixed top-0 w-full z-[100] px-6 py-5 flex justify-between items-center glass">
     <div class="font-mag text-lg text-red-600 cursor-pointer tracking-tighter" onclick="window.scrollTo(0,0)">YARMA</div>
     <div class="flex items-center gap-6">
-        <button onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})" class="text-[10px] font-bold uppercase tracking-widest hover:text-red-600 hidden md:block">The Drop</button>
-        <button onclick="toggleCart()" class="relative bg-white/10 p-3 rounded-full hover:bg-red-600 transition">
+        <button onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})" class="text-[10px] font-bold uppercase tracking-widest hover:text-red-600">Shop</button>
+        <button onclick="togglePanel('cart-panel')" class="relative bg-white/10 p-3 rounded-full hover:bg-red-600 transition">
             <span id="cart-count" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         </button>
     </div>
 </nav>
 
-<div id="cart-panel" class="fixed top-0 right-0 h-full w-full md:w-[400px] glass z-[150] p-8 flex flex-col">
-    <div class="flex justify-between items-center mb-10">
-        <h2 class="font-mag text-xl tracking-tighter">YOUR CART</h2>
-        <button onclick="toggleCart()" class="text-gray-400 hover:text-white uppercase text-[10px] font-bold tracking-widest">Close</button>
-    </div>
-    <div id="cart-items" class="flex-grow overflow-y-auto space-y-6"></div>
-    <div class="border-t border-white/10 pt-6 mt-6">
-        <div class="flex justify-between font-bold mb-6"><span>TOTAL</span><span id="cart-total" class="text-red-600 text-xl font-black">₹0</span></div>
-        <button onclick="openCheckout()" class="w-full bg-white text-black py-4 rounded-xl font-black text-[10px] tracking-widest mb-3 uppercase hover:bg-red-600 hover:text-white transition">Proceed to Checkout</button>
+<div id="cart-panel" class="panel w-full md:w-[400px] glass p-8 flex flex-col">
+    <h2 class="font-mag text-xl mb-10 tracking-tighter">YOUR CART</h2>
+    <div id="cart-items" class="flex-grow overflow-y-auto space-y-4"></div>
+    <div class="border-t border-white/10 pt-6">
+        <div class="flex justify-between font-black text-xl mb-6"><span>TOTAL</span><span id="cart-total">₹0</span></div>
+        <button onclick="togglePanel('checkout-panel')" class="w-full bg-white text-black py-4 rounded-xl font-black text-[10px] tracking-widest uppercase hover:bg-red-600 hover:text-white transition">Place Order</button>
     </div>
 </div>
 
-<div id="checkout-panel" class="fixed top-0 right-0 h-full w-full md:w-[400px] glass z-[160] p-8 flex flex-col overflow-y-auto">
-    <div class="flex justify-between items-center mb-10">
-        <h2 class="font-mag text-xl tracking-tighter text-red-600">SHIPPING DETAILS</h2>
-        <button onclick="closeCheckout()" class="text-gray-400 hover:text-white uppercase text-[10px] font-bold tracking-widest">Back</button>
+<div id="checkout-panel" class="panel w-full md:w-[400px] glass p-8 flex flex-col overflow-y-auto">
+    <h2 class="font-mag text-xl mb-6 text-red-600">SHIPPING DETAILS</h2>
+    <input type="text" id="custName" class="input-style" placeholder="Full Name">
+    <input type="tel" id="custPhone" class="input-style" placeholder="Mobile Number">
+    <input type="text" id="custCity" class="input-style" placeholder="City">
+    <textarea id="custAddress" class="input-style" placeholder="Area Name, Near Place (Landmark)"></textarea>
+    <input type="text" id="custPin" class="input-style" placeholder="Postal Code">
+    <button onclick="showReview()" class="w-full bg-red-600 text-white py-4 rounded-xl font-black text-[10px] tracking-widest uppercase mt-4">Review Order</button>
+    <button onclick="togglePanel('checkout-panel')" class="mt-4 text-[10px] uppercase opacity-50">Back to Cart</button>
+</div>
+
+<div id="review-panel" class="panel w-full md:w-[400px] glass p-8 flex flex-col z-[170]">
+    <h2 class="font-mag text-xl mb-6 text-green-500">RECHECK DETAILS</h2>
+    <div id="order-summary" class="bg-white/5 p-6 rounded-2xl text-xs space-y-3 mb-6 border border-white/10 overflow-y-auto"></div>
+    <div class="p-4 border border-green-500/30 rounded-xl mb-6 bg-green-500/10">
+        <p class="text-[9px] font-bold text-green-500 uppercase tracking-widest">Payment Method</p>
+        <p class="font-black">CASH ON DELIVERY (COD)</p>
     </div>
-    <form id="orderForm" class="space-y-4">
-        <div><label class="text-[9px] uppercase font-bold text-gray-500 ml-2">Full Name</label><input type="text" id="custName" class="input-style" placeholder="John Doe" required></div>
-        <div><label class="text-[9px] uppercase font-bold text-gray-500 ml-2">Mobile Number</label><input type="tel" id="custPhone" class="input-style" placeholder="91XXXXXXXX" required></div>
-        <div><label class="text-[9px] uppercase font-bold text-gray-500 ml-2">City Name</label><input type="text" id="custCity" class="input-style" placeholder="Mumbai" required></div>
-        <div><label class="text-[9px] uppercase font-bold text-gray-500 ml-2">Area / Street Name</label><input type="text" id="custArea" class="input-style" placeholder="Sector 45, MG Road" required></div>
-        <div><label class="text-[9px] uppercase font-bold text-gray-500 ml-2">Near Place (Landmark)</label><input type="text" id="custLandmark" class="input-style" placeholder="Near Blue Star Mall" required></div>
-        <div><label class="text-[9px] uppercase font-bold text-gray-500 ml-2">Postal Code (PIN)</label><input type="text" id="custPin" class="input-style" placeholder="400001" required></div>
-        
-        <button type="submit" class="w-full bg-red-600 text-white py-4 rounded-xl font-black text-[10px] tracking-widest uppercase mt-6 shadow-lg shadow-red-600/20">Place Order via WhatsApp</button>
-    </form>
+    <button onclick="finalSubmit()" class="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white py-4 rounded-xl font-black text-[10px] tracking-widest uppercase">Confirm & Open Instagram</button>
 </div>
 
 <section id="home">
-    <h1 class="font-mag text-7xl md:text-9xl mb-4 italic text-center tracking-tighter">YARMA</h1>
-    <p class="tracking-[0.8em] text-gray-500 text-[10px] mb-12 uppercase text-center font-black italic">Ishaan & Munendra</p>
+    <h1 class="font-mag text-6xl md:text-9xl mb-4 italic tracking-tighter">YARMA</h1>
+    <p class="tracking-[0.8em] text-gray-500 text-[10px] mb-12 uppercase font-black italic">Luxury Collective</p>
     <div class="flex flex-col md:flex-row gap-4">
-        <button onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})" class="bg-white text-black px-12 py-4 rounded-full font-black uppercase text-[10px] tracking-widest hover:bg-red-600 hover:text-white transition">Shop Now</button>
-        <button onclick="window.location.href='https://www.instagram.com/yarmaclothingbrand?igsh=NzZqNzI2em5lNWU='" class="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-12 py-4 rounded-full font-black uppercase text-[10px] tracking-widest">Order on Instagram</button>
+        <button onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})" class="bg-white text-black px-12 py-4 rounded-full font-black uppercase text-[10px] tracking-widest">The Drop</button>
+        <button onclick="window.location.href='https://www.instagram.com/yarmaclothingbrand'" class="bg-white/5 border border-white/20 text-white px-12 py-4 rounded-full font-black uppercase text-[10px] tracking-widest">Instagram</button>
     </div>
 </section>
 
 <section id="shop">
-    <h2 class="font-mag text-3xl mb-16 text-red-600 tracking-widest uppercase">The Drop</h2>
+    <h2 class="font-mag text-3xl mb-16 text-red-600 tracking-widest uppercase">Collection</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl w-full">
         <div class="product-card">
-            <div class="h-80 bg-zinc-900 rounded-2xl mb-6 flex items-center justify-center text-xs text-gray-700 font-bold uppercase tracking-widest">Vortex Hoodie</div>
-            <h3 class="font-bold tracking-widest text-sm">VORTEX HOODIE</h3>
+            <div class="h-80 bg-zinc-900 rounded-2xl mb-6 flex items-center justify-center text-gray-600 uppercase text-[10px] font-bold">Image Coming Soon</div>
+            <h3 class="font-bold tracking-widest">VORTEX HOODIE</h3>
             <p class="text-red-600 font-black text-xl mt-1">₹5,499</p>
-            <div class="grid grid-cols-2 gap-3 mt-6">
-                <button onclick="addToCart('VORTEX HOODIE', 5499)" class="bg-white text-black py-4 rounded-xl font-black text-[9px] tracking-widest uppercase hover:bg-red-600 hover:text-white transition">Add to Cart</button>
-                <button onclick="window.location.href='tel:8869089461'" class="border border-white/10 py-4 rounded-xl font-black text-[9px] tracking-widest uppercase">Buy Now</button>
-            </div>
+            <button onclick="addToCart('VORTEX HOODIE', 5499)" class="w-full mt-6 bg-white text-black py-4 rounded-xl font-black text-[9px] tracking-widest uppercase">Add to Cart</button>
         </div>
         <div class="product-card">
-            <div class="h-80 bg-zinc-900 rounded-2xl mb-6 flex items-center justify-center text-xs text-gray-700 font-bold uppercase tracking-widest">Stealth Tee</div>
-            <h3 class="font-bold tracking-widest text-sm">STEALTH TEE</h3>
+            <div class="h-80 bg-zinc-900 rounded-2xl mb-6 flex items-center justify-center text-gray-600 uppercase text-[10px] font-bold">Image Coming Soon</div>
+            <h3 class="font-bold tracking-widest">STEALTH TEE</h3>
             <p class="text-red-600 font-black text-xl mt-1">₹2,999</p>
-            <div class="grid grid-cols-2 gap-3 mt-6">
-                <button onclick="addToCart('STEALTH TEE', 2999)" class="bg-white text-black py-4 rounded-xl font-black text-[9px] tracking-widest uppercase hover:bg-red-600 hover:text-white transition">Add to Cart</button>
-                <button onclick="window.location.href='tel:8869089461'" class="border border-white/10 py-4 rounded-xl font-black text-[9px] tracking-widest uppercase">Buy Now</button>
-            </div>
+            <button onclick="addToCart('STEALTH TEE', 2999)" class="w-full mt-6 bg-white text-black py-4 rounded-xl font-black text-[9px] tracking-widest uppercase">Add to Cart</button>
         </div>
     </div>
 </section>
 
-<section id="about">
-    <div class="max-w-4xl glass p-12 md:p-20 rounded-[3rem] text-center border-t-4 border-red-600">
-        <h2 class="font-mag text-2xl mb-10 italic text-red-600 tracking-widest uppercase">The Vision</h2>
-        <p class="text-lg md:text-2xl font-light leading-relaxed text-gray-300 mb-12">Luxury streetwear by <span class="text-white font-black uppercase">Ishaan</span> & <span class="text-white font-black uppercase">Munendra</span>.</p>
-        <div class="flex justify-center gap-12">
-            <div onclick="window.location.href='tel:8869089461'" class="cursor-pointer group"><p class="text-[9px] text-gray-500 uppercase tracking-widest">Founder</p><p class="font-black group-hover:text-red-600 transition">ISHAAN</p></div>
-            <div onclick="window.location.href='tel:8218415994'" class="cursor-pointer group"><p class="text-[9px] text-gray-500 uppercase tracking-widest">Founder</p><p class="font-black group-hover:text-red-600 transition">MUNENDRA</p></div>
-        </div>
-    </div>
-</section>
+<footer class="py-20 glass text-center border-t border-white/10">
+    <p class="text-[10px] text-gray-500 uppercase tracking-[0.5em] mb-4">Official Contact</p>
+    <a href="https://www.instagram.com/yarmaclothingbrand" class="font-mag text-xl hover:text-red-600 transition tracking-tighter">@YARMACLOTHINGBRAND</a>
+    <div class="mt-20 opacity-10 text-[8px] cursor-pointer hover:opacity-100 transition" onclick="togglePanel('admin-panel')">SYSTEM ACCESS</div>
+</footer>
+
+<div id="admin-panel" class="panel w-full md:w-[500px] glass p-8 flex flex-col z-[200] overflow-y-auto">
+    <h2 class="font-mag text-xl mb-6 text-yellow-500 tracking-tighter">ORDER LOGS</h2>
+    <div id="admin-orders" class="space-y-4"></div>
+    <button onclick="togglePanel('admin-panel')" class="mt-10 border border-white/20 py-3 rounded uppercase text-[10px] font-bold">Close Logs</button>
+</div>
 
 <script>
     let cart = [];
-    function toggleCart() { document.getElementById('cart-panel').classList.toggle('active'); }
-    function openCheckout() { if(cart.length > 0) document.getElementById('checkout-panel').classList.add('active'); else alert('Cart is empty!'); }
-    function closeCheckout() { document.getElementById('checkout-panel').classList.remove('active'); }
+    function togglePanel(id) { document.getElementById(id).classList.toggle('active'); }
 
     function addToCart(name, price) {
         cart.push({name, price});
-        updateCartUI();
-        if(!document.getElementById('cart-panel').classList.contains('active')) toggleCart();
+        updateUI();
+        togglePanel('cart-panel');
     }
 
-    function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); }
-
-    function updateCartUI() {
+    function updateUI() {
         const list = document.getElementById('cart-items');
-        const count = document.getElementById('cart-count');
-        const totalEl = document.getElementById('cart-total');
-        list.innerHTML = ''; let total = 0;
-        cart.forEach((item, index) => {
+        let total = 0; list.innerHTML = '';
+        cart.forEach((item, i) => {
             total += item.price;
-            list.innerHTML += `<div class="flex justify-between items-center bg-white/5 p-4 rounded-xl"><div><p class="text-[10px] font-black uppercase tracking-widest">${item.name}</p><p class="text-red-600 text-xs font-bold">₹${item.price}</p></div><button onclick="removeFromCart(${index})" class="text-gray-500 hover:text-red-600">✕</button></div>`;
+            list.innerHTML += `<div class="flex justify-between items-center bg-white/5 p-4 rounded-xl text-xs"><span class="font-bold">${item.name}</span><button onclick="cart.splice(${i},1);updateUI()" class="text-red-600">✕</button></div>`;
         });
-        count.innerText = cart.length;
-        totalEl.innerText = '₹' + total.toLocaleString();
+        document.getElementById('cart-count').innerText = cart.length;
+        document.getElementById('cart-total').innerText = '₹' + total.toLocaleString();
     }
 
-    document.getElementById('orderForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const items = cart.map(i => i.name).join(', ');
-        const total = document.getElementById('cart-total').innerText;
-        const msg = `*NEW ORDER - YARMA*%0A------------------%0A*Name:* ${document.getElementById('custName').value}%0A*Phone:* ${document.getElementById('custPhone').value}%0A*City:* ${document.getElementById('custCity').value}%0A*Area:* ${document.getElementById('custArea').value}%0A*Landmark:* ${document.getElementById('custLandmark').value}%0A*PIN:* ${document.getElementById('custPin').value}%0A------------------%0A*Items:* ${items}%0A*Total:* ${total}`;
-        window.open(`https://wa.me/918869089461?text=${msg}`);
-    });
+    function showReview() {
+        if(!document.getElementById('custName').value || !document.getElementById('custPhone').value) { alert('Please fill details'); return; }
+        const summary = `<strong>NAME:</strong> ${document.getElementById('custName').value}<br>
+                         <strong>PHONE:</strong> ${document.getElementById('custPhone').value}<br>
+                         <strong>CITY:</strong> ${document.getElementById('custCity').value}<br>
+                         <strong>ADDRESS:</strong> ${document.getElementById('custAddress').value}<br>
+                         <strong>PIN:</strong> ${document.getElementById('custPin').value}<br>
+                         <strong>ITEMS:</strong> ${cart.map(i=>i.name).join(', ')}`;
+        document.getElementById('order-summary').innerHTML = summary;
+        togglePanel('review-panel');
+    }
 
-    // Background and Resize Logic (Simplified for performance)
+    function finalSubmit() {
+        const orderData = {
+            name: document.getElementById('custName').value,
+            phone: document.getElementById('custPhone').value,
+            city: document.getElementById('custCity').value,
+            address: document.getElementById('custAddress').value,
+            pin: document.getElementById('custPin').value,
+            items: cart.map(i=>i.name).join(', '),
+            total: document.getElementById('cart-total').innerText,
+            date: new Date().toLocaleString()
+        };
+
+        // Save to Browser Storage (Admin View)
+        let orders = JSON.parse(localStorage.getItem('yarmaOrders') || '[]');
+        orders.unshift(orderData); // Add new order to top
+        localStorage.setItem('yarmaOrders', JSON.stringify(orders));
+        
+        // Final Action: Instagram DM
+        alert("Order Recorded! Opening Instagram DM. Please paste your details there.");
+        window.location.href = "https://www.instagram.com/yarmaclothingbrand";
+        loadAdmin();
+    }
+
+    function loadAdmin() {
+        const adminList = document.getElementById('admin-orders');
+        const orders = JSON.parse(localStorage.getItem('yarmaOrders') || '[]');
+        adminList.innerHTML = orders.map(o => `
+            <div class="bg-white/5 p-4 rounded-xl border border-white/10 text-[10px] leading-relaxed">
+                <p class="text-red-600 font-bold mb-2 uppercase">${o.date}</p>
+                <p><b>Name:</b> ${o.name}</p>
+                <p><b>Phone:</b> ${o.phone}</p>
+                <p><b>Address:</b> ${o.address}, ${o.city} - ${o.pin}</p>
+                <p class="mt-2 text-white font-bold">Items: ${o.items}</p>
+                <p class="text-white font-bold">Total: ${o.total}</p>
+            </div>
+        `).join('');
+    }
+    loadAdmin();
+
+    // 3D Background Logic
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas3d'), alpha: true });
@@ -156,11 +185,17 @@
     const pos = new Float32Array(1500 * 3);
     for(let i=0; i<4500; i++) pos[i] = (Math.random() - 0.5) * 45;
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    const mat = new THREE.PointsMaterial({ size: 0.02, color: 0xffffff, transparent: true, opacity: 0.4 });
-    scene.add(new THREE.Points(geo, mat));
+    scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ size: 0.02, color: 0xffffff, transparent: true, opacity: 0.5 })));
     camera.position.z = 5;
-    function anim() { requestAnimationFrame(anim); scene.rotation.y += 0.0005; renderer.render(scene, camera); }
+    function anim() { requestAnimationFrame(anim); scene.rotation.y += 0.0006; renderer.render(scene, camera); }
     anim();
+    
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
 </script>
 </body>
 </html>
+
