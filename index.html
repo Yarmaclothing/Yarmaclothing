@@ -17,7 +17,6 @@
         .panel { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); transform: translateX(100%); position: fixed; top: 0; right: 0; height: 100%; z-[150]; }
         .panel.active { transform: translateX(0); }
         .input-style { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 14px; border-radius: 12px; width: 100%; color: white; outline: none; margin-bottom: 10px; font-size: 14px; }
-        .input-style:focus { border-color: #ff0000; }
     </style>
 </head>
 <body>
@@ -28,7 +27,7 @@
     <div class="font-mag text-lg text-red-600 cursor-pointer tracking-tighter" onclick="window.scrollTo(0,0)">YARMA</div>
     <div class="flex items-center gap-6">
         <button onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})" class="text-[10px] font-bold uppercase tracking-widest hover:text-red-600">Shop</button>
-        <button onclick="togglePanel('cart-panel')" class="relative bg-white/10 p-3 rounded-full hover:bg-red-600 transition">
+        <button onclick="togglePanel('cart-panel')" class="relative bg-white/10 p-3 rounded-full">
             <span id="cart-count" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         </button>
@@ -36,55 +35,53 @@
 </nav>
 
 <div id="cart-panel" class="panel w-full md:w-[400px] glass p-8 flex flex-col">
-    <h2 class="font-mag text-xl mb-10 tracking-tighter">YOUR CART</h2>
+    <h2 class="font-mag text-xl mb-10 tracking-tighter">CART</h2>
     <div id="cart-items" class="flex-grow overflow-y-auto space-y-4"></div>
     <div class="border-t border-white/10 pt-6">
         <div class="flex justify-between font-black text-xl mb-6"><span>TOTAL</span><span id="cart-total">₹0</span></div>
-        <button onclick="togglePanel('checkout-panel')" class="w-full bg-white text-black py-4 rounded-xl font-black text-[10px] tracking-widest uppercase hover:bg-red-600 hover:text-white transition">Place Order</button>
+        <button onclick="togglePanel('checkout-panel')" class="w-full bg-white text-black py-4 rounded-xl font-black text-[10px] tracking-widest uppercase hover:bg-red-600 hover:text-white transition">Checkout</button>
     </div>
 </div>
 
 <div id="checkout-panel" class="panel w-full md:w-[400px] glass p-8 flex flex-col overflow-y-auto">
-    <h2 class="font-mag text-xl mb-6 text-red-600">SHIPPING DETAILS</h2>
+    <h2 class="font-mag text-xl mb-6 text-red-600">SHIPPING</h2>
     <input type="text" id="custName" class="input-style" placeholder="Full Name">
     <input type="tel" id="custPhone" class="input-style" placeholder="Mobile Number">
     <input type="text" id="custCity" class="input-style" placeholder="City">
-    <textarea id="custAddress" class="input-style" placeholder="Area Name, Near Place (Landmark)"></textarea>
-    <input type="text" id="custPin" class="input-style" placeholder="Postal Code">
-    <button onclick="showReview()" class="w-full bg-red-600 text-white py-4 rounded-xl font-black text-[10px] tracking-widest uppercase mt-4">Review Order</button>
-    <button onclick="togglePanel('checkout-panel')" class="mt-4 text-[10px] uppercase opacity-50">Back to Cart</button>
+    <textarea id="custAddress" class="input-style" placeholder="Area & Landmark"></textarea>
+    <input type="text" id="custPin" class="input-style" placeholder="PIN Code">
+    <button onclick="showReview()" class="w-full bg-red-600 text-white py-4 rounded-xl font-black text-[10px] tracking-widest uppercase mt-4">Place Order</button>
+    <button onclick="togglePanel('checkout-panel')" class="mt-4 text-[10px] opacity-50 uppercase">Back</button>
 </div>
 
 <div id="review-panel" class="panel w-full md:w-[400px] glass p-8 flex flex-col z-[170]">
-    <h2 class="font-mag text-xl mb-6 text-green-500">RECHECK DETAILS</h2>
-    <div id="order-summary" class="bg-white/5 p-6 rounded-2xl text-xs space-y-3 mb-6 border border-white/10 overflow-y-auto"></div>
-    <div class="p-4 border border-green-500/30 rounded-xl mb-6 bg-green-500/10">
-        <p class="text-[9px] font-bold text-green-500 uppercase tracking-widest">Payment Method</p>
-        <p class="font-black">CASH ON DELIVERY (COD)</p>
+    <h2 class="font-mag text-xl mb-6 text-green-500 uppercase">Review Order</h2>
+    <div id="order-summary" class="bg-white/5 p-6 rounded-2xl text-[12px] space-y-3 mb-6 border border-white/10"></div>
+    <div class="p-4 border border-green-500/30 rounded-xl mb-6 bg-green-500/10 text-center">
+        <p class="font-black text-green-500 uppercase tracking-widest">CASH ON DELIVERY</p>
     </div>
-    <button onclick="finalSubmit()" class="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white py-4 rounded-xl font-black text-[10px] tracking-widest uppercase">Confirm & Open Instagram</button>
+    <button onclick="finalSubmit()" class="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white py-4 rounded-xl font-black text-[10px] tracking-widest uppercase">Confirm & Open Instagram DM</button>
 </div>
 
 <section id="home">
-    <h1 class="font-mag text-6xl md:text-9xl mb-4 italic tracking-tighter">YARMA</h1>
+    <h1 class="font-mag text-7xl md:text-9xl mb-4 italic tracking-tighter">YARMA</h1>
     <p class="tracking-[0.8em] text-gray-500 text-[10px] mb-12 uppercase font-black italic">Luxury Collective</p>
     <div class="flex flex-col md:flex-row gap-4">
-        <button onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})" class="bg-white text-black px-12 py-4 rounded-full font-black uppercase text-[10px] tracking-widest">The Drop</button>
-        <button onclick="window.location.href='https://www.instagram.com/yarmaclothingbrand'" class="bg-white/5 border border-white/20 text-white px-12 py-4 rounded-full font-black uppercase text-[10px] tracking-widest">Instagram</button>
+        <button onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})" class="bg-white text-black px-12 py-4 rounded-full font-black uppercase text-[10px] tracking-widest">Shop Drop</button>
     </div>
 </section>
 
 <section id="shop">
-    <h2 class="font-mag text-3xl mb-16 text-red-600 tracking-widest uppercase">Collection</h2>
+    <h2 class="font-mag text-3xl mb-16 text-red-600 tracking-widest uppercase text-center">Collection</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl w-full">
         <div class="product-card">
-            <div class="h-80 bg-zinc-900 rounded-2xl mb-6 flex items-center justify-center text-gray-600 uppercase text-[10px] font-bold">Image Coming Soon</div>
+            <div class="h-80 bg-zinc-900 rounded-2xl mb-6 flex items-center justify-center text-gray-700 text-[10px] font-bold">IMAGE</div>
             <h3 class="font-bold tracking-widest">VORTEX HOODIE</h3>
             <p class="text-red-600 font-black text-xl mt-1">₹5,499</p>
             <button onclick="addToCart('VORTEX HOODIE', 5499)" class="w-full mt-6 bg-white text-black py-4 rounded-xl font-black text-[9px] tracking-widest uppercase">Add to Cart</button>
         </div>
         <div class="product-card">
-            <div class="h-80 bg-zinc-900 rounded-2xl mb-6 flex items-center justify-center text-gray-600 uppercase text-[10px] font-bold">Image Coming Soon</div>
+            <div class="h-80 bg-zinc-900 rounded-2xl mb-6 flex items-center justify-center text-gray-700 text-[10px] font-bold">IMAGE</div>
             <h3 class="font-bold tracking-widest">STEALTH TEE</h3>
             <p class="text-red-600 font-black text-xl mt-1">₹2,999</p>
             <button onclick="addToCart('STEALTH TEE', 2999)" class="w-full mt-6 bg-white text-black py-4 rounded-xl font-black text-[9px] tracking-widest uppercase">Add to Cart</button>
@@ -93,15 +90,14 @@
 </section>
 
 <footer class="py-20 glass text-center border-t border-white/10">
-    <p class="text-[10px] text-gray-500 uppercase tracking-[0.5em] mb-4">Official Contact</p>
     <a href="https://www.instagram.com/yarmaclothingbrand" class="font-mag text-xl hover:text-red-600 transition tracking-tighter">@YARMACLOTHINGBRAND</a>
-    <div class="mt-20 opacity-10 text-[8px] cursor-pointer hover:opacity-100 transition" onclick="togglePanel('admin-panel')">SYSTEM ACCESS</div>
+    <div class="mt-20 opacity-10 text-[8px] cursor-pointer" onclick="togglePanel('admin-panel')">SYSTEM ACCESS</div>
 </footer>
 
 <div id="admin-panel" class="panel w-full md:w-[500px] glass p-8 flex flex-col z-[200] overflow-y-auto">
-    <h2 class="font-mag text-xl mb-6 text-yellow-500 tracking-tighter">ORDER LOGS</h2>
+    <h2 class="font-mag text-xl mb-6 text-yellow-500 uppercase tracking-tighter">Admin Order Logs</h2>
     <div id="admin-orders" class="space-y-4"></div>
-    <button onclick="togglePanel('admin-panel')" class="mt-10 border border-white/20 py-3 rounded uppercase text-[10px] font-bold">Close Logs</button>
+    <button onclick="togglePanel('admin-panel')" class="mt-10 border border-white/20 py-3 rounded uppercase text-[10px] font-bold">Close</button>
 </div>
 
 <script>
@@ -119,64 +115,49 @@
         let total = 0; list.innerHTML = '';
         cart.forEach((item, i) => {
             total += item.price;
-            list.innerHTML += `<div class="flex justify-between items-center bg-white/5 p-4 rounded-xl text-xs"><span class="font-bold">${item.name}</span><button onclick="cart.splice(${i},1);updateUI()" class="text-red-600">✕</button></div>`;
+            list.innerHTML += `<div class="flex justify-between items-center bg-white/5 p-4 rounded-xl text-xs"><span>${item.name}</span><button onclick="cart.splice(${i},1);updateUI()" class="text-red-600 font-bold">✕</button></div>`;
         });
         document.getElementById('cart-count').innerText = cart.length;
         document.getElementById('cart-total').innerText = '₹' + total.toLocaleString();
     }
 
     function showReview() {
-        if(!document.getElementById('custName').value || !document.getElementById('custPhone').value) { alert('Please fill details'); return; }
-        const summary = `<strong>NAME:</strong> ${document.getElementById('custName').value}<br>
-                         <strong>PHONE:</strong> ${document.getElementById('custPhone').value}<br>
-                         <strong>CITY:</strong> ${document.getElementById('custCity').value}<br>
-                         <strong>ADDRESS:</strong> ${document.getElementById('custAddress').value}<br>
-                         <strong>PIN:</strong> ${document.getElementById('custPin').value}<br>
-                         <strong>ITEMS:</strong> ${cart.map(i=>i.name).join(', ')}`;
-        document.getElementById('order-summary').innerHTML = summary;
+        if(!document.getElementById('custName').value) { alert('Details bhariye bhai!'); return; }
+        const summary = `NAME: ${document.getElementById('custName').value}\nPHONE: ${document.getElementById('custPhone').value}\nCITY: ${document.getElementById('custCity').value}\nADDRESS: ${document.getElementById('custAddress').value}\nPIN: ${document.getElementById('custPin').value}\nITEMS: ${cart.map(i=>i.name).join(', ')}\nTOTAL: ${document.getElementById('cart-total').innerText}`;
+        document.getElementById('order-summary').innerText = summary;
         togglePanel('review-panel');
     }
 
     function finalSubmit() {
+        const orderText = document.getElementById('order-summary').innerText;
         const orderData = {
             name: document.getElementById('custName').value,
-            phone: document.getElementById('custPhone').value,
-            city: document.getElementById('custCity').value,
-            address: document.getElementById('custAddress').value,
-            pin: document.getElementById('custPin').value,
-            items: cart.map(i=>i.name).join(', '),
-            total: document.getElementById('cart-total').innerText,
+            text: orderText,
             date: new Date().toLocaleString()
         };
 
-        // Save to Browser Storage (Admin View)
+        // 1. Save to Admin Logs
         let orders = JSON.parse(localStorage.getItem('yarmaOrders') || '[]');
-        orders.unshift(orderData); // Add new order to top
+        orders.unshift(orderData);
         localStorage.setItem('yarmaOrders', JSON.stringify(orders));
-        
-        // Final Action: Instagram DM
-        alert("Order Recorded! Opening Instagram DM. Please paste your details there.");
-        window.location.href = "https://www.instagram.com/yarmaclothingbrand";
+
+        // 2. Auto-Copy to Clipboard
+        navigator.clipboard.writeText("*NEW ORDER YARMA*\n" + orderText).then(() => {
+            alert("ORDER DETAILS COPIED! Ab humara Instagram DM khulega, bas wahan jaakar PASTE kar dena.");
+            // 3. Open Instagram Direct Message
+            window.location.href = "https://www.instagram.com/direct/t/yarmaclothingbrand";
+        });
         loadAdmin();
     }
 
     function loadAdmin() {
         const adminList = document.getElementById('admin-orders');
         const orders = JSON.parse(localStorage.getItem('yarmaOrders') || '[]');
-        adminList.innerHTML = orders.map(o => `
-            <div class="bg-white/5 p-4 rounded-xl border border-white/10 text-[10px] leading-relaxed">
-                <p class="text-red-600 font-bold mb-2 uppercase">${o.date}</p>
-                <p><b>Name:</b> ${o.name}</p>
-                <p><b>Phone:</b> ${o.phone}</p>
-                <p><b>Address:</b> ${o.address}, ${o.city} - ${o.pin}</p>
-                <p class="mt-2 text-white font-bold">Items: ${o.items}</p>
-                <p class="text-white font-bold">Total: ${o.total}</p>
-            </div>
-        `).join('');
+        adminList.innerHTML = orders.map(o => `<div class="bg-white/5 p-4 rounded-xl border border-white/10 text-[10px]"><p class="text-red-600 mb-2">${o.date}</p><pre class="whitespace-pre-wrap">${o.text}</pre></div>`).join('');
     }
     loadAdmin();
 
-    // 3D Background Logic
+    // 3D background logic
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas3d'), alpha: true });
@@ -185,17 +166,12 @@
     const pos = new Float32Array(1500 * 3);
     for(let i=0; i<4500; i++) pos[i] = (Math.random() - 0.5) * 45;
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ size: 0.02, color: 0xffffff, transparent: true, opacity: 0.5 })));
+    scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ size: 0.02, color: 0xffffff })));
     camera.position.z = 5;
     function anim() { requestAnimationFrame(anim); scene.rotation.y += 0.0006; renderer.render(scene, camera); }
     anim();
-    
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
 </script>
 </body>
 </html>
+
 
