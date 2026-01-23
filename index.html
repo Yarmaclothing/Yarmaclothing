@@ -17,6 +17,7 @@
         .panel { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); transform: translateX(100%); position: fixed; top: 0; right: 0; height: 100%; z-[150]; }
         .panel.active { transform: translateX(0); }
         .input-style { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 14px; border-radius: 12px; width: 100%; color: white; outline: none; margin-bottom: 10px; font-size: 14px; }
+        #success-msg { display: none; }
     </style>
 </head>
 <body>
@@ -39,7 +40,7 @@
     <div id="cart-items" class="flex-grow overflow-y-auto space-y-4"></div>
     <div class="border-t border-white/10 pt-6">
         <div class="flex justify-between font-black text-xl mb-6"><span>TOTAL</span><span id="cart-total">₹0</span></div>
-        <button onclick="togglePanel('checkout-panel')" class="w-full bg-white text-black py-4 rounded-xl font-black text-[10px] tracking-widest uppercase hover:bg-red-600 hover:text-white transition">Checkout</button>
+        <button onclick="togglePanel('checkout-panel')" class="w-full bg-white text-black py-4 rounded-xl font-black text-[10px] tracking-widest uppercase">Checkout</button>
     </div>
 </div>
 
@@ -50,7 +51,7 @@
     <input type="text" id="custCity" class="input-style" placeholder="City">
     <textarea id="custAddress" class="input-style" placeholder="Area & Landmark"></textarea>
     <input type="text" id="custPin" class="input-style" placeholder="PIN Code">
-    <button onclick="showReview()" class="w-full bg-red-600 text-white py-4 rounded-xl font-black text-[10px] tracking-widest uppercase mt-4">Place Order</button>
+    <button onclick="showReview()" class="w-full bg-red-600 text-white py-4 rounded-xl font-black text-[10px] tracking-widest uppercase mt-4">Next</button>
     <button onclick="togglePanel('checkout-panel')" class="mt-4 text-[10px] opacity-50 uppercase">Back</button>
 </div>
 
@@ -60,19 +61,17 @@
     <div class="p-4 border border-green-500/30 rounded-xl mb-6 bg-green-500/10 text-center">
         <p class="font-black text-green-500 uppercase tracking-widest">CASH ON DELIVERY</p>
     </div>
-    <button onclick="finalSubmit()" class="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white py-4 rounded-xl font-black text-[10px] tracking-widest uppercase">Confirm & Open Instagram DM</button>
+    <button onclick="finalSubmit()" class="w-full bg-white text-black py-4 rounded-xl font-black text-[10px] tracking-widest uppercase">Confirm & Place Order</button>
+    <div id="success-msg" class="mt-6 text-center text-green-500 font-bold uppercase text-xs">Order Placed Successfully!</div>
 </div>
 
 <section id="home">
     <h1 class="font-mag text-7xl md:text-9xl mb-4 italic tracking-tighter">YARMA</h1>
     <p class="tracking-[0.8em] text-gray-500 text-[10px] mb-12 uppercase font-black italic">Luxury Collective</p>
-    <div class="flex flex-col md:flex-row gap-4">
-        <button onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})" class="bg-white text-black px-12 py-4 rounded-full font-black uppercase text-[10px] tracking-widest">Shop Drop</button>
-    </div>
+    <button onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})" class="bg-white text-black px-12 py-4 rounded-full font-black uppercase text-[10px] tracking-widest">The Drop</button>
 </section>
 
 <section id="shop">
-    <h2 class="font-mag text-3xl mb-16 text-red-600 tracking-widest uppercase text-center">Collection</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl w-full">
         <div class="product-card">
             <div class="h-80 bg-zinc-900 rounded-2xl mb-6 flex items-center justify-center text-gray-700 text-[10px] font-bold">IMAGE</div>
@@ -91,18 +90,33 @@
 
 <footer class="py-20 glass text-center border-t border-white/10">
     <a href="https://www.instagram.com/yarmaclothingbrand" class="font-mag text-xl hover:text-red-600 transition tracking-tighter">@YARMACLOTHINGBRAND</a>
-    <div class="mt-20 opacity-10 text-[8px] cursor-pointer" onclick="togglePanel('admin-panel')">SYSTEM ACCESS</div>
+    <div class="mt-20 opacity-10 text-[8px] cursor-pointer" onclick="openAdmin()">SYSTEM ACCESS</div>
 </footer>
 
-<div id="admin-panel" class="panel w-full md:w-[500px] glass p-8 flex flex-col z-[200] overflow-y-auto">
-    <h2 class="font-mag text-xl mb-6 text-yellow-500 uppercase tracking-tighter">Admin Order Logs</h2>
+<div id="admin-panel" class="panel w-full md:w-[600px] glass p-8 flex flex-col z-[200] overflow-y-auto">
+    <div class="flex justify-between items-center mb-10">
+        <h2 class="font-mag text-xl text-yellow-500 uppercase">Order Logs</h2>
+        <button onclick="clearLogs()" class="text-red-600 text-[10px] font-bold uppercase">Clear All</button>
+    </div>
     <div id="admin-orders" class="space-y-4"></div>
-    <button onclick="togglePanel('admin-panel')" class="mt-10 border border-white/20 py-3 rounded uppercase text-[10px] font-bold">Close</button>
+    <button onclick="togglePanel('admin-panel')" class="mt-10 border border-white/20 py-3 rounded uppercase text-[10px] font-bold">Close Logs</button>
 </div>
 
 <script>
     let cart = [];
+    const ADMIN_PASS = "ishaangund";
+
     function togglePanel(id) { document.getElementById(id).classList.toggle('active'); }
+
+    function openAdmin() {
+        let pass = prompt("Enter Admin Password:");
+        if(pass === ADMIN_PASS) {
+            togglePanel('admin-panel');
+            loadAdmin();
+        } else {
+            alert("Wrong Password!");
+        }
+    }
 
     function addToCart(name, price) {
         cart.push({name, price});
@@ -115,49 +129,45 @@
         let total = 0; list.innerHTML = '';
         cart.forEach((item, i) => {
             total += item.price;
-            list.innerHTML += `<div class="flex justify-between items-center bg-white/5 p-4 rounded-xl text-xs"><span>${item.name}</span><button onclick="cart.splice(${i},1);updateUI()" class="text-red-600 font-bold">✕</button></div>`;
+            list.innerHTML += `<div class="flex justify-between items-center bg-white/5 p-4 rounded-xl text-xs"><span>${item.name}</span><button onclick="cart.splice(${i},1);updateUI()" class="text-red-600">✕</button></div>`;
         });
         document.getElementById('cart-count').innerText = cart.length;
         document.getElementById('cart-total').innerText = '₹' + total.toLocaleString();
     }
 
     function showReview() {
-        if(!document.getElementById('custName').value) { alert('Details bhariye bhai!'); return; }
+        if(!document.getElementById('custName').value) { alert('Fill details!'); return; }
         const summary = `NAME: ${document.getElementById('custName').value}\nPHONE: ${document.getElementById('custPhone').value}\nCITY: ${document.getElementById('custCity').value}\nADDRESS: ${document.getElementById('custAddress').value}\nPIN: ${document.getElementById('custPin').value}\nITEMS: ${cart.map(i=>i.name).join(', ')}\nTOTAL: ${document.getElementById('cart-total').innerText}`;
         document.getElementById('order-summary').innerText = summary;
         togglePanel('review-panel');
     }
 
     function finalSubmit() {
-        const orderText = document.getElementById('order-summary').innerText;
         const orderData = {
             name: document.getElementById('custName').value,
-            text: orderText,
+            phone: document.getElementById('custPhone').value,
+            details: document.getElementById('order-summary').innerText,
             date: new Date().toLocaleString()
         };
-
-        // 1. Save to Admin Logs
         let orders = JSON.parse(localStorage.getItem('yarmaOrders') || '[]');
         orders.unshift(orderData);
         localStorage.setItem('yarmaOrders', JSON.stringify(orders));
-
-        // 2. Auto-Copy to Clipboard
-        navigator.clipboard.writeText("*NEW ORDER YARMA*\n" + orderText).then(() => {
-            alert("ORDER DETAILS COPIED! Ab humara Instagram DM khulega, bas wahan jaakar PASTE kar dena.");
-            // 3. Open Instagram Direct Message
-            window.location.href = "https://www.instagram.com/direct/t/yarmaclothingbrand";
-        });
-        loadAdmin();
+        
+        document.getElementById('success-msg').style.display = 'block';
+        setTimeout(() => {
+            alert("Order Success! Hum aapse jald hi contact karenge.");
+            location.reload();
+        }, 1500);
     }
 
     function loadAdmin() {
         const adminList = document.getElementById('admin-orders');
         const orders = JSON.parse(localStorage.getItem('yarmaOrders') || '[]');
-        adminList.innerHTML = orders.map(o => `<div class="bg-white/5 p-4 rounded-xl border border-white/10 text-[10px]"><p class="text-red-600 mb-2">${o.date}</p><pre class="whitespace-pre-wrap">${o.text}</pre></div>`).join('');
+        adminList.innerHTML = orders.map(o => `<div class="bg-white/5 p-4 rounded-xl border border-white/10 text-[10px]"><p class="text-yellow-500 font-bold mb-2">${o.date}</p><pre class="whitespace-pre-wrap">${o.details}</pre></div>`).join('');
     }
-    loadAdmin();
 
-    // 3D background logic
+    function clearLogs() { if(confirm("Saare orders delete kar dein?")) { localStorage.removeItem('yarmaOrders'); loadAdmin(); } }
+
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas3d'), alpha: true });
@@ -173,5 +183,3 @@
 </script>
 </body>
 </html>
-
-
