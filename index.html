@@ -6,44 +6,41 @@
     <title>YARMA | Luxury Collective</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;400;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;600;900&display=swap" rel="stylesheet">
     <style>
-        :root { --brand-red: #ff0000; --pure-white: #ffffff; }
-        body { font-family: 'Inter', sans-serif; background: #000; color: #fff; scroll-behavior: smooth; margin: 0; overflow-x: hidden; }
+        :root { --brand-red: #ff0000; }
+        body { font-family: 'Inter', sans-serif; background: #000; color: #fff; scroll-behavior: smooth; margin: 0; }
         canvas { position: fixed; top: 0; left: 0; z-index: -1; }
         
-        .font-mag { font-family: 'Syncopate', sans-serif; letter-spacing: 4px; }
-        .glass { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(25px); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .font-mag { font-family: 'Syncopate', sans-serif; letter-spacing: 2px; }
+        .glass { background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); }
         
-        /* Fixed Bright Menu */
-        .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 500; display: none; flex-direction: column; justify-content: center; align-items: center; }
+        /* Menu Alignment Fix */
+        .menu-overlay { position: fixed; inset: 0; background: #000; z-index: 500; display: none; flex-direction: column; justify-content: center; align-items: center; gap: 2rem; }
         .menu-overlay.active { display: flex; }
-        .menu-btn { font-family: 'Syncopate', sans-serif; font-size: 2.5rem; margin: 15px; color: var(--pure-white); transition: 0.4s; background: none; border: none; cursor: pointer; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
-        .menu-btn:hover { color: var(--brand-red); transform: scale(1.1); letter-spacing: 10px; text-shadow: 0 0 20px rgba(255,0,0,0.5); }
+        .menu-btn { font-family: 'Syncopate', sans-serif; font-size: 2.5rem; color: #fff; transition: 0.3s; background: none; border: none; }
+        .menu-btn:hover { color: var(--brand-red); letter-spacing: 8px; }
 
-        /* Panels */
-        .panel { position: fixed; top: 0; right: 0; height: 100%; width: 100%; max-width: 480px; background: #0d0d0d; z-index: 400; transform: translateX(100%); transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1); border-left: 2px solid var(--brand-red); display: flex; flex-direction: column; padding: 40px; }
-        .panel.active { transform: translateX(0); }
-
-        .product-card { background: #0a0a0a; border: 1px solid #222; padding: 0; transition: 0.5s; position: relative; overflow: hidden; }
-        .product-card:hover { border-color: var(--brand-red); }
-        .img-container { width: 100%; height: 400px; background: #111; overflow: hidden; position: relative; }
-        .img-container img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s; }
-        .product-card:hover img { transform: scale(1.1); }
+        /* Product Card Refinement */
+        .product-card { background: #0a0a0a; border: 1px solid #1a1a1a; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .product-card:hover { border-color: var(--brand-red); transform: translateY(-5px); }
+        .img-container { aspect-ratio: 3/4; background: #111; overflow: hidden; position: relative; }
+        .img-container img { width: 100%; height: 100%; object-fit: cover; }
         
-        .details-box { padding: 25px; border-top: 1px solid #1a1a1a; }
-        .btn-premium { background: var(--pure-white); color: #000; padding: 18px; font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; width: 100%; transition: 0.3s; }
-        .btn-premium:hover:not(:disabled) { background: var(--brand-red); color: #fff; }
-        .btn-premium:disabled { background: #222; color: #555; cursor: not-allowed; }
+        /* Button Styling */
+        .btn-main { background: #fff; color: #000; padding: 14px; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; width: 100%; transition: 0.3s; border: none; cursor: pointer; }
+        .btn-main:hover:not(:disabled) { background: var(--brand-red); color: #fff; box-shadow: 0 10px 20px rgba(255,0,0,0.2); }
+        .btn-main:disabled { background: #222; color: #444; }
 
-        .input-style { background: #000; border: 1px solid #333; padding: 15px; width: 100%; color: #fff; margin-bottom: 12px; font-size: 12px; outline: none; }
+        .input-style { background: #080808; border: 1px solid #222; padding: 15px; width: 100%; color: #fff; margin-bottom: 10px; font-size: 13px; outline: none; }
         .input-style:focus { border-color: var(--brand-red); }
 
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 350; display: none; }
+        .panel { position: fixed; top: 0; right: 0; height: 100%; width: 100%; max-width: 450px; background: #080808; z-index: 400; transform: translateX(100%); transition: 0.5s; padding: 30px; border-left: 1px solid #222; display: flex; flex-direction: column; }
+        .panel.active { transform: translateX(0); }
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 350; display: none; }
         .overlay.active { display: block; }
-        
-        .stock-tag { position: absolute; top: 15px; right: 15px; background: var(--brand-red); color: #fff; font-size: 9px; font-weight: 900; padding: 5px 12px; z-index: 10; }
-        .sold-out-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 24px; color: var(--brand-red); z-index: 20; letter-spacing: 5px; font-family: 'Syncopate'; }
+
+        .stock-badge { position: absolute; top: 15px; left: 15px; background: var(--brand-red); padding: 4px 10px; font-size: 9px; font-weight: 900; z-index: 10; }
     </style>
 </head>
 <body>
@@ -51,215 +48,156 @@
 <canvas id="canvas3d"></canvas>
 <div id="overlay" class="overlay" onclick="closeAllPanels()"></div>
 
-<nav class="fixed top-0 w-full z-[100] px-8 py-6 flex justify-between items-center glass">
-    <div class="font-mag text-2xl text-red-600 cursor-pointer" onclick="window.scrollTo(0,0)">YARMA</div>
-    <div class="flex gap-8 items-center">
-        <button onclick="toggleMenu()" class="text-[11px] font-black tracking-[4px] uppercase text-white hover:text-red-600 transition">Menu</button>
-        <button onclick="togglePanel('cart-panel')" class="relative text-white">
-            <span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-[9px] w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+<nav class="fixed top-0 w-full z-[100] px-6 py-5 flex justify-between items-center glass">
+    <div class="font-mag text-xl text-red-600 cursor-pointer" onclick="window.scrollTo(0,0)">YARMA</div>
+    <div class="flex gap-6 items-center">
+        <button onclick="toggleMenu()" class="text-[10px] font-bold tracking-[3px] uppercase">Menu</button>
+        <button onclick="togglePanel('cart-panel')" class="relative">
+            <span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-[8px] w-4 h-4 rounded-full flex items-center justify-center">0</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         </button>
     </div>
 </nav>
 
 <div id="main-menu" class="menu-overlay">
-    <span class="absolute top-10 right-10 text-xl cursor-pointer font-black text-white hover:text-red-600" onclick="toggleMenu()">[ CLOSE ]</span>
     <button class="menu-btn" onclick="scrollToSec('home')">HOME</button>
     <button class="menu-btn" onclick="scrollToSec('shop')">SHOP</button>
-    <button class="menu-btn" onclick="openTrack()">TRACK ORDER</button>
-    <a href="https://www.instagram.com/yarmaclothingbrand" target="_blank" class="menu-btn text-lg mt-10 opacity-60">INSTAGRAM</a>
+    <button class="menu-btn" onclick="openTrack()">TRACKING</button>
+    <button onclick="toggleMenu()" class="text-xs tracking-[5px] mt-10 opacity-50 underline">CLOSE</button>
 </div>
 
-<section id="home" class="min-h-screen flex flex-col items-center justify-center text-center px-4">
-    <h1 class="font-mag text-6xl md:text-[9rem] mb-6 tracking-tighter">YARMA</h1>
-    <p class="text-[11px] uppercase tracking-[0.8em] mb-12 text-gray-400">Luxury Collective • Drop 2026</p>
-    <button onclick="scrollToSec('shop')" class="border-2 border-white px-16 py-5 text-[11px] font-black uppercase tracking-[5px] hover:bg-white hover:text-black transition duration-500">Shop Collection</button>
+<section id="home" class="min-h-screen flex flex-col items-center justify-center text-center pt-20">
+    <h1 class="font-mag text-5xl md:text-[8rem] mb-4">YARMA</h1>
+    <p class="text-[10px] tracking-[0.6em] mb-10 opacity-60">ESSENTIALS FOR THE ELITE</p>
+    <button onclick="scrollToSec('shop')" class="border border-white/30 px-10 py-4 text-[10px] font-bold tracking-[4px] hover:bg-white hover:text-black transition">BROWSE DROPS</button>
 </section>
 
-<section id="shop" class="py-32 px-6 flex flex-col items-center">
-    <h2 class="font-mag text-3xl text-red-600 mb-20 uppercase">The Inventory</h2>
-    <div id="product-list" class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-7xl w-full">
-        </div>
+<section id="shop" class="py-20 px-4 max-w-7xl mx-auto">
+    <h2 class="font-mag text-center text-2xl mb-16 text-red-600 uppercase">Current Inventory</h2>
+    <div id="product-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
 </section>
+
+<div id="admin-panel" class="panel !max-w-[600px]">
+    <div class="flex gap-4 mb-6 border-b border-white/10 pb-4">
+        <button onclick="switchAdminTab('orders')" class="text-[10px] font-black tracking-widest">ORDERS</button>
+        <button onclick="switchAdminTab('inventory')" class="text-[10px] font-black tracking-widest">INVENTORY</button>
+    </div>
+    
+    <div id="admin-inventory-view" class="hidden overflow-y-auto">
+        <p class="text-[10px] text-red-600 mb-4 font-black">LIST NEW PRODUCT</p>
+        <input type="text" id="pName" class="input-style" placeholder="Product Name">
+        <input type="number" id="pPrice" class="input-style" placeholder="Price (₹)">
+        <input type="number" id="pStock" class="input-style" placeholder="Stock Quantity">
+        <div class="mb-4">
+            <label class="text-[9px] block mb-2 opacity-50">PRODUCT IMAGE (FROM GALLERY)</label>
+            <input type="file" id="pImgFile" accept="image/*" class="text-[10px]">
+        </div>
+        <textarea id="pDesc" class="input-style h-20" placeholder="Product Details..."></textarea>
+        <button onclick="addProduct()" class="btn-main mb-8">Confirm Listing</button>
+        <div id="aInventory" class="space-y-2"></div>
+    </div>
+
+    <div id="admin-orders-view" class="overflow-y-auto">
+        <div id="aOrders" class="space-y-4"></div>
+    </div>
+</div>
 
 <div id="cart-panel" class="panel">
-    <h2 class="font-mag text-xl mb-10 border-b border-white/10 pb-4">YOUR BAG</h2>
-    <div id="cart-items" class="flex-grow overflow-y-auto mb-6"></div>
-    <div class="border-t border-white/10 pt-6">
-        <div class="flex justify-between font-black text-2xl mb-8"><span>TOTAL</span><span id="cart-total">₹0</span></div>
-        <button onclick="togglePanel('checkout-panel')" class="btn-premium">Proceed to Checkout</button>
+    <h2 class="font-mag text-lg mb-8">CART</h2>
+    <div id="cart-items" class="flex-grow overflow-y-auto"></div>
+    <div class="mt-6 border-t border-white/10 pt-6">
+        <div class="flex justify-between text-xl font-bold mb-6"><span>Total</span><span id="cart-total">₹0</span></div>
+        <button onclick="togglePanel('checkout-panel')" class="btn-main">Checkout</button>
     </div>
 </div>
 
 <div id="checkout-panel" class="panel">
-    <h2 class="font-mag text-xl mb-10 text-red-600">SHIPPING DETAILS</h2>
-    <input type="text" id="cName" class="input-style" placeholder="Full Name *">
-    <input type="tel" id="cPhone" class="input-style" placeholder="Mobile Number *">
-    <input type="text" id="cCity" class="input-style" placeholder="City *">
-    <textarea id="cAddress" class="input-style h-24" placeholder="Full Address & Landmark *"></textarea>
-    <input type="text" id="cPin" class="input-style" placeholder="PIN Code *">
-    <div class="bg-red-600/10 p-4 border border-red-600/20 text-[10px] mb-6 tracking-widest text-center">PAYMENT METHOD: CASH ON DELIVERY</div>
-    <button onclick="confirmOrder()" class="btn-premium">Place Order Now</button>
+    <h2 class="font-mag text-lg mb-8 text-red-600">SHIPPING</h2>
+    <input type="text" id="cName" class="input-style" placeholder="Name">
+    <input type="tel" id="cPhone" class="input-style" placeholder="Mobile">
+    <textarea id="cAddress" class="input-style h-24" placeholder="Full Address"></textarea>
+    <button onclick="confirmOrder()" class="btn-main">Place Order</button>
 </div>
 
 <div id="track-panel" class="panel">
-    <h2 class="font-mag text-xl mb-10 text-red-600">TRACKING</h2>
-    <input type="text" id="tInput" class="input-style" placeholder="ENTER ORDER ID (YRM-XXXX)">
-    <button onclick="trackNow()" class="btn-premium">Search Order</button>
-    <div id="tResult" class="mt-10"></div>
+    <h2 class="font-mag text-lg mb-8">TRACK ORDER</h2>
+    <input type="text" id="tInput" class="input-style" placeholder="Order ID">
+    <button onclick="trackNow()" class="btn-main">Locate</button>
+    <div id="tResult" class="mt-8"></div>
 </div>
 
-<div id="admin-panel" class="panel !max-w-[750px]">
-    <div class="flex gap-6 mb-8 border-b border-white/10 pb-4">
-        <div id="tab-orders" class="admin-tab active text-lg" onclick="switchAdminTab('orders')">ORDERS</div>
-        <div id="tab-inventory" class="admin-tab text-lg" onclick="switchAdminTab('inventory')">INVENTORY</div>
-    </div>
-    
-    <div id="admin-orders-view" class="overflow-y-auto">
-        <div id="aOrders" class="space-y-4"></div>
-    </div>
-
-    <div id="admin-inventory-view" class="hidden overflow-y-auto">
-        <h3 class="text-xs font-black mb-4 uppercase text-red-600 tracking-widest">Add New Product</h3>
-        <input type="text" id="pName" class="input-style" placeholder="Product Name">
-        <input type="number" id="pPrice" class="input-style" placeholder="Price (₹)">
-        <input type="number" id="pStock" class="input-style" placeholder="Initial Stock">
-        <input type="text" id="pImg" class="input-style" placeholder="Image URL (Link from Google/Pinterest)">
-        <textarea id="pDesc" class="input-style h-20" placeholder="Product Description"></textarea>
-        <button onclick="addProduct()" class="btn-premium mb-10">Add to Gallery</button>
-        <h3 class="text-xs font-black mb-4 uppercase tracking-widest">Manage Live Stock</h3>
-        <div id="aInventory" class="space-y-4"></div>
-    </div>
-</div>
-
-<footer class="py-20 text-center border-t border-white/5 bg-black">
-    <p class="font-mag text-lg text-red-600 mb-2 cursor-pointer" onclick="openAdmin()">YARMA</p>
-    <p class="text-[9px] tracking-[0.8em] opacity-50 uppercase">Security Portal Access</p>
+<footer class="py-20 text-center border-t border-white/5 opacity-40">
+    <p class="font-mag text-sm mb-2" onclick="openAdmin()">YARMA</p>
+    <p class="text-[8px] tracking-[5px]">MANAGEMENT PORTAL</p>
 </footer>
 
 <script>
     let cart = [];
     const pss = "ishaangund";
-
-    // Initial Database with Image Links
-    let defaultProducts = [
-        { id: 1, name: 'Vortex Hoodie', price: 5499, stock: 10, img: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=1000&auto=format&fit=crop', desc: '400 GSM Heavyweight Cotton. Oversized Silhouette.' },
-        { id: 2, name: 'Stealth Tee', price: 2999, stock: 5, img: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1000&auto=format&fit=crop', desc: 'Premium Terry Fabric. Boxy Fit. High Density Print.' }
-    ];
-    let products = JSON.parse(localStorage.getItem('yrProducts')) || defaultProducts;
+    let products = JSON.parse(localStorage.getItem('yrProducts')) || [];
 
     function renderProducts() {
         const list = document.getElementById('product-list');
-        list.innerHTML = products.map(p => `
+        list.innerHTML = products.length ? products.map(p => `
             <div class="product-card">
                 <div class="img-container">
-                    ${p.stock <= 0 ? '<div class="sold-out-overlay">SOLD OUT</div>' : ''}
-                    ${p.stock > 0 && p.stock < 5 ? '<div class="stock-tag">ONLY '+p.stock+' LEFT</div>' : ''}
-                    <img src="${p.img || 'https://via.placeholder.com/600x800?text=YARMA'}" alt="${p.name}">
+                    ${p.stock <= 0 ? '<div class="absolute inset-0 bg-black/80 flex items-center justify-center font-mag text-red-600">SOLD OUT</div>' : ''}
+                    ${p.stock > 0 && p.stock < 5 ? '<div class="stock-badge">LOW STOCK</div>' : ''}
+                    <img src="${p.img}" onerror="this.src='https://via.placeholder.com/400x500?text=YARMA'">
                 </div>
-                <div class="details-box text-center">
-                    <h3 class="font-mag text-sm mb-2 text-white">${p.name}</h3>
-                    <p class="text-gray-500 text-[10px] mb-4 uppercase tracking-widest">${p.desc}</p>
-                    <p class="text-white font-black text-2xl mb-6 tracking-tighter">₹${p.price.toLocaleString()}</p>
-                    <button onclick="addToCart(${p.id})" class="btn-premium" ${p.stock <= 0 ? 'disabled' : ''}>
-                        ${p.stock <= 0 ? 'Out of Stock' : 'Add to Bag'}
+                <div class="p-6">
+                    <h3 class="font-mag text-[12px] mb-2 uppercase">${p.name}</h3>
+                    <p class="text-white font-black text-xl mb-6">₹${p.price.toLocaleString()}</p>
+                    <button onclick="addToCart(${p.id})" class="btn-main" ${p.stock <= 0 ? 'disabled' : ''}>
+                        ${p.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}
                     </button>
                 </div>
             </div>
-        `).join('');
+        `).join('') : '<p class="col-span-full text-center opacity-30 uppercase tracking-widest text-xs py-20">New Collection Coming Soon</p>';
     }
 
+    // GALLERY UPLOAD LOGIC
     function addProduct() {
+        const fileInput = document.getElementById('pImgFile');
         const name = document.getElementById('pName').value.trim();
         const price = document.getElementById('pPrice').value;
         const stock = document.getElementById('pStock').value;
-        const img = document.getElementById('pImg').value.trim();
         const desc = document.getElementById('pDesc').value.trim();
-        if(!name || !price || !stock || !img) return alert("Bhai, sari details bharna zaroori hai!");
-        
-        products.unshift({ id: Date.now(), name, price: parseInt(price), stock: parseInt(stock), img, desc });
-        localStorage.setItem('yrProducts', JSON.stringify(products));
-        renderProducts(); loadInventory();
-        alert("Product listed successfully!");
-    }
 
-    function confirmOrder() {
-        const n = document.getElementById('cName').value.trim();
-        const pNum = document.getElementById('cPhone').value.trim();
-        const a = document.getElementById('cAddress').value.trim();
-        const pin = document.getElementById('cPin').value.trim();
-        if(!n || !pNum || !a || !pin) return alert("Invalid Details! Please fill all fields.");
+        if(!fileInput.files[0] || !name || !price) return alert("All fields including Image are required!");
 
-        cart.forEach(item => {
-            const prod = products.find(x => x.id === item.id);
-            if(prod && prod.stock > 0) prod.stock--;
-        });
-
-        const oid = "YRM-" + Math.floor(1000 + Math.random() * 9000);
-        const order = { id: oid, details: `Client: ${n}\nTel: ${pNum}\nAdd: ${a}\nItems: ${cart.map(i=>i.name).join(',')}`, amount: cart.reduce((s,i)=>s+i.price,0), status: 'Processing' };
-        
-        let orders = JSON.parse(localStorage.getItem('yrOrders') || '[]');
-        orders.unshift(order);
-        localStorage.setItem('yrOrders', JSON.stringify(orders));
-        localStorage.setItem('yrProducts', JSON.stringify(products));
-
-        alert("ORDER SECURED!\nORDER ID: " + oid);
-        location.reload();
-    }
-
-    function deleteProduct(id) {
-        if(confirm("Delete this product permanently?")) {
-            products = products.filter(p => p.id !== id);
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            products.unshift({
+                id: Date.now(),
+                name,
+                price: parseInt(price),
+                stock: parseInt(stock),
+                img: e.target.result, // Base64 image string
+                desc
+            });
             localStorage.setItem('yrProducts', JSON.stringify(products));
             renderProducts(); loadInventory();
-        }
+            alert("Product Live!");
+        };
+        reader.readAsDataURL(fileInput.files[0]);
     }
 
-    function switchAdminTab(tab) {
-        document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
-        document.getElementById('tab-' + tab).classList.add('active');
-        document.getElementById('admin-orders-view').classList.toggle('hidden', tab !== 'orders');
-        document.getElementById('admin-inventory-view').classList.toggle('hidden', tab !== 'inventory');
-        if(tab === 'inventory') loadInventory();
-    }
-
-    function loadInventory() {
-        document.getElementById('aInventory').innerHTML = products.map(p => `
-            <div class="bg-white/5 p-4 flex justify-between items-center text-[11px] border border-white/5">
-                <div class="flex items-center gap-4">
-                    <img src="${p.img}" class="w-10 h-10 object-cover">
-                    <span>${p.name} (${p.stock})</span>
-                </div>
-                <button onclick="deleteProduct(${p.id})" class="text-red-600 font-black hover:text-white transition">DELETE</button>
-            </div>
-        `).join('');
-    }
-
-    function loadAdmin() {
-        const orders = JSON.parse(localStorage.getItem('yrOrders') || '[]');
-        document.getElementById('aOrders').innerHTML = orders.length ? orders.map((o, i) => `
-            <div class="bg-white/5 p-6 border border-white/5 text-[11px]">
-                <div class="flex justify-between font-black mb-4"><span class="text-red-600 text-lg">${o.id}</span><span class="bg-white/10 px-3 py-1">${o.status}</span></div>
-                <pre class="opacity-70 whitespace-pre-wrap leading-loose">${o.details}</pre>
-                <p class="mt-4 font-black text-lg">TOTAL: ₹${o.amount.toLocaleString()}</p>
-            </div>
-        `).join('') : '<p class="text-center opacity-50 py-10">No orders yet.</p>';
-    }
-
-    // Utilities
+    // Standard Backend Logic
     function toggleMenu() { document.getElementById('main-menu').classList.toggle('active'); }
     function togglePanel(id) { closeAllPanels(); document.getElementById(id).classList.add('active'); document.getElementById('overlay').classList.add('active'); }
-    function closeAllPanels() { document.querySelectorAll('.panel').forEach(p => p.classList.remove('active')); document.getElementById('overlay').classList.remove('active'); document.body.style.overflow = 'auto'; }
-    function scrollToSec(id) { if(id==='home') window.scrollTo(0,0); else document.getElementById(id).scrollIntoView({behavior:'smooth'}); toggleMenu(); }
-    function openTrack() { toggleMenu(); togglePanel('track-panel'); }
-    function openAdmin() { if(prompt("ACCESS KEY:") === pss) { togglePanel('admin-panel'); loadAdmin(); } }
+    function closeAllPanels() { document.querySelectorAll('.panel').forEach(p => p.classList.remove('active')); document.getElementById('overlay').classList.remove('active'); }
+    function scrollToSec(id) { toggleMenu(); document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+    function openAdmin() { if(prompt("KEY:") === pss) { togglePanel('admin-panel'); loadAdmin(); } }
+    function switchAdminTab(t) { 
+        document.getElementById('admin-orders-view').classList.toggle('hidden', t !== 'orders');
+        document.getElementById('admin-inventory-view').classList.toggle('hidden', t !== 'inventory');
+        if(t === 'inventory') loadInventory();
+    }
 
     function addToCart(id) {
         const p = products.find(x => x.id === id);
-        if(p.stock > 0) {
-            cart.push({id: p.id, name: p.name, price: p.price});
-            updateUI(); togglePanel('cart-panel');
-        }
+        if(p.stock > 0) { cart.push(p); updateUI(); togglePanel('cart-panel'); }
     }
 
     function updateUI() {
@@ -267,35 +205,72 @@
         let total = 0; list.innerHTML = '';
         cart.forEach((item, i) => {
             total += item.price;
-            list.innerHTML += `<div class="flex justify-between p-5 bg-white/5 mb-2 text-[11px] font-black uppercase tracking-widest"><span>${item.name}</span><button onclick="cart.splice(${i},1);updateUI()" class="text-red-500">✕</button></div>`;
+            list.innerHTML += `<div class="flex gap-4 mb-4 bg-white/5 p-3"><img src="${item.img}" class="w-16 h-20 object-cover"><div><p class="text-[10px] font-black">${item.name}</p><p class="text-sm">₹${item.price}</p><button onclick="cart.splice(${i},1);updateUI()" class="text-red-600 text-[10px]">Remove</button></div></div>`;
         });
         document.getElementById('cart-count').innerText = cart.length;
         document.getElementById('cart-total').innerText = '₹' + total.toLocaleString();
     }
 
+    function confirmOrder() {
+        const n = document.getElementById('cName').value.trim();
+        const pNum = document.getElementById('cPhone').value.trim();
+        const a = document.getElementById('cAddress').value.trim();
+        if(!n || !pNum || !a) return alert("Fill shipping info!");
+
+        const oid = "YRM-" + Math.floor(1000 + Math.random() * 9000);
+        const order = { id: oid, details: `Client: ${n}\nTel: ${pNum}\nItems: ${cart.map(i=>i.name).join(',')}`, status: 'Processing' };
+        
+        let orders = JSON.parse(localStorage.getItem('yrOrders') || '[]');
+        orders.unshift(order);
+        localStorage.setItem('yrOrders', JSON.stringify(orders));
+
+        // Deduct Stock
+        cart.forEach(c => { const pr = products.find(x=>x.id===c.id); if(pr) pr.stock--; });
+        localStorage.setItem('yrProducts', JSON.stringify(products));
+
+        alert("ORDER PLACED! ID: " + oid);
+        location.reload();
+    }
+
+    function loadInventory() {
+        document.getElementById('aInventory').innerHTML = products.map(p => `
+            <div class="flex justify-between items-center bg-white/5 p-3 text-[10px]">
+                <span>${p.name} (${p.stock})</span>
+                <button onclick="deleteProduct(${p.id})" class="text-red-600 font-bold">DELETE</button>
+            </div>
+        `).join('');
+    }
+
+    function deleteProduct(id) { if(confirm("Delete?")) { products = products.filter(p => p.id !== id); localStorage.setItem('yrProducts', JSON.stringify(products)); renderProducts(); loadInventory(); } }
+
+    function loadAdmin() {
+        const orders = JSON.parse(localStorage.getItem('yrOrders') || '[]');
+        document.getElementById('aOrders').innerHTML = orders.map(o => `<div class="bg-white/5 p-4 border border-white/5 text-[10px]"><p class="text-red-600 font-bold mb-2">${o.id}</p><pre class="opacity-50">${o.details}</pre></div>`).join('');
+    }
+
+    function openTrack() { toggleMenu(); togglePanel('track-panel'); }
     function trackNow() {
         const id = document.getElementById('tInput').value.trim().toUpperCase();
         const orders = JSON.parse(localStorage.getItem('yrOrders') || '[]');
         const o = orders.find(x => x.id === id);
-        document.getElementById('tResult').innerHTML = o ? `<div class="bg-red-600/10 p-10 border border-red-600/30 text-center"><p class="text-xs uppercase opacity-50 mb-4">Shipment Status</p><p class="text-3xl font-black text-red-600 tracking-widest uppercase">${o.status}</p></div>` : "<p class='text-center text-red-500 font-bold'>ORDER ID NOT FOUND</p>";
+        document.getElementById('tResult').innerHTML = o ? `<div class="p-6 bg-red-600/10 text-center border border-red-600/30"><p class="text-2xl font-black text-red-600">${o.status}</p></div>` : "Invalid ID";
     }
 
     renderProducts();
 
-    // Visuals
+    // Visuals (3D)
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas3d'), alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     const geo = new THREE.BufferGeometry();
-    const pos = new Float32Array(800 * 3);
-    for(let i=0; i<2400; i++) pos[i] = (Math.random() - 0.5) * 50;
+    const pos = new Float32Array(500 * 3);
+    for(let i=0; i<1500; i++) pos[i] = (Math.random() - 0.5) * 50;
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
     scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ size: 0.05, color: 0xffffff, transparent: true, opacity: 0.2 })));
     camera.position.z = 5;
     function anim() { requestAnimationFrame(anim); scene.rotation.y += 0.0005; renderer.render(scene, camera); }
     anim();
-    window.addEventListener('resize', () => { camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
 </script>
 </body>
 </html>
