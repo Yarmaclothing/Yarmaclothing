@@ -9,35 +9,33 @@
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;600;900&display=swap" rel="stylesheet">
     <style>
         :root { --brand-red: #ff0000; }
-        body { font-family: 'Inter', sans-serif; background: #000; color: #fff; scroll-behavior: smooth; margin: 0; }
+        body { font-family: 'Inter', sans-serif; background: #000; color: #fff; scroll-behavior: smooth; margin: 0; overflow-x: hidden; }
         canvas { position: fixed; top: 0; left: 0; z-index: -1; }
-        
         .font-mag { font-family: 'Syncopate', sans-serif; letter-spacing: 2px; }
         .glass { background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); }
         
-        .menu-overlay { position: fixed; inset: 0; background: #000; z-index: 500; display: none; flex-direction: column; justify-content: center; align-items: center; gap: 2rem; }
-        .menu-overlay.active { display: flex; }
-        .menu-btn { font-family: 'Syncopate', sans-serif; font-size: 2.5rem; color: #fff; transition: 0.3s; background: none; border: none; }
-        
-        /* Product Page View */
+        /* Product Detail View (Individual Page) */
         #product-detail-view { position: fixed; inset: 0; background: #000; z-index: 600; display: none; overflow-y: auto; padding: 100px 20px 40px; }
         #product-detail-view.active { display: block; }
 
-        .size-box { border: 1px solid #333; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; font-size: 12px; }
-        .size-box.selected { border-color: #fff; background: #fff; color: #000; font-weight: 900; }
+        .size-box { border: 1px solid #333; padding: 15px; text-align: center; cursor: pointer; transition: 0.3s; font-size: 11px; font-weight: 600; }
+        .size-box.selected { border-color: #fff; background: #fff; color: #000; }
 
         .product-card { background: #0a0a0a; border: 1px solid #1a1a1a; cursor: pointer; transition: 0.4s; }
         .product-card:hover { border-color: var(--brand-red); }
-        .img-container { aspect-ratio: 3/4; background: #111; overflow: hidden; position: relative; }
+        .img-container { aspect-ratio: 3/4; background: #111; overflow: hidden; }
         .img-container img { width: 100%; height: 100%; object-fit: cover; }
         
-        .btn-main { background: #fff; color: #000; padding: 16px; font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; width: 100%; border: none; cursor: pointer; }
+        .btn-main { background: #fff; color: #000; padding: 18px; font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: 3px; width: 100%; border: none; cursor: pointer; }
         .btn-main:hover { background: var(--brand-red); color: #fff; }
 
-        .panel { position: fixed; top: 0; right: 0; height: 100%; width: 100%; max-width: 450px; background: #080808; z-index: 400; transform: translateX(100%); transition: 0.5s; padding: 30px; border-left: 1px solid #222; }
+        .panel { position: fixed; top: 0; right: 0; height: 100%; width: 100%; max-width: 450px; background: #080808; z-index: 400; transform: translateX(100%); transition: 0.5s; padding: 30px; border-left: 1px solid #222; overflow-y: auto; }
         .panel.active { transform: translateX(0); }
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 350; display: none; }
         .overlay.active { display: block; }
+
+        .admin-input { background: #111; border: 1px solid #222; padding: 15px; width: 100%; font-size: 11px; color: #fff; margin-bottom: 10px; outline: none; }
+        .admin-input:focus { border-color: var(--brand-red); }
     </style>
 </head>
 <body>
@@ -56,33 +54,20 @@
     </div>
 </nav>
 
-<div id="main-menu" class="menu-overlay">
-    <button class="menu-btn" onclick="scrollToSec('shop')">SHOP</button>
-    <button class="menu-btn" onclick="openTrack()">TRACKING</button>
-    <a href="https://instagram.com/yarmaclothingbrand" target="_blank" class="menu-btn">INSTAGRAM</a>
-    <button onclick="toggleMenu()" class="text-xs tracking-[5px] mt-10 opacity-50">CLOSE</button>
-</div>
-
-<section id="home" class="min-h-screen flex flex-col items-center justify-center text-center">
-    <h1 class="font-mag text-5xl md:text-[8rem] mb-4">YARMA</h1>
-    <p class="text-[10px] tracking-[0.6em] mb-10 opacity-60">ESSENTIALS FOR THE ELITE</p>
-    <button onclick="scrollToSec('shop')" class="border border-white/30 px-10 py-4 text-[10px] font-bold tracking-[4px]">EXPLORE</button>
-</section>
-
-<section id="shop" class="py-20 px-4 max-w-7xl mx-auto">
+<section id="shop" class="pt-32 pb-20 px-4 max-w-7xl mx-auto">
     <div id="product-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
 </section>
 
 <div id="product-detail-view">
-    <button onclick="closeProductView()" class="fixed top-10 left-10 z-[700] text-xs font-black tracking-widest">[ BACK ]</button>
+    <button onclick="closeProductView()" class="fixed top-10 left-10 z-[700] text-[10px] font-black tracking-widest bg-white/10 px-4 py-2 rounded-full uppercase">← Return</button>
     <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
-        <div id="detail-images" class="space-y-4"></div>
-        <div class="flex flex-col">
-            <h2 id="detail-name" class="font-mag text-3xl mb-4"></h2>
-            <p id="detail-price" class="text-2xl font-black mb-8"></p>
-            <p id="detail-desc" class="text-xs opacity-60 leading-relaxed mb-10"></p>
+        <div id="detail-images" class="flex flex-col gap-4"></div>
+        <div class="flex flex-col sticky top-24 h-fit">
+            <h2 id="detail-name" class="font-mag text-4xl mb-4 text-red-600"></h2>
+            <p id="detail-price" class="text-3xl font-black mb-6 tracking-tighter"></p>
+            <p id="detail-desc" class="text-xs opacity-50 leading-relaxed mb-10 max-w-md"></p>
             
-            <p class="text-[10px] font-bold mb-4 uppercase tracking-widest">Select Size Range (EUR)</p>
+            <p class="text-[10px] font-black mb-4 uppercase tracking-[4px]">Size Range (EUR)</p>
             <div class="grid grid-cols-3 gap-2 mb-10">
                 <div class="size-box" onclick="selectSize(this, '32-36')">32-36</div>
                 <div class="size-box" onclick="selectSize(this, '38-42')">38-42</div>
@@ -92,29 +77,36 @@
                 <div class="size-box" onclick="selectSize(this, '62')">62</div>
             </div>
             
-            <button id="add-to-cart-btn" class="btn-main">Add to Bag</button>
-            <div class="mt-10 border-t border-white/10 pt-6">
-                <p class="text-[9px] opacity-40 uppercase">Direct Assistance</p>
-                <a href="https://instagram.com/yarmaclothingbrand" class="text-[10px] font-bold underline">Instagram DM</a>
+            <button id="add-to-cart-btn" class="btn-main">Add to Collective</button>
+            <div class="mt-12 border-t border-white/5 pt-8">
+                <a href="https://instagram.com/yarmaclothingbrand" target="_blank" class="text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
+                    <span class="w-2 h-2 bg-red-600 rounded-full animate-pulse"></span> Connect on Instagram
+                </a>
             </div>
         </div>
     </div>
 </div>
 
-<div id="admin-panel" class="panel !max-w-[600px] overflow-y-auto">
-    <div class="flex gap-4 mb-8">
-        <button onclick="switchAdminTab('inventory')" class="text-[10px] font-black">INVENTORY</button>
-        <button onclick="switchAdminTab('orders')" class="text-[10px] font-black">ORDERS</button>
+<div id="admin-panel" class="panel !max-w-[600px]">
+    <div class="flex gap-8 mb-10 border-b border-white/5 pb-4">
+        <button onclick="switchAdminTab('inventory')" class="text-[10px] font-black tracking-widest opacity-40 focus:opacity-100">INVENTORY</button>
+        <button onclick="switchAdminTab('orders')" class="text-[10px] font-black tracking-widest opacity-40 focus:opacity-100">ORDERS</button>
     </div>
+    
     <div id="admin-inventory-view">
-        <input type="text" id="pName" class="bg-[#111] border border-[#222] p-4 w-full text-xs mb-2" placeholder="Product Name">
-        <input type="number" id="pPrice" class="bg-[#111] border border-[#222] p-4 w-full text-xs mb-2" placeholder="Price">
-        <textarea id="pDesc" class="bg-[#111] border border-[#222] p-4 w-full text-xs h-20 mb-2" placeholder="Description"></textarea>
-        <label class="text-[9px] opacity-50">Upload Up to 3 Images</label>
-        <input type="file" id="pImgFile" multiple accept="image/*" class="text-[10px] mb-6">
-        <button onclick="addProduct()" class="btn-main mb-8">List Product</button>
-        <div id="aInventory" class="space-y-2"></div>
+        <input type="text" id="pName" class="admin-input" placeholder="PRODUCT NAME">
+        <input type="number" id="pPrice" class="admin-input" placeholder="PRICE (INR)">
+        <textarea id="pDesc" class="admin-input h-24" placeholder="PRODUCT DESCRIPTION"></textarea>
+        
+        <p class="text-[9px] font-bold opacity-40 mb-3 tracking-widest">IMAGE URLS (MULTIPLE)</p>
+        <input type="text" id="pImg1" class="admin-input" placeholder="IMAGE URL 1 (MAIN)">
+        <input type="text" id="pImg2" class="admin-input" placeholder="IMAGE URL 2 (DETAIL)">
+        <input type="text" id="pImg3" class="admin-input" placeholder="IMAGE URL 3 (DETAIL)">
+        
+        <button onclick="addProductByUrl()" class="btn-main mt-4">Release Globally</button>
+        <div id="aInventory" class="mt-12 space-y-3"></div>
     </div>
+
     <div id="admin-orders-view" class="hidden">
         <div id="aOrders" class="space-y-4"></div>
     </div>
@@ -122,47 +114,59 @@
 
 <div id="cart-panel" class="panel flex flex-col">
     <h2 class="font-mag text-lg mb-8">BAG</h2>
-    <div id="cart-items" class="flex-grow overflow-y-auto"></div>
+    <div id="cart-items" class="flex-grow"></div>
     <div class="mt-6 border-t border-white/10 pt-6">
-        <div class="flex justify-between text-xl font-bold mb-6"><span>Total</span><span id="cart-total">₹0</span></div>
+        <div class="flex justify-between text-2xl font-black mb-6"><span>Total</span><span id="cart-total">₹0</span></div>
         <button onclick="togglePanel('checkout-panel')" class="btn-main">Checkout</button>
     </div>
 </div>
 
-<div id="checkout-panel" class="panel">
-    <h2 class="font-mag text-lg mb-8 text-red-600">SHIPPING</h2>
-    <input type="text" id="cName" class="bg-[#111] border border-[#222] p-4 w-full text-xs mb-2" placeholder="Full Name">
-    <input type="tel" id="cPhone" class="bg-[#111] border border-[#222] p-4 w-full text-xs mb-2" placeholder="Phone">
-    <textarea id="cAddress" class="bg-[#111] border border-[#222] p-4 w-full text-xs h-24 mb-4" placeholder="Address"></textarea>
-    <button onclick="confirmOrder()" class="btn-main">Complete COD Order</button>
-</div>
-
 <div id="track-panel" class="panel">
     <h2 class="font-mag text-lg mb-8">TRACKING</h2>
-    <input type="text" id="tInput" class="bg-[#111] border border-[#222] p-4 w-full text-xs mb-4" placeholder="Order ID">
-    <button onclick="trackNow()" class="btn-main">Locate</button>
-    <div id="tResult" class="mt-8"></div>
+    <input type="text" id="tInput" class="admin-input" placeholder="ORDER ID (YRM-XXXX)">
+    <button onclick="trackNow()" class="btn-main mt-4">Check Status</button>
+    <div id="tResult" class="mt-10"></div>
 </div>
 
-<footer class="py-20 text-center opacity-40 border-t border-white/5">
-    <p class="font-mag text-sm mb-2" onclick="openAdmin()">YARMA</p>
-    <p class="text-[8px] tracking-[5px]">MANAGEMENT PORTAL</p>
-</footer>
-
 <script>
+    let products = JSON.parse(localStorage.getItem('yrProducts')) || [];
     let cart = [];
     let selectedSize = null;
-    let products = JSON.parse(localStorage.getItem('yrProducts')) || [];
-    const pss = "ishaangund";
+    const adminPass = "ishaangund";
 
+    // 1. ADD PRODUCT VIA MULTIPLE URLS
+    function addProductByUrl() {
+        const name = document.getElementById('pName').value.trim();
+        const price = document.getElementById('pPrice').value;
+        const desc = document.getElementById('pDesc').value.trim();
+        const img1 = document.getElementById('pImg1').value.trim();
+        const img2 = document.getElementById('pImg2').value.trim();
+        const img3 = document.getElementById('pImg3').value.trim();
+
+        if(!name || !price || !img1) return alert("Bhai, Details aur kam se kam 1 Photo URL zaroori hai!");
+
+        let imgArray = [img1];
+        if(img2) imgArray.push(img2);
+        if(img3) imgArray.push(img3);
+
+        const newP = { id: Date.now(), name, price: parseInt(price), desc, imgs: imgArray, stock: 10 };
+        products.unshift(newP);
+        localStorage.setItem('yrProducts', JSON.stringify(products));
+        
+        // Reset Inputs
+        document.querySelectorAll('.admin-input').forEach(i => i.value = '');
+        renderProducts(); loadInventory(); alert("Product Live!");
+    }
+
+    // 2. RENDER & PRODUCT VIEW
     function renderProducts() {
         const list = document.getElementById('product-list');
         list.innerHTML = products.map(p => `
             <div class="product-card" onclick="openProductView(${p.id})">
-                <div class="img-container"><img src="${p.imgs[0]}"></div>
+                <div class="img-container"><img src="${p.imgs[0]}" loading="lazy"></div>
                 <div class="p-6">
-                    <h3 class="font-mag text-[12px] mb-2 uppercase">${p.name}</h3>
-                    <p class="font-black text-xl">₹${p.price.toLocaleString()}</p>
+                    <h3 class="font-mag text-[11px] mb-2 uppercase opacity-80">${p.name}</h3>
+                    <p class="font-black text-2xl">₹${p.price.toLocaleString()}</p>
                 </div>
             </div>
         `).join('');
@@ -174,126 +178,60 @@
         document.getElementById('detail-name').innerText = p.name;
         document.getElementById('detail-price').innerText = '₹' + p.price.toLocaleString();
         document.getElementById('detail-desc').innerText = p.desc;
-        document.getElementById('detail-images').innerHTML = p.imgs.map(img => `<img src="${img}" class="w-full">`).join('');
+        document.getElementById('detail-images').innerHTML = p.imgs.map(url => `<img src="${url}" class="w-full bg-[#0a0a0a]">`).join('');
         
-        const addBtn = document.getElementById('add-to-cart-btn');
-        addBtn.onclick = () => {
-            if(!selectedSize) return alert("Bhai, Size select kar pehle!");
+        document.querySelectorAll('.size-box').forEach(b => b.classList.remove('selected'));
+        document.getElementById('add-to-cart-btn').onclick = () => {
+            if(!selectedSize) return alert("Please select a size first.");
             cart.push({...p, size: selectedSize});
-            updateUI();
-            closeProductView();
-            togglePanel('cart-panel');
+            updateUI(); closeProductView(); togglePanel('cart-panel');
         };
-
         document.getElementById('product-detail-view').classList.add('active');
         document.body.style.overflow = 'hidden';
     }
 
-    function selectSize(el, size) {
+    function selectSize(el, s) { 
         document.querySelectorAll('.size-box').forEach(b => b.classList.remove('selected'));
-        el.classList.add('selected');
-        selectedSize = size;
+        el.classList.add('selected'); selectedSize = s; 
     }
+    
+    function closeProductView() { document.getElementById('product-detail-view').classList.remove('active'); document.body.style.overflow = 'auto'; }
 
-    function closeProductView() {
-        document.getElementById('product-detail-view').classList.remove('active');
-        document.body.style.overflow = 'auto';
-    }
-
-    function addProduct() {
-        const files = document.getElementById('pImgFile').files;
-        const name = document.getElementById('pName').value.trim();
-        const price = document.getElementById('pPrice').value;
-        const desc = document.getElementById('pDesc').value.trim();
-
-        if(files.length === 0 || !name || !price) return alert("Details missing!");
-
-        let uploadedImgs = [];
-        let loaded = 0;
-        for(let i=0; i<Math.min(files.length, 3); i++) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                uploadedImgs.push(e.target.result);
-                loaded++;
-                if(loaded === Math.min(files.length, 3)) {
-                    products.unshift({ id: Date.now(), name, price: parseInt(price), imgs: uploadedImgs, desc, stock: 10 });
-                    localStorage.setItem('yrProducts', JSON.stringify(products));
-                    renderProducts(); loadInventory();
-                    alert("Listed!");
-                }
-            };
-            reader.readAsDataURL(files[i]);
-        }
-    }
-
-    // Logic utilities (same as before)
-    function toggleMenu() { document.getElementById('main-menu').classList.toggle('active'); }
+    // Logic Utilities (Global Sync ready)
     function togglePanel(id) { closeAllPanels(); document.getElementById(id).classList.add('active'); document.getElementById('overlay').classList.add('active'); }
     function closeAllPanels() { document.querySelectorAll('.panel').forEach(p => p.classList.remove('active')); document.getElementById('overlay').classList.remove('active'); }
-    function scrollToSec(id) { toggleMenu(); document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
-    function openAdmin() { if(prompt("KEY:") === pss) { togglePanel('admin-panel'); loadAdmin(); } }
-    function switchAdminTab(t) { 
-        document.getElementById('admin-orders-view').classList.toggle('hidden', t !== 'orders');
-        document.getElementById('admin-inventory-view').classList.toggle('hidden', t !== 'inventory');
-    }
     function updateUI() {
-        const list = document.getElementById('cart-items');
-        let total = 0; list.innerHTML = '';
-        cart.forEach((item, i) => {
-            total += item.price;
-            list.innerHTML += `<div class="flex gap-4 mb-4 bg-white/5 p-3"><img src="${item.imgs[0]}" class="w-12 h-16 object-cover"><div><p class="text-[10px] font-black">${item.name} (${item.size})</p><p class="text-sm">₹${item.price}</p><button onclick="cart.splice(${i},1);updateUI()" class="text-red-600 text-[10px]">Remove</button></div></div>`;
-        });
         document.getElementById('cart-count').innerText = cart.length;
+        let total = cart.reduce((s, i) => s + i.price, 0);
         document.getElementById('cart-total').innerText = '₹' + total.toLocaleString();
-    }
-    function confirmOrder() {
-        const n = document.getElementById('cName').value.trim();
-        const pNum = document.getElementById('cPhone').value.trim();
-        const a = document.getElementById('cAddress').value.trim();
-        if(!n || !pNum || !a) return alert("Details missing!");
-        const oid = "YRM-" + Math.floor(1000 + Math.random() * 9000);
-        let orders = JSON.parse(localStorage.getItem('yrOrders') || '[]');
-        orders.unshift({ id: oid, details: `Client: ${n}\nItems: ${cart.map(i=>i.name + ' [' + i.size + ']').join(',')}`, status: 'Processing' });
-        localStorage.setItem('yrOrders', JSON.stringify(orders));
-        alert("SECURED! ID: " + oid);
-        location.reload();
-    }
-    function loadAdmin() {
-        const oList = JSON.parse(localStorage.getItem('yrOrders') || '[]');
-        document.getElementById('aOrders').innerHTML = oList.map(o => `<div class="bg-white/5 p-4 text-[10px]"><p class="text-red-600 font-bold">${o.id}</p><pre class="opacity-50">${o.details}</pre></div>`).join('');
-        loadInventory();
-    }
-    function loadInventory() {
-        document.getElementById('aInventory').innerHTML = products.map(p => `
-            <div class="flex justify-between items-center bg-white/5 p-3 text-[10px]">
-                <span>${p.name}</span>
-                <button onclick="deleteProduct(${p.id})" class="text-red-600">DEL</button>
+        document.getElementById('cart-items').innerHTML = cart.map((i, idx) => `
+            <div class="flex gap-4 mb-6 bg-white/5 p-4 items-center">
+                <img src="${i.imgs[0]}" class="w-16 h-20 object-cover">
+                <div class="flex-grow">
+                    <p class="text-[10px] font-black uppercase">${i.name}</p>
+                    <p class="text-[10px] opacity-40">SIZE: ${i.size}</p>
+                    <p class="text-sm font-bold">₹${i.price}</p>
+                </div>
+                <button onclick="cart.splice(${idx},1);updateUI()" class="text-red-600 font-bold text-[10px]">REMOVE</button>
             </div>
         `).join('');
     }
-    function deleteProduct(id) { if(confirm("Delete?")) { products = products.filter(x=>x.id!==id); localStorage.setItem('yrProducts', JSON.stringify(products)); renderProducts(); loadInventory(); } }
-    function openTrack() { toggleMenu(); togglePanel('track-panel'); }
-    function trackNow() {
-        const id = document.getElementById('tInput').value.trim().toUpperCase();
-        const orders = JSON.parse(localStorage.getItem('yrOrders') || '[]');
-        const o = orders.find(x => x.id === id);
-        document.getElementById('tResult').innerHTML = o ? `<div class="p-6 bg-red-600/10 text-center border border-red-600/30 font-black">${o.status}</div>` : "NOT FOUND";
-    }
 
+    // Initialize
     renderProducts();
 
-    // 3D Visuals
+    // 3D Background (Same as scratch)
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas3d'), alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     const geo = new THREE.BufferGeometry();
-    const pos = new Float32Array(500 * 3);
-    for(let i=0; i<1500; i++) pos[i] = (Math.random() - 0.5) * 50;
+    const pos = new Float32Array(800 * 3);
+    for(let i=0; i<2400; i++) pos[i] = (Math.random() - 0.5) * 60;
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ size: 0.05, color: 0xffffff, transparent: true, opacity: 0.2 })));
+    scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ size: 0.04, color: 0xffffff, transparent: true, opacity: 0.2 })));
     camera.position.z = 5;
-    function anim() { requestAnimationFrame(anim); scene.rotation.y += 0.0005; renderer.render(scene, camera); }
+    function anim() { requestAnimationFrame(anim); scene.rotation.y += 0.0003; renderer.render(scene, camera); }
     anim();
 </script>
 </body>
