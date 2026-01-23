@@ -8,126 +8,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@400;900&display=swap" rel="stylesheet">
     <style>
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background: #000; 
-            color: #fff; 
-            scroll-behavior: smooth; 
-            margin: 0; 
-            overflow-x: hidden;
-            background: linear-gradient(-45deg, #1a0a0a, #0a0a1a, #1a1a0a, #0a1a1a);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-        }
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
+        body { font-family: 'Inter', sans-serif; background: #000; color: #fff; scroll-behavior: smooth; margin: 0; overflow-x: hidden; }
         canvas { position: fixed; top: 0; left: 0; z-index: -1; }
-        
-        /* Glass Effect */
-        .glass { background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); }
-        
-        /* Panel Styling (Cart, Checkout, Admin, Track) */
-        .panel { 
-            position: fixed; top: 0; right: 0; 
-            height: 100%; width: 100%; max-width: 450px;
-            background: rgba(10, 10, 10, 0.98); 
-            backdrop-filter: blur(25px);
-            z-index: 200; 
-            transform: translateX(100%);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-left: 1px solid rgba(255,255,255,0.1);
-            display: flex; flex-direction: column;
-            padding: 30px;
-        }
-        .panel.active { transform: translateX(0); box-shadow: -10px 0 30px rgba(0,0,0,0.5); }
-        
-        /* Full Screen Menu Overlay */
-        .menu-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.98); backdrop-filter: blur(25px);
-            z-index: 250; /* Higher than panels */
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            opacity: 0; visibility: hidden; transition: opacity 0.4s ease, visibility 0.4s ease;
-        }
-        .menu-overlay.active { opacity: 1; visibility: visible; }
-        .menu-overlay a, .menu-overlay button {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 2.5em; /* Large menu items */
-            font-weight: 700;
-            color: white;
-            margin: 15px 0;
-            text-decoration: none;
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
-        .menu-overlay a:hover, .menu-overlay button:hover {
-            color: #ff0000;
-            transform: translateX(10px);
-        }
-        .menu-overlay .close-btn {
-            position: absolute; top: 30px; right: 30px;
-            font-size: 3em; color: gray; cursor: pointer;
-        }
-
-        /* General Overlay for Panels */
-        .overlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.7); z-index: 150; 
-            display: none; 
-        }
+        .glass { background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); }
+        .panel { position: fixed; top: 0; right: 0; height: 100%; width: 100%; max-width: 450px; background: rgba(10,10,10,0.98); z-index: 200; transform: translateX(100%); transition: 0.4s; border-left: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; padding: 30px; }
+        .panel.active { transform: translateX(0); }
+        .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 250; display: none; flex-direction: column; justify-content: center; align-items: center; }
+        .menu-overlay.active { display: flex; }
+        .menu-btn { font-family: 'Syncopate', sans-serif; font-size: 2rem; margin: 15px; color: white; transition: 0.3s; }
+        .menu-btn:hover { color: #ff0000; transform: scale(1.1); }
+        .product-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 20px; transition: 0.3s; position: relative; }
+        .product-card:hover { border-color: #ff0000; box-shadow: 0 0 30px rgba(255,0,0,0.2); }
+        .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 900; text-transform: uppercase; }
+        .status-pending { background: #444; } .status-shipped { background: #2563eb; } .status-delivered { background: #16a34a; }
+        .input-style { background: #111; border: 1px solid #333; padding: 12px; border-radius: 8px; width: 100%; color: white; margin-bottom: 10px; outline: none; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 150; display: none; }
         .overlay.active { display: block; }
-
-        .font-mag { font-family: 'Syncopate', sans-serif; }
-        .input-style { background: #1a1a1a; border: 1px solid #333; padding: 14px; border-radius: 12px; width: 100%; color: white; outline: none; margin-bottom: 12px; }
-        
-        /* Product Card & Hover Effects */
-        .product-card { 
-            background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 24px; padding: 24px; transition: 0.3s; 
-            position: relative; overflow: hidden;
-        }
-        .product-card:hover {
-            box-shadow: 0 0 40px rgba(255, 0, 0, 0.2); /* Enhanced Red Glow */
-            border-color: rgba(255, 0, 0, 0.6);
-            transform: translateY(-5px);
-        }
-        .product-image {
-            height: 250px; background-color: #1a1a1a; border-radius: 16px; margin-bottom: 20px;
-            display: flex; align-items: center; justify-content: center;
-            color: #4a4a4a; font-weight: bold; font-size: 10px; text-transform: uppercase;
-            transition: transform 0.4s ease;
-        }
-        .product-card:hover .product-image { transform: scale(1.03); }
-
-        .stock-tag {
-            position: absolute; top: 15px; right: 15px;
-            background: red; color: white; font-size: 8px; font-weight: 900;
-            padding: 4px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px;
-            animation: pulse 2s infinite; z-index: 10;
-        }
-        @keyframes pulse {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.05); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        /* Status Badges */
-        .status-badge { padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 900; }
-        .status-pending { background: #555; }
-        .status-shipped { background: #2563eb; }
-        .status-out-for-delivery { background: #9333ea; }
-        .status-delivered { background: #16a34a; }
-
-        /* Section Animations */
-        section { 
-            min-height: 100vh; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            padding: 80px 20px;
-            opacity: 0; transform: translateY(20px); transition: opacity 1s ease-out, transform 1s ease-out; 
-        }
-        section.animated { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body>
@@ -136,160 +32,126 @@
 <div id="overlay" class="overlay" onclick="closeAllPanels()"></div>
 
 <div id="main-menu" class="menu-overlay">
-    <span class="close-btn" onclick="toggleMenu()">✕</span>
-    <button onclick="scrollToSection('home'); toggleMenu();">HOME</button>
-    <button onclick="scrollToSection('shop'); toggleMenu();">SHOP</button>
-    <button onclick="scrollToSection('about'); toggleMenu();">ABOUT</button>
-    <a href="https://www.instagram.com/yarmaclothingbrand" target="_blank" onclick="toggleMenu()">CONTACT</a>
-    <button onclick="togglePanel('track-panel'); toggleMenu();">TRACK ORDER</button>
+    <span class="absolute top-10 right-10 text-3xl cursor-pointer" onclick="toggleMenu()">✕</span>
+    <button class="menu-btn" onclick="scrollToSec('home')">HOME</button>
+    <button class="menu-btn" onclick="scrollToSec('shop')">SHOP</button>
+    <button class="menu-btn" onclick="scrollToSec('about')">ABOUT</button>
+    <a href="https://www.instagram.com/yarmaclothingbrand" target="_blank" class="menu-btn">CONTACT</a>
+    <button class="menu-btn" onclick="openTrack()">TRACK ORDER</button>
 </div>
 
-<nav class="fixed top-0 w-full z-[100] px-6 py-5 flex justify-between items-center bg-black/80 backdrop-blur-md border-b border-white/5">
-    <div class="font-mag text-lg text-red-600 tracking-tighter cursor-pointer" onclick="scrollToSection('home')">YARMA</div>
-    <div class="flex items-center gap-3">
-        <button onclick="toggleMenu()" class="text-[9px] font-black uppercase border border-white/20 px-3 py-2 rounded-full hover:bg-white hover:text-black transition">MENU</button>
-        <button onclick="togglePanel('cart-panel')" class="relative bg-white/10 p-3 rounded-full hover:bg-red-600 transition">
-            <span id="cart-count" class="absolute -top-1 -right-1 bg-red-600 text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+<nav class="fixed top-0 w-full z-[100] px-6 py-5 flex justify-between items-center glass">
+    <div class="font-bold text-xl text-red-600 tracking-tighter cursor-pointer" onclick="window.scrollTo(0,0)">YARMA</div>
+    <div class="flex gap-4">
+        <button onclick="toggleMenu()" class="text-[10px] font-black border border-white/20 px-4 py-2 rounded-full">MENU</button>
+        <button onclick="togglePanel('cart-panel')" class="bg-white/10 p-2 rounded-full relative">
+            <span id="cart-count" class="absolute -top-1 -right-1 bg-red-600 text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         </button>
     </div>
 </nav>
 
-<div id="track-panel" class="panel">
-    <div class="flex justify-between items-center mb-8">
-        <h2 class="font-mag text-xl text-red-600">TRACK YOUR ORDER</h2>
-        <button onclick="closeAllPanels()" class="text-2xl text-gray-400 hover:text-white transition">✕</button>
+<section id="home" class="min-h-screen flex flex-col items-center justify-center text-center px-4">
+    <h1 style="font-family: 'Syncopate';" class="text-6xl md:text-9xl italic font-bold mb-4">YARMA</h1>
+    <p class="tracking-[0.5em] text-gray-500 text-xs uppercase mb-10">Luxury Collective</p>
+    <button onclick="scrollToSec('shop')" class="bg-white text-black px-10 py-4 rounded-full font-black text-xs uppercase tracking-widest">Shop Now</button>
+</section>
+
+<section id="shop" class="py-20 flex flex-col items-center">
+    <h2 style="font-family: 'Syncopate';" class="text-2xl text-red-600 mb-16 uppercase tracking-widest">The Drop</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl w-full px-6">
+        <div class="product-card">
+            <div class="h-64 bg-zinc-900 rounded-xl mb-4"></div>
+            <h3 class="font-bold tracking-widest">VORTEX HOODIE</h3>
+            <p class="text-gray-500 text-[10px] mb-2">400 GSM Heavyweight Cotton. Oversized Fit.</p>
+            <p class="text-red-600 font-black text-xl">₹5,499</p>
+            <button onclick="addToCart('Vortex Hoodie', 5499)" class="w-full mt-4 bg-white text-black py-3 rounded-lg font-black text-[10px] uppercase">Add to Cart</button>
+        </div>
+        <div class="product-card">
+            <div class="h-64 bg-zinc-900 rounded-xl mb-4"></div>
+            <h3 class="font-bold tracking-widest">STEALTH TEE</h3>
+            <p class="text-gray-500 text-[10px] mb-2">Premium Terry Fabric. Minimalist Branding.</p>
+            <p class="text-red-600 font-black text-xl">₹2,999</p>
+            <button onclick="addToCart('Stealth Tee', 2999)" class="w-full mt-4 bg-white text-black py-3 rounded-lg font-black text-[10px] uppercase">Add to Cart</button>
+        </div>
     </div>
-    <input type="text" id="trackIdInput" class="input-style" placeholder="Enter Order ID (e.g. YRM-1234)">
-    <button onclick="trackOrder()" class="w-full bg-white text-black py-4 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-red-600 hover:text-white transition">Check Status</button>
-    <div id="trackResult" class="mt-8 flex-grow overflow-y-auto"></div>
-</div>
+</section>
+
+<section id="about" class="py-20 px-6 text-center">
+    <h2 style="font-family: 'Syncopate';" class="text-2xl mb-8 uppercase tracking-widest">About Us</h2>
+    <p class="max-w-xl mx-auto text-gray-400 leading-relaxed text-sm">
+        YARMA is a luxury collective designed for those who seek exclusivity and premium quality. Every piece is crafted with precision, blending bold street aesthetics with high-end fabrics to create a statement that lasts. We believe in quality over quantity, and our limited drops reflect our commitment to true luxury.
+    </p>
+</section>
 
 <div id="cart-panel" class="panel">
-    <div class="flex justify-between items-center mb-8">
-        <h2 class="font-mag text-xl">YOUR CART</h2>
-        <button onclick="closeAllPanels()" class="text-2xl text-gray-400 hover:text-white transition">✕</button>
-    </div>
-    <div id="cart-items" class="flex-grow overflow-y-auto space-y-4 mb-6"></div>
-    <div class="border-t border-white/10 pt-6">
-        <div class="flex justify-between font-black text-xl mb-6"><span>TOTAL</span><span id="cart-total">₹0</span></div>
-        <button onclick="togglePanel('checkout-panel')" class="w-full bg-white text-black py-4 rounded-xl font-black text-[10px] uppercase hover:bg-red-600 hover:text-white transition">Proceed to Checkout</button>
+    <h2 class="font-bold text-xl mb-6">CART</h2>
+    <div id="cart-items" class="flex-grow overflow-y-auto mb-4"></div>
+    <div class="border-t border-white/10 pt-4">
+        <div class="flex justify-between font-bold mb-4"><span>TOTAL</span><span id="cart-total">₹0</span></div>
+        <button onclick="togglePanel('checkout-panel')" class="w-full bg-white text-black py-4 rounded-xl font-black text-xs uppercase">Checkout</button>
     </div>
 </div>
 
 <div id="checkout-panel" class="panel">
-    <h2 class="font-mag text-xl mb-8 text-red-600">SHIPPING DETAILS</h2>
-    <div class="flex-grow overflow-y-auto pr-2">
-        <input type="text" id="custName" class="input-style" placeholder="Full Name">
-        <input type="tel" id="custPhone" class="input-style" placeholder="Mobile Number">
-        <input type="text" id="custCity" class="input-style" placeholder="City">
-        <textarea id="custAddress" class="input-style" placeholder="Full Address, Area, & Nearest Landmark"></textarea>
-        <input type="text" id="custPin" class="input-style" placeholder="Postal PIN Code">
-        <button onclick="showReview()" class="w-full bg-red-600 text-white py-4 rounded-xl font-black text-[10px] uppercase mt-4 hover:bg-white hover:text-black transition">Review Order</button>
-        <button onclick="togglePanel('cart-panel')" class="w-full mt-4 text-[10px] opacity-50 uppercase hover:text-white transition">Back to Cart</button>
-    </div>
+    <h2 class="font-bold text-xl mb-6 text-red-600">SHIPPING</h2>
+    <input type="text" id="cName" class="input-style" placeholder="Full Name">
+    <input type="tel" id="cPhone" class="input-style" placeholder="Mobile Number">
+    <input type="text" id="cCity" class="input-style" placeholder="City">
+    <textarea id="cAddress" class="input-style" placeholder="Address & Landmark"></textarea>
+    <input type="text" id="cPin" class="input-style" placeholder="PIN Code">
+    <button onclick="confirmOrder()" class="w-full bg-red-600 py-4 rounded-xl font-black text-xs uppercase">Confirm Order (COD)</button>
+    <button onclick="togglePanel('cart-panel')" class="w-full mt-2 text-[10px] opacity-50 uppercase">Back</button>
 </div>
 
-<div id="review-panel" class="panel">
-    <div id="review-content">
-        <h2 class="font-mag text-xl mb-6 text-green-500 uppercase">CONFIRM ORDER</h2>
-        <div id="order-summary" class="bg-white/5 p-6 rounded-2xl text-[11px] space-y-2 mb-6 border border-white/10 overflow-y-auto max-h-[250px]"></div>
-        <div class="p-4 border border-green-500/30 rounded-xl mb-6 bg-green-500/10 text-center">
-            <p class="font-black text-green-500 text-[10px] uppercase tracking-widest">CASH ON DELIVERY (COD)</p>
-        </div>
-        <button onclick="finalSubmit()" class="w-full bg-white text-black py-4 rounded-xl font-black text-[10px] uppercase hover:bg-red-600 hover:text-white transition">Place COD Order</button>
-    </div>
+<div id="track-panel" class="panel">
+    <h2 class="font-bold text-xl mb-6 text-red-600">TRACK ORDER</h2>
+    <input type="text" id="tInput" class="input-style" placeholder="Order ID (e.g. YRM-1234)">
+    <button onclick="trackNow()" class="w-full bg-white text-black py-3 rounded-lg font-black text-xs uppercase">Track</button>
+    <div id="tResult" class="mt-6"></div>
 </div>
 
-<section id="home">
-    <h1 class="font-mag text-7xl md:text-9xl mb-4 italic tracking-tighter animate-fade-in">YARMA</h1>
-    <p class="tracking-[0.8em] text-gray-500 text-[10px] mb-12 uppercase font-black italic animate-fade-in delay-200">Luxury Collective</p>
-    <button onclick="scrollToSection('shop')" class="bg-white text-black px-12 py-4 rounded-full font-black uppercase text-[10px] tracking-widest hover:bg-red-600 hover:text-white transition animate-fade-in delay-400">Explore The Drop</button>
-</section>
-
-<section id="shop">
-    <h2 class="font-mag text-3xl mb-16 text-red-600 tracking-widest uppercase text-center animate-slide-up">The Latest Collection</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl w-full px-4">
-        <div class="product-card animate-slide-up delay-200">
-            <div class="stock-tag">Only 7 Left!</div> <div class="product-image">Product Image Here</div>
-            <h3 class="font-bold tracking-widest uppercase mb-1">VORTEX HOODIE</h3>
-            <p class="text-gray-400 text-xs mb-3">Oversized fit, 400 GSM heavy-knit cotton. Designed for a bold, statement look.</p>
-            <p class="text-red-600 font-black text-xl">₹5,499</p>
-            <button onclick="addToCart('Vortex Hoodie', 5499)" class="w-full mt-6 bg-white text-black py-4 rounded-xl font-black text-[9px] uppercase hover:bg-red-600 hover:text-white transition">Add to Cart</button>
-        </div>
-        <div class="product-card animate-slide-up delay-300">
-            <div class="stock-tag">Limited Stock!</div> <div class="product-image">Product Image Here</div>
-            <h3 class="font-bold tracking-widest uppercase mb-1">STEALTH TEE</h3>
-            <p class="text-gray-400 text-xs mb-3">Premium breathable fabric with subtle branding. Perfect for everyday luxury.</p>
-            <p class="text-red-600 font-black text-xl">₹2,999</p>
-            <button onclick="addToCart('Stealth Tee', 2999)" class="w-full mt-6 bg-white text-black py-4 rounded-xl font-black text-[9px] uppercase hover:bg-red-600 hover:text-white transition">Add to Cart</button>
-        </div>
-    </div>
-</section>
-
-<section id="about">
-    <h2 class="font-mag text-3xl mb-10 text-white tracking-widest uppercase text-center animate-slide-up">Our Vision</h2>
-    <p class="text-gray-400 text-center max-w-2xl text-lg leading-relaxed animate-fade-in delay-200">
-        YARMA is more than just clothing; it's a movement towards redefined luxury. We craft exclusive pieces that blend bold aesthetics with uncompromising quality, creating statements that resonate with individuality and modern sophistication. Experience the future of street luxe.
-    </p>
-</section>
-
-<footer class="py-20 text-center border-t border-white/10 glass">
-    <p class="text-[10px] text-gray-500 uppercase tracking-[0.5em] mb-4">Official Contact</p>
-    <a href="https://www.instagram.com/yarmaclothingbrand" target="_blank" class="font-mag text-xl hover:text-red-600 transition tracking-tighter">@YARMACLOTHINGBRAND</a>
-    <div class="mt-20 opacity-10 text-[8px] cursor-pointer hover:opacity-100 transition" onclick="openAdmin()">SYSTEM ACCESS</div>
-</footer>
-
-<div id="admin-panel" class="panel !max-w-[650px]">
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="font-mag text-xl text-yellow-500 uppercase">Admin Dashboard</h2>
-        <button onclick="closeAllPanels()" class="text-xl text-gray-400 hover:text-white transition">✕</button>
-    </div>
+<div id="admin-panel" class="panel !max-w-[600px]">
+    <h2 class="font-bold text-xl mb-4 text-yellow-500 uppercase">Admin Dashboard</h2>
     <div class="grid grid-cols-2 gap-4 mb-6">
-        <div class="bg-white/5 p-4 rounded-xl text-center border border-white/10">
-            <p class="text-[9px] text-gray-500 uppercase">Total Orders</p>
-            <p id="stat-count" class="text-2xl font-black">0</p>
+        <div class="bg-white/5 p-4 rounded-xl border border-white/10 text-center">
+            <p class="text-[9px] text-gray-500 uppercase">Orders</p>
+            <p id="aCount" class="text-xl font-black">0</p>
         </div>
-        <div class="bg-white/5 p-4 rounded-xl text-center border border-white/10">
-            <p class="text-[9px] text-gray-500 uppercase">Total Sales</p>
-            <p id="stat-sales" class="text-2xl font-black text-green-500">₹0</p>
+        <div class="bg-white/5 p-4 rounded-xl border border-white/10 text-center">
+            <p class="text-[9px] text-gray-500 uppercase">Sales</p>
+            <p id="aSales" class="text-xl font-black text-green-500">₹0</p>
         </div>
     </div>
-    <div class="text-right mb-4">
-        <button onclick="clearLogs()" class="text-red-600 text-[10px] font-bold uppercase hover:text-white transition">Clear All Orders</button>
-    </div>
-    <div id="admin-orders" class="flex-grow overflow-y-auto space-y-4"></div>
+    <div id="aOrders" class="overflow-y-auto flex-grow space-y-4"></div>
 </div>
+
+<footer class="py-10 text-center opacity-50 text-[10px]">
+    <p>© 2026 YARMA LUXURY COLLECTIVE</p>
+    <p class="mt-4 cursor-pointer" onclick="openAdmin()">SYSTEM ACCESS</p>
+</footer>
 
 <script>
     let cart = [];
-    const ADMIN_PASS = "ishaangund"; // Your Admin Password
+    const pass = "ishaangund";
 
-    function toggleMenu() {
-        document.getElementById('main-menu').classList.toggle('active');
-        document.body.style.overflow = document.getElementById('main-menu').classList.contains('active') ? 'hidden' : 'auto';
-    }
-
-    function togglePanel(id) {
-        closeAllPanels(); // Close all other panels first
-        document.getElementById(id).classList.add('active');
+    function toggleMenu() { document.getElementById('main-menu').classList.toggle('active'); }
+    function togglePanel(id) { 
+        closeAllPanels(); 
+        document.getElementById(id).classList.add('active'); 
         document.getElementById('overlay').classList.add('active');
-        document.body.style.overflow = 'hidden'; // Lock scroll
+        document.body.style.overflow = 'hidden';
     }
-
     function closeAllPanels() {
         document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
         document.getElementById('overlay').classList.remove('active');
-        document.body.style.overflow = 'auto'; // Unlock scroll
+        document.body.style.overflow = 'auto';
     }
-
-    function scrollToSection(id) {
-        document.getElementById(id).scrollIntoView({behavior:'smooth'});
-    }
+    function scrollToSec(id) { toggleMenu(); document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+    function openTrack() { toggleMenu(); togglePanel('track-panel'); }
 
     function openAdmin() {
-        if(prompt("Enter Admin Password:") === ADMIN_PASS) { togglePanel('admin-panel'); loadAdmin(); }
-        else { alert("Access Denied!"); }
+        if(prompt("Admin Password:") === pass) { togglePanel('admin-panel'); loadAdmin(); }
     }
 
     function addToCart(name, price) {
@@ -303,142 +165,68 @@
         let total = 0; list.innerHTML = '';
         cart.forEach((item, i) => {
             total += item.price;
-            list.innerHTML += `<div class="flex justify-between items-center bg-white/5 p-4 rounded-xl text-xs"><span class="font-bold uppercase">${item.name}</span><button onclick="cart.splice(${i},1);updateUI()" class="text-red-600">✕</button></div>`;
+            list.innerHTML += `<div class="flex justify-between p-3 bg-white/5 rounded-lg mb-2 text-xs"><span>${item.name}</span><button onclick="cart.splice(${i},1);updateUI()" class="text-red-500">✕</button></div>`;
         });
         document.getElementById('cart-count').innerText = cart.length;
         document.getElementById('cart-total').innerText = '₹' + total.toLocaleString();
     }
 
-    function showReview() {
-        if(!document.getElementById('custName').value || !document.getElementById('custPhone').value) {
-            alert('Please fill Full Name and Mobile Number!');
-            return;
-        }
-        const summary = `NAME: ${document.getElementById('custName').value}\nPHONE: ${document.getElementById('custPhone').value}\nCITY: ${document.getElementById('custCity').value}\nADDRESS: ${document.getElementById('custAddress').value}\nPIN: ${document.getElementById('custPin').value}\nITEMS: ${cart.map(i=>i.name).join(', ')}\nTOTAL: ${document.getElementById('cart-total').innerText}`;
-        document.getElementById('order-summary').innerText = summary;
-        togglePanel('review-panel');
-    }
-
-    function finalSubmit() {
-        const orderId = "YRM-" + Math.floor(1000 + Math.random() * 9000);
-        const orderData = {
-            id: orderId,
-            name: document.getElementById('custName').value,
-            details: document.getElementById('order-summary').innerText,
-            amount: parseInt(document.getElementById('cart-total').innerText.replace(/[₹,]/g, '')),
-            status: 'Pending',
-            date: new Date().toLocaleString()
-        };
-        let orders = JSON.parse(localStorage.getItem('yarmaOrders') || '[]');
-        orders.unshift(orderData);
-        localStorage.setItem('yarmaOrders', JSON.stringify(orders));
-        
-        // Show Professional Success Screen
-        const reviewPanel = document.getElementById('review-panel');
-        reviewPanel.innerHTML = `
-            <div class="flex flex-col items-center justify-center h-full text-center p-6">
-                <div class="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mb-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                </div>
-                <h2 class="font-mag text-2xl text-green-500 mb-2">ORDER PLACED</h2>
-                <p class="text-[10px] tracking-widest text-gray-400 mb-8 uppercase">Thank you for shopping with YARMA</p>
-                
-                <div class="bg-white/5 p-6 rounded-2xl border border-white/10 w-full mb-8">
-                    <p class="text-[9px] text-gray-500 uppercase mb-1">Your Order ID</p>
-                    <p class="text-2xl font-black text-white tracking-tighter">${orderId}</p>
-                </div>
-                
-                <p class="text-[10px] text-gray-500 italic mb-8 px-4">Screenshot this for your reference. We will contact you soon for delivery.</p>
-                
-                <button onclick="location.reload()" class="bg-white text-black px-10 py-4 rounded-full font-black text-[10px] uppercase tracking-widest hover:bg-red-600 hover:text-white transition">Back to Store</button>
-            </div>
-        `;
-        cart = []; // Clear cart after successful order
-        updateUI(); // Update cart count in nav
+    function confirmOrder() {
+        const id = "YRM-" + Math.floor(1000 + Math.random() * 9000);
+        const details = `Name: ${document.getElementById('cName').value}\nPhone: ${document.getElementById('cPhone').value}\nCity: ${document.getElementById('cCity').value}\nAddress: ${document.getElementById('cAddress').value}\nItems: ${cart.map(i=>i.name).join(', ')}`;
+        const order = { id, details, amount: parseInt(document.getElementById('cart-total').innerText.replace(/[₹,]/g, '')), status: 'Pending' };
+        let orders = JSON.parse(localStorage.getItem('yrOrders') || '[]');
+        orders.unshift(order);
+        localStorage.setItem('yrOrders', JSON.stringify(orders));
+        alert("Order Placed! ID: " + id);
+        location.reload();
     }
 
     function loadAdmin() {
-        const orders = JSON.parse(localStorage.getItem('yarmaOrders') || '[]');
-        document.getElementById('stat-count').innerText = orders.length;
-        const totalSales = orders.reduce((acc, curr) => acc + curr.amount, 0);
-        document.getElementById('stat-sales').innerText = '₹' + totalSales.toLocaleString();
-
-        const adminList = document.getElementById('admin-orders');
-        adminList.innerHTML = orders.map((o, index) => `
-            <div class="bg-white/5 p-5 rounded-xl border border-white/10 text-[11px] leading-relaxed">
-                <div class="flex justify-between items-center mb-3">
-                    <span class="text-yellow-500 font-black text-xs">${o.id}</span>
-                    <span class="status-badge status-${o.status.toLowerCase().replace(/ /g, '-')}">${o.status}</span>
-                </div>
-                <pre class="text-gray-300 mb-4 font-sans">${o.details}</pre>
-                <select onchange="updateStatus(${index}, this.value)" class="bg-white/10 border border-white/20 text-white p-2 rounded w-full text-[10px] outline-none hover:border-red-600 transition">
-                    <option value="" disabled selected>${o.status}</option>
+        const orders = JSON.parse(localStorage.getItem('yrOrders') || '[]');
+        document.getElementById('aCount').innerText = orders.length;
+        document.getElementById('aSales').innerText = '₹' + orders.reduce((s, o) => s + o.amount, 0).toLocaleString();
+        document.getElementById('aOrders').innerHTML = orders.map((o, i) => `
+            <div class="bg-white/5 p-4 rounded-xl border border-white/10 text-[11px]">
+                <div class="flex justify-between mb-2"><span class="text-red-500 font-bold">${o.id}</span><span class="status-badge status-${o.status.toLowerCase()}">${o.status}</span></div>
+                <pre class="whitespace-pre-wrap mb-3 text-gray-400">${o.details}</pre>
+                <select onchange="updStat(${i}, this.value)" class="bg-black border border-white/20 text-white p-2 rounded w-full text-[10px]">
+                    <option value="" disabled selected>Update Status</option>
                     <option value="Pending">Pending</option>
                     <option value="Shipped">Shipped</option>
-                    <option value="Out for Delivery">Out for Delivery</option>
                     <option value="Delivered">Delivered</option>
                 </select>
             </div>
         `).join('');
     }
 
-    function updateStatus(index, newStatus) {
-        let orders = JSON.parse(localStorage.getItem('yarmaOrders') || '[]');
-        orders[index].status = newStatus;
-        localStorage.setItem('yarmaOrders', JSON.stringify(orders));
+    function updStat(i, s) {
+        let orders = JSON.parse(localStorage.getItem('yrOrders') || '[]');
+        orders[i].status = s;
+        localStorage.setItem('yrOrders', JSON.stringify(orders));
         loadAdmin();
-        alert("Order " + orders[index].id + " status updated to: " + newStatus);
     }
 
-    function trackOrder() {
-        const id = document.getElementById('trackIdInput').value.trim().toUpperCase();
-        const orders = JSON.parse(localStorage.getItem('yarmaOrders') || '[]');
-        const order = orders.find(o => o.id === id);
-        const res = document.getElementById('trackResult');
-        
-        if(order) {
-            res.innerHTML = `
-                <div class="bg-white/5 p-6 rounded-2xl border border-red-600/30 text-center">
-                    <p class="text-[10px] uppercase text-gray-500 mb-1">Current Status for ${order.id}</p>
-                    <p class="text-xl font-black text-red-600 uppercase mb-4">${order.status}</p>
-                    <p class="text-[10px] text-gray-400 italic">Expected delivery will be communicated soon.</p>
-                </div>`;
-        } else {
-            res.innerHTML = `<p class="text-red-600 text-[10px] uppercase font-bold text-center">Order ID Not Found! Please check the ID and try again.</p>`;
-        }
+    function trackNow() {
+        const id = document.getElementById('tInput').value.trim().toUpperCase();
+        const orders = JSON.parse(localStorage.getItem('yrOrders') || '[]');
+        const o = orders.find(x => x.id === id);
+        document.getElementById('tResult').innerHTML = o ? `<div class="bg-red-600/20 p-6 rounded-xl border border-red-600/40 text-center"><p class="text-[10px] uppercase text-gray-400">Status</p><p class="text-2xl font-black">${o.status}</p></div>` : "Not Found";
     }
 
-    function clearLogs() { 
-        if(confirm("Are you sure? All order data will be permanently deleted.")) { 
-            localStorage.removeItem('yarmaOrders'); 
-            loadAdmin(); 
-            alert("All order logs cleared!");
-        } 
-    }
-
-    // Initialize Intersection Observer for section animations
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animated');
-                observer.unobserve(entry.target); // Stop observing once animated
-            }
-        });
-    }, { threshold: 0.1 }); // Trigger when 10% of the section is visible
-
-    document.querySelectorAll('section').forEach(section => {
-        observer.observe(section);
-    });
-
-    // 3D Star Background Logic
+    // Stars
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas3d'), alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     const geo = new THREE.BufferGeometry();
     const pos = new Float32Array(1500 * 3);
-    for(let i=0; i<4500; i++) pos[i] = (Math.random() - 0.5) * 45;
+    for(let i=0; i<4500; i++) pos[i] = (Math.random() - 0.5) * 50;
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ size: 0.02, color: 0xffffff, transparent: true, opacity: 0.5 })));
+    scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ size: 0.03, color: 0xffffff })));
     camera.position.z = 5;
-    function anim() { requestAnimationFrame(anim); scene.rotation.y
+    function anim() { requestAnimationFrame(anim); scene.rotation.y += 0.001; renderer.render(scene, camera); }
+    anim();
+</script>
+</body>
+</html>
