@@ -8,30 +8,42 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;400;900&display=swap" rel="stylesheet">
     <style>
-        :root { --brand-red: #ff0000; }
+        :root { --brand-red: #ff0000; --pure-white: #ffffff; }
         body { font-family: 'Inter', sans-serif; background: #000; color: #fff; scroll-behavior: smooth; margin: 0; overflow-x: hidden; }
         canvas { position: fixed; top: 0; left: 0; z-index: -1; }
+        
         .font-mag { font-family: 'Syncopate', sans-serif; letter-spacing: 4px; }
-        .glass { background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .panel { position: fixed; top: 0; right: 0; height: 100%; width: 100%; max-width: 480px; background: #0a0a0a; z-index: 300; transform: translateX(100%); transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1); border-left: 1px solid rgba(255,0,0,0.2); display: flex; flex-direction: column; padding: 40px; }
-        .panel.active { transform: translateX(0); box-shadow: -20px 0 50px rgba(0,0,0,0.9); }
-        .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 400; display: none; flex-direction: column; justify-content: center; align-items: center; }
-        .menu-overlay.active { display: flex; animation: fadeIn 0.3s ease; }
-        .menu-btn { font-family: 'Syncopate', sans-serif; font-size: 2.2rem; margin: 12px; color: #444; transition: 0.4s; background: none; border: none; cursor: pointer; }
-        .menu-btn:hover { color: var(--brand-red); letter-spacing: 12px; }
-        .product-card { background: #080808; border: 1px solid #151515; padding: 25px; transition: 0.5s; position: relative; }
-        .product-card:hover { border-color: var(--brand-red); transform: translateY(-10px); }
-        .img-box { height: 350px; background: #111; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #333; border: 1px solid #1a1a1a; position: relative; }
-        .btn-premium { background: #fff; color: #000; padding: 15px; font-weight: 900; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; width: 100%; transition: 0.3s; }
+        .glass { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(25px); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        
+        /* Fixed Bright Menu */
+        .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 500; display: none; flex-direction: column; justify-content: center; align-items: center; }
+        .menu-overlay.active { display: flex; }
+        .menu-btn { font-family: 'Syncopate', sans-serif; font-size: 2.5rem; margin: 15px; color: var(--pure-white); transition: 0.4s; background: none; border: none; cursor: pointer; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+        .menu-btn:hover { color: var(--brand-red); transform: scale(1.1); letter-spacing: 10px; text-shadow: 0 0 20px rgba(255,0,0,0.5); }
+
+        /* Panels */
+        .panel { position: fixed; top: 0; right: 0; height: 100%; width: 100%; max-width: 480px; background: #0d0d0d; z-index: 400; transform: translateX(100%); transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1); border-left: 2px solid var(--brand-red); display: flex; flex-direction: column; padding: 40px; }
+        .panel.active { transform: translateX(0); }
+
+        .product-card { background: #0a0a0a; border: 1px solid #222; padding: 0; transition: 0.5s; position: relative; overflow: hidden; }
+        .product-card:hover { border-color: var(--brand-red); }
+        .img-container { width: 100%; height: 400px; background: #111; overflow: hidden; position: relative; }
+        .img-container img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s; }
+        .product-card:hover img { transform: scale(1.1); }
+        
+        .details-box { padding: 25px; border-top: 1px solid #1a1a1a; }
+        .btn-premium { background: var(--pure-white); color: #000; padding: 18px; font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; width: 100%; transition: 0.3s; }
         .btn-premium:hover:not(:disabled) { background: var(--brand-red); color: #fff; }
-        .btn-premium:disabled { background: #222; color: #444; cursor: not-allowed; }
-        .input-style { background: #000; border: 1px solid #222; padding: 15px; width: 100%; color: #fff; margin-bottom: 12px; font-size: 12px; outline: none; }
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 250; display: none; }
+        .btn-premium:disabled { background: #222; color: #555; cursor: not-allowed; }
+
+        .input-style { background: #000; border: 1px solid #333; padding: 15px; width: 100%; color: #fff; margin-bottom: 12px; font-size: 12px; outline: none; }
+        .input-style:focus { border-color: var(--brand-red); }
+
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 350; display: none; }
         .overlay.active { display: block; }
-        .admin-tab { padding: 10px; font-size: 10px; font-weight: 900; border-bottom: 2px solid transparent; cursor: pointer; opacity: 0.5; }
-        .admin-tab.active { border-color: var(--brand-red); opacity: 1; }
-        .stock-tag { position: absolute; top: 10px; left: 10px; background: #fff; color: #000; font-size: 8px; font-weight: 900; padding: 4px 8px; z-index: 5; }
-        .sold-out { position: absolute; inset: 0; background: rgba(0,0,0,0.7); display: flex; items-center: center; justify-content: center; font-weight: 900; font-size: 20px; color: #ff0000; z-index: 10; letter-spacing: 5px; }
+        
+        .stock-tag { position: absolute; top: 15px; right: 15px; background: var(--brand-red); color: #fff; font-size: 9px; font-weight: 900; padding: 5px 12px; z-index: 10; }
+        .sold-out-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 24px; color: var(--brand-red); z-index: 20; letter-spacing: 5px; font-family: 'Syncopate'; }
     </style>
 </head>
 <body>
@@ -40,93 +52,99 @@
 <div id="overlay" class="overlay" onclick="closeAllPanels()"></div>
 
 <nav class="fixed top-0 w-full z-[100] px-8 py-6 flex justify-between items-center glass">
-    <div class="font-mag text-xl text-red-600 cursor-pointer" onclick="window.scrollTo(0,0)">YARMA</div>
-    <div class="flex gap-6 items-center">
-        <button onclick="toggleMenu()" class="text-[9px] font-black tracking-[3px] uppercase opacity-70">Menu</button>
-        <button onclick="togglePanel('cart-panel')" class="relative">
-            <span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-[8px] w-4 h-4 rounded-full flex items-center justify-center">0</span>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    <div class="font-mag text-2xl text-red-600 cursor-pointer" onclick="window.scrollTo(0,0)">YARMA</div>
+    <div class="flex gap-8 items-center">
+        <button onclick="toggleMenu()" class="text-[11px] font-black tracking-[4px] uppercase text-white hover:text-red-600 transition">Menu</button>
+        <button onclick="togglePanel('cart-panel')" class="relative text-white">
+            <span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-[9px] w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
         </button>
     </div>
 </nav>
 
 <div id="main-menu" class="menu-overlay">
-    <span class="absolute top-10 right-10 text-2xl cursor-pointer font-thin" onclick="toggleMenu()">CLOSE</span>
+    <span class="absolute top-10 right-10 text-xl cursor-pointer font-black text-white hover:text-red-600" onclick="toggleMenu()">[ CLOSE ]</span>
     <button class="menu-btn" onclick="scrollToSec('home')">HOME</button>
-    <button class="menu-btn" onclick="scrollToSec('shop')">COLLECTION</button>
-    <button class="menu-btn" onclick="openTrack()">TRACKING</button>
+    <button class="menu-btn" onclick="scrollToSec('shop')">SHOP</button>
+    <button class="menu-btn" onclick="openTrack()">TRACK ORDER</button>
+    <a href="https://www.instagram.com/yarmaclothingbrand" target="_blank" class="menu-btn text-lg mt-10 opacity-60">INSTAGRAM</a>
 </div>
 
 <section id="home" class="min-h-screen flex flex-col items-center justify-center text-center px-4">
-    <h1 class="font-mag text-7xl md:text-[10rem] mb-6">YARMA</h1>
-    <p class="text-[10px] uppercase tracking-[0.5em] mb-12 opacity-50">Luxury Collective 2026</p>
-    <button onclick="scrollToSec('shop')" class="border border-white/20 px-12 py-4 text-[10px] font-black uppercase tracking-[4px]">Enter Shop</button>
+    <h1 class="font-mag text-6xl md:text-[9rem] mb-6 tracking-tighter">YARMA</h1>
+    <p class="text-[11px] uppercase tracking-[0.8em] mb-12 text-gray-400">Luxury Collective • Drop 2026</p>
+    <button onclick="scrollToSec('shop')" class="border-2 border-white px-16 py-5 text-[11px] font-black uppercase tracking-[5px] hover:bg-white hover:text-black transition duration-500">Shop Collection</button>
 </section>
 
 <section id="shop" class="py-32 px-6 flex flex-col items-center">
-    <h2 class="font-mag text-2xl text-red-600 mb-20">THE DROP</h2>
-    <div id="product-list" class="grid grid-cols-1 md:grid-cols-2 gap-16 max-w-6xl w-full"></div>
+    <h2 class="font-mag text-3xl text-red-600 mb-20 uppercase">The Inventory</h2>
+    <div id="product-list" class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-7xl w-full">
+        </div>
 </section>
 
 <div id="cart-panel" class="panel">
-    <h2 class="font-mag text-lg mb-10">BAG</h2>
+    <h2 class="font-mag text-xl mb-10 border-b border-white/10 pb-4">YOUR BAG</h2>
     <div id="cart-items" class="flex-grow overflow-y-auto mb-6"></div>
     <div class="border-t border-white/10 pt-6">
-        <div class="flex justify-between font-black text-lg mb-6"><span>TOTAL</span><span id="cart-total">₹0</span></div>
-        <button onclick="togglePanel('checkout-panel')" class="btn-premium">Checkout</button>
+        <div class="flex justify-between font-black text-2xl mb-8"><span>TOTAL</span><span id="cart-total">₹0</span></div>
+        <button onclick="togglePanel('checkout-panel')" class="btn-premium">Proceed to Checkout</button>
     </div>
 </div>
 
 <div id="checkout-panel" class="panel">
-    <h2 class="font-mag text-lg mb-10 text-red-600">SHIPPING</h2>
+    <h2 class="font-mag text-xl mb-10 text-red-600">SHIPPING DETAILS</h2>
     <input type="text" id="cName" class="input-style" placeholder="Full Name *">
     <input type="tel" id="cPhone" class="input-style" placeholder="Mobile Number *">
     <input type="text" id="cCity" class="input-style" placeholder="City *">
-    <textarea id="cAddress" class="input-style h-24" placeholder="Full Address *"></textarea>
+    <textarea id="cAddress" class="input-style h-24" placeholder="Full Address & Landmark *"></textarea>
     <input type="text" id="cPin" class="input-style" placeholder="PIN Code *">
-    <button onclick="confirmOrder()" class="btn-premium">Confirm Order (COD)</button>
+    <div class="bg-red-600/10 p-4 border border-red-600/20 text-[10px] mb-6 tracking-widest text-center">PAYMENT METHOD: CASH ON DELIVERY</div>
+    <button onclick="confirmOrder()" class="btn-premium">Place Order Now</button>
 </div>
 
 <div id="track-panel" class="panel">
-    <h2 class="font-mag text-lg mb-10 text-red-600">TRACKING</h2>
-    <input type="text" id="tInput" class="input-style" placeholder="ORDER ID">
-    <button onclick="trackNow()" class="btn-premium">Track Status</button>
+    <h2 class="font-mag text-xl mb-10 text-red-600">TRACKING</h2>
+    <input type="text" id="tInput" class="input-style" placeholder="ENTER ORDER ID (YRM-XXXX)">
+    <button onclick="trackNow()" class="btn-premium">Search Order</button>
     <div id="tResult" class="mt-10"></div>
 </div>
 
-<div id="admin-panel" class="panel !max-w-[700px]">
-    <div class="flex gap-4 mb-8">
-        <div id="tab-orders" class="admin-tab active" onclick="switchAdminTab('orders')">ORDERS</div>
-        <div id="tab-inventory" class="admin-tab" onclick="switchAdminTab('inventory')">INVENTORY</div>
+<div id="admin-panel" class="panel !max-w-[750px]">
+    <div class="flex gap-6 mb-8 border-b border-white/10 pb-4">
+        <div id="tab-orders" class="admin-tab active text-lg" onclick="switchAdminTab('orders')">ORDERS</div>
+        <div id="tab-inventory" class="admin-tab text-lg" onclick="switchAdminTab('inventory')">INVENTORY</div>
     </div>
-    <div id="admin-orders-view">
-        <div id="aOrders" class="overflow-y-auto space-y-4"></div>
+    
+    <div id="admin-orders-view" class="overflow-y-auto">
+        <div id="aOrders" class="space-y-4"></div>
     </div>
-    <div id="admin-inventory-view" class="hidden">
-        <h3 class="text-[10px] font-black mb-4 uppercase text-red-600">Add Product</h3>
-        <input type="text" id="pName" class="input-style" placeholder="Name">
+
+    <div id="admin-inventory-view" class="hidden overflow-y-auto">
+        <h3 class="text-xs font-black mb-4 uppercase text-red-600 tracking-widest">Add New Product</h3>
+        <input type="text" id="pName" class="input-style" placeholder="Product Name">
         <input type="number" id="pPrice" class="input-style" placeholder="Price (₹)">
-        <input type="number" id="pStock" class="input-style" placeholder="Stock Quantity">
-        <textarea id="pDesc" class="input-style h-20" placeholder="Description"></textarea>
-        <button onclick="addProduct()" class="btn-premium mb-10">List Product</button>
-        <h3 class="text-[10px] font-black mb-4 uppercase">Current Inventory</h3>
+        <input type="number" id="pStock" class="input-style" placeholder="Initial Stock">
+        <input type="text" id="pImg" class="input-style" placeholder="Image URL (Link from Google/Pinterest)">
+        <textarea id="pDesc" class="input-style h-20" placeholder="Product Description"></textarea>
+        <button onclick="addProduct()" class="btn-premium mb-10">Add to Gallery</button>
+        <h3 class="text-xs font-black mb-4 uppercase tracking-widest">Manage Live Stock</h3>
         <div id="aInventory" class="space-y-4"></div>
     </div>
 </div>
 
-<footer class="py-20 text-center opacity-40 border-t border-white/5">
-    <p class="font-mag text-sm text-red-600 mb-4 cursor-pointer" onclick="openAdmin()">YARMA</p>
-    <p class="text-[8px] tracking-[0.8em]">SYSTEM ACCESS POINT</p>
+<footer class="py-20 text-center border-t border-white/5 bg-black">
+    <p class="font-mag text-lg text-red-600 mb-2 cursor-pointer" onclick="openAdmin()">YARMA</p>
+    <p class="text-[9px] tracking-[0.8em] opacity-50 uppercase">Security Portal Access</p>
 </footer>
 
 <script>
     let cart = [];
     const pss = "ishaangund";
 
-    // Products Data
+    // Initial Database with Image Links
     let defaultProducts = [
-        { id: 1, name: 'Vortex Hoodie', price: 5499, stock: 5, desc: '400 GSM Heavyweight Cotton. Oversized Fit.' },
-        { id: 2, name: 'Stealth Tee', price: 2999, stock: 0, desc: 'Premium Terry Fabric. Boxy Fit.' }
+        { id: 1, name: 'Vortex Hoodie', price: 5499, stock: 10, img: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=1000&auto=format&fit=crop', desc: '400 GSM Heavyweight Cotton. Oversized Silhouette.' },
+        { id: 2, name: 'Stealth Tee', price: 2999, stock: 5, img: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1000&auto=format&fit=crop', desc: 'Premium Terry Fabric. Boxy Fit. High Density Print.' }
     ];
     let products = JSON.parse(localStorage.getItem('yrProducts')) || defaultProducts;
 
@@ -134,17 +152,19 @@
         const list = document.getElementById('product-list');
         list.innerHTML = products.map(p => `
             <div class="product-card">
-                <div class="img-box">
-                    ${p.stock <= 0 ? '<div class="sold-out">SOLD OUT</div>' : ''}
-                    ${p.stock > 0 && p.stock < 10 ? '<div class="stock-tag">LOW STOCK: '+p.stock+' LEFT</div>' : ''}
-                    IMAGE_REF
+                <div class="img-container">
+                    ${p.stock <= 0 ? '<div class="sold-out-overlay">SOLD OUT</div>' : ''}
+                    ${p.stock > 0 && p.stock < 5 ? '<div class="stock-tag">ONLY '+p.stock+' LEFT</div>' : ''}
+                    <img src="${p.img || 'https://via.placeholder.com/600x800?text=YARMA'}" alt="${p.name}">
                 </div>
-                <h3 class="font-bold tracking-[3px] text-sm mb-1 uppercase">${p.name}</h3>
-                <p class="text-gray-600 text-[9px] mb-4 uppercase">${p.desc}</p>
-                <p class="text-white font-black text-xl mb-6">₹${p.price.toLocaleString()}</p>
-                <button onclick="addToCart(${p.id})" class="btn-premium" ${p.stock <= 0 ? 'disabled' : ''}>
-                    ${p.stock <= 0 ? 'Out of Stock' : 'Add to Bag'}
-                </button>
+                <div class="details-box text-center">
+                    <h3 class="font-mag text-sm mb-2 text-white">${p.name}</h3>
+                    <p class="text-gray-500 text-[10px] mb-4 uppercase tracking-widest">${p.desc}</p>
+                    <p class="text-white font-black text-2xl mb-6 tracking-tighter">₹${p.price.toLocaleString()}</p>
+                    <button onclick="addToCart(${p.id})" class="btn-premium" ${p.stock <= 0 ? 'disabled' : ''}>
+                        ${p.stock <= 0 ? 'Out of Stock' : 'Add to Bag'}
+                    </button>
+                </div>
             </div>
         `).join('');
     }
@@ -153,42 +173,23 @@
         const name = document.getElementById('pName').value.trim();
         const price = document.getElementById('pPrice').value;
         const stock = document.getElementById('pStock').value;
+        const img = document.getElementById('pImg').value.trim();
         const desc = document.getElementById('pDesc').value.trim();
-        if(!name || !price || !stock || !desc) return alert("Fill all fields!");
-        products.unshift({ id: Date.now(), name, price: parseInt(price), stock: parseInt(stock), desc });
-        saveData();
+        if(!name || !price || !stock || !img) return alert("Bhai, sari details bharna zaroori hai!");
+        
+        products.unshift({ id: Date.now(), name, price: parseInt(price), stock: parseInt(stock), img, desc });
+        localStorage.setItem('yrProducts', JSON.stringify(products));
         renderProducts(); loadInventory();
-        alert("Product Added!");
-    }
-
-    function deleteProduct(id) {
-        if(confirm("Remove product?")) {
-            products = products.filter(p => p.id !== id);
-            saveData(); renderProducts(); loadInventory();
-        }
-    }
-
-    function saveData() { localStorage.setItem('yrProducts', JSON.stringify(products)); }
-
-    function addToCart(id) {
-        const p = products.find(x => x.id === id);
-        if(p.stock > 0) {
-            cart.push({id: p.id, name: p.name, price: p.price});
-            updateUI();
-            togglePanel('cart-panel');
-        }
+        alert("Product listed successfully!");
     }
 
     function confirmOrder() {
         const n = document.getElementById('cName').value.trim();
         const pNum = document.getElementById('cPhone').value.trim();
-        const c = document.getElementById('cCity').value.trim();
         const a = document.getElementById('cAddress').value.trim();
         const pin = document.getElementById('cPin').value.trim();
+        if(!n || !pNum || !a || !pin) return alert("Invalid Details! Please fill all fields.");
 
-        if(!n || !pNum || !c || !a || !pin) return alert("Invalid Details!");
-
-        // Deduct Stock
         cart.forEach(item => {
             const prod = products.find(x => x.id === item.id);
             if(prod && prod.stock > 0) prod.stock--;
@@ -200,13 +201,20 @@
         let orders = JSON.parse(localStorage.getItem('yrOrders') || '[]');
         orders.unshift(order);
         localStorage.setItem('yrOrders', JSON.stringify(orders));
-        saveData();
+        localStorage.setItem('yrProducts', JSON.stringify(products));
 
-        alert("Order Success! ID: " + oid);
+        alert("ORDER SECURED!\nORDER ID: " + oid);
         location.reload();
     }
 
-    // Admin UI logic
+    function deleteProduct(id) {
+        if(confirm("Delete this product permanently?")) {
+            products = products.filter(p => p.id !== id);
+            localStorage.setItem('yrProducts', JSON.stringify(products));
+            renderProducts(); loadInventory();
+        }
+    }
+
     function switchAdminTab(tab) {
         document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
         document.getElementById('tab-' + tab).classList.add('active');
@@ -217,32 +225,25 @@
 
     function loadInventory() {
         document.getElementById('aInventory').innerHTML = products.map(p => `
-            <div class="bg-white/5 p-4 flex justify-between items-center text-[10px]">
-                <span>${p.name} (Stock: ${p.stock})</span>
-                <button onclick="deleteProduct(${p.id})" class="text-red-600 font-black">DEL</button>
+            <div class="bg-white/5 p-4 flex justify-between items-center text-[11px] border border-white/5">
+                <div class="flex items-center gap-4">
+                    <img src="${p.img}" class="w-10 h-10 object-cover">
+                    <span>${p.name} (${p.stock})</span>
+                </div>
+                <button onclick="deleteProduct(${p.id})" class="text-red-600 font-black hover:text-white transition">DELETE</button>
             </div>
         `).join('');
     }
 
     function loadAdmin() {
         const orders = JSON.parse(localStorage.getItem('yrOrders') || '[]');
-        document.getElementById('aOrders').innerHTML = orders.map((o, i) => `
-            <div class="bg-white/5 p-4 border border-white/5 text-[10px]">
-                <div class="flex justify-between font-black mb-2"><span class="text-red-600">${o.id}</span><span>${o.status}</span></div>
-                <pre class="opacity-50 whitespace-pre-wrap">${o.details}</pre>
+        document.getElementById('aOrders').innerHTML = orders.length ? orders.map((o, i) => `
+            <div class="bg-white/5 p-6 border border-white/5 text-[11px]">
+                <div class="flex justify-between font-black mb-4"><span class="text-red-600 text-lg">${o.id}</span><span class="bg-white/10 px-3 py-1">${o.status}</span></div>
+                <pre class="opacity-70 whitespace-pre-wrap leading-loose">${o.details}</pre>
+                <p class="mt-4 font-black text-lg">TOTAL: ₹${o.amount.toLocaleString()}</p>
             </div>
-        `).join('');
-    }
-
-    function updateUI() {
-        const list = document.getElementById('cart-items');
-        let total = 0; list.innerHTML = '';
-        cart.forEach((item, i) => {
-            total += item.price;
-            list.innerHTML += `<div class="flex justify-between p-4 bg-white/5 mb-2 text-[10px]"><span>${item.name}</span><button onclick="cart.splice(${i},1);updateUI()" class="text-red-500">✕</button></div>`;
-        });
-        document.getElementById('cart-count').innerText = cart.length;
-        document.getElementById('cart-total').innerText = '₹' + total.toLocaleString();
+        `).join('') : '<p class="text-center opacity-50 py-10">No orders yet.</p>';
     }
 
     // Utilities
@@ -253,28 +254,48 @@
     function openTrack() { toggleMenu(); togglePanel('track-panel'); }
     function openAdmin() { if(prompt("ACCESS KEY:") === pss) { togglePanel('admin-panel'); loadAdmin(); } }
 
+    function addToCart(id) {
+        const p = products.find(x => x.id === id);
+        if(p.stock > 0) {
+            cart.push({id: p.id, name: p.name, price: p.price});
+            updateUI(); togglePanel('cart-panel');
+        }
+    }
+
+    function updateUI() {
+        const list = document.getElementById('cart-items');
+        let total = 0; list.innerHTML = '';
+        cart.forEach((item, i) => {
+            total += item.price;
+            list.innerHTML += `<div class="flex justify-between p-5 bg-white/5 mb-2 text-[11px] font-black uppercase tracking-widest"><span>${item.name}</span><button onclick="cart.splice(${i},1);updateUI()" class="text-red-500">✕</button></div>`;
+        });
+        document.getElementById('cart-count').innerText = cart.length;
+        document.getElementById('cart-total').innerText = '₹' + total.toLocaleString();
+    }
+
     function trackNow() {
         const id = document.getElementById('tInput').value.trim().toUpperCase();
         const orders = JSON.parse(localStorage.getItem('yrOrders') || '[]');
         const o = orders.find(x => x.id === id);
-        document.getElementById('tResult').innerHTML = o ? `<div class="bg-white/5 p-6 border border-red-600/30 text-center"><p class="text-2xl font-black text-red-600">${o.status}</p></div>` : "Not Found";
+        document.getElementById('tResult').innerHTML = o ? `<div class="bg-red-600/10 p-10 border border-red-600/30 text-center"><p class="text-xs uppercase opacity-50 mb-4">Shipment Status</p><p class="text-3xl font-black text-red-600 tracking-widest uppercase">${o.status}</p></div>` : "<p class='text-center text-red-500 font-bold'>ORDER ID NOT FOUND</p>";
     }
 
     renderProducts();
 
-    // 3D Background
+    // Visuals
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('canvas3d'), alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     const geo = new THREE.BufferGeometry();
-    const pos = new Float32Array(1000 * 3);
-    for(let i=0; i<3000; i++) pos[i] = (Math.random() - 0.5) * 50;
+    const pos = new Float32Array(800 * 3);
+    for(let i=0; i<2400; i++) pos[i] = (Math.random() - 0.5) * 50;
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ size: 0.05, color: 0xffffff, transparent: true, opacity: 0.3 })));
+    scene.add(new THREE.Points(geo, new THREE.PointsMaterial({ size: 0.05, color: 0xffffff, transparent: true, opacity: 0.2 })));
     camera.position.z = 5;
-    function anim() { requestAnimationFrame(anim); scene.rotation.y += 0.001; renderer.render(scene, camera); }
+    function anim() { requestAnimationFrame(anim); scene.rotation.y += 0.0005; renderer.render(scene, camera); }
     anim();
+    window.addEventListener('resize', () => { camera.aspect = window.innerWidth/window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight); });
 </script>
 </body>
 </html>
