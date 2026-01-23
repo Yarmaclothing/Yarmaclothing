@@ -3,19 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YARMA | Luxury Collective</title>
+    <title>YARMA | Premium Collective</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@400;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;400;900&display=swap" rel="stylesheet">
     <style>
+        :root { --red: #ff0000; }
         body { font-family: 'Inter', sans-serif; background: #000; color: #fff; margin: 0; overflow-x: hidden; }
-        canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.3; }
-        .nav-main { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.9); border-bottom: 1px solid #111; }
-        .panel { position: fixed; top: 0; right: 0; height: 100%; width: 100%; max-width: 500px; background: #050505; z-index: 2000; transform: translateX(100%); transition: 0.5s cubic-bezier(0.7, 0, 0.3, 1); padding: 40px; border-left: 1px solid #1a1a1a; overflow-y: auto; }
+        canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.4; }
+        .font-sync { font-family: 'Syncopate', sans-serif; }
+        .panel { position: fixed; top: 0; right: 0; height: 100%; width: 100%; max-width: 600px; background: #050505; z-index: 2000; transform: translateX(100%); transition: 0.6s cubic-bezier(0.8, 0, 0.2, 1); padding: 30px; border-left: 1px solid #1a1a1a; overflow-y: auto; }
         .panel.active { transform: translateX(0); }
-        .btn-lux { background: #fff; color: #000; padding: 15px; width: 100%; font-weight: 900; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; border: none; cursor: pointer; margin-top: 10px; }
-        .admin-in { background: #111; border: 1px solid #222; padding: 12px; width: 100%; color: #fff; margin-bottom: 8px; font-size: 11px; outline: none; }
-        .btn-back { background: #111; border: 1px solid #333; padding: 5px 12px; font-size: 10px; font-weight: 900; cursor: pointer; margin-bottom: 20px; display: inline-block; }
+        .admin-in { background: #111; border: 1px solid #222; padding: 12px; width: 100%; color: #fff; margin-bottom: 10px; font-size: 12px; border-radius: 4px; }
+        .btn-lux { background: #fff; color: #000; padding: 15px; width: 100%; font-weight: 900; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; border: none; cursor: pointer; transition: 0.3s; }
+        .btn-lux:hover { background: var(--red); color: #fff; }
+        .nav-main { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); border-bottom: 1px solid #111; }
+        .tag-limited { background: var(--red); color: #fff; font-size: 8px; padding: 2px 8px; font-weight: 900; position: absolute; top: 10px; left: 10px; }
     </style>
 </head>
 <body>
@@ -23,145 +26,357 @@
 <canvas id="lux-bg"></canvas>
 
 <nav class="nav-main">
-    <button onclick="openPanel('menu-panel')" class="text-[10px] font-black tracking-widest border border-white/10 px-4 py-2">MENU</button>
-    <div style="font-family:'Syncopate'; font-size: 22px; font-weight: 700; color: #ff0000;">YARMA</div>
-    <button onclick="openPanel('cart-panel')" class="relative">
-        <span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-[8px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-    </button>
+    <button onclick="togglePanel('menu-panel')" class="text-[10px] font-black tracking-widest border border-white/10 px-4 py-2">MENU</button>
+    <div class="font-sync text-2xl text-red-600 cursor-pointer" onclick="showSection('home')">YARMA</div>
+    <div class="flex gap-4">
+        <button onclick="togglePanel('cart-panel')" class="relative">
+            <span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-[8px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        </button>
+    </div>
 </nav>
 
-<section class="h-screen flex flex-col justify-center items-center text-center px-5">
-    <h1 style="font-family:'Syncopate'; font-size: clamp(2.5rem, 12vw, 7rem);" class="mb-5 uppercase">YARMA</h1>
-    <p class="max-w-md text-[10px] opacity-50 uppercase tracking-[2px] leading-loose">High-end collective bridging street culture and luxury craftsmanship.</p>
-    <button onclick="document.getElementById('shop').scrollIntoView()" class="mt-10 border-b-2 border-red-600 pb-2 text-[9px] font-black tracking-[4px]">BROWSE VAULT</button>
-</section>
+<main id="main-content" class="pt-24">
+    <section id="home-sec" class="h-screen flex flex-col justify-center items-center text-center px-6">
+        <h1 class="font-sync text-6xl md:text-9xl mb-6">COLLECTIVE</h1>
+        <p class="max-w-2xl text-[11px] uppercase tracking-[3px] opacity-60 leading-relaxed">
+            Yarma is more than a brand; it is a vision of architectural street fashion. We blend technical precision with raw underground culture to create limited-edition artifacts. Each piece is a statement of luxury, designed for those who navigate the world with an uncompromising sense of identity and style.
+        </p>
+        <button onclick="showSection('shop')" class="mt-12 border-b-2 border-red-600 pb-2 font-black text-[10px] tracking-[5px]">ENTER VAULT</button>
+    </section>
 
-<section id="shop" class="py-20 px-6 max-w-7xl mx-auto">
-    <div id="product-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"></div>
-</section>
+    <section id="shop-sec" class="hidden py-10 px-6 max-w-7xl mx-auto">
+        <div class="flex gap-4 mb-10 overflow-x-auto pb-4 no-scrollbar text-[10px] font-bold uppercase tracking-widest">
+            <button onclick="filterShop('all')" class="border border-white/20 px-6 py-2">All</button>
+            <button onclick="filterShop('Clothing')" class="border border-white/20 px-6 py-2">Clothing</button>
+            <button onclick="filterShop('Accessories')" class="border border-white/20 px-6 py-2">Accessories</button>
+            <button onclick="filterShop('Watches')" class="border border-white/20 px-6 py-2">Watches</button>
+        </div>
+        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"></div>
+    </section>
+
+    <section id="about-sec" class="hidden py-20 px-6 max-w-4xl mx-auto text-center">
+        <h2 class="font-sync text-3xl mb-10">THE MANIFESTO</h2>
+        <p class="text-lg leading-loose opacity-80">Our collective thrives on the edge of innovation and tradition. We curate electrical appliances, high-end watches, and luxury decor alongside our signature clothing line. Every item in the Yarma vault is vetted for quality, ensuring that our community receives only the absolute pinnacle of modern craftsmanship and design.</p>
+    </section>
+
+    <section id="pdp-sec" class="hidden py-10 px-6 max-w-6xl mx-auto"></section>
+
+    <section id="checkout-sec" class="hidden py-10 px-6 max-w-xl mx-auto"></section>
+    <section id="thanks-sec" class="hidden h-screen flex flex-col justify-center items-center text-center">
+        <h1 class="font-sync text-4xl text-red-600 mb-4">THANKS FOR ORDERING</h1>
+        <p class="opacity-50 mb-8 uppercase tracking-widest">Your order is being processed by the collective.</p>
+        <div id="final-oid" class="text-3xl font-black mb-10"></div>
+        <button onclick="showSection('home')" class="btn-lux">Return to Home</button>
+    </section>
+</main>
 
 <div id="menu-panel" class="panel">
-    <div class="btn-back" onclick="closePanels()">← BACK</div>
-    <div class="flex flex-col gap-8 font-black text-2xl mt-10">
-        <button onclick="closePanels()" class="text-left">THE SHOP</button>
-        <button onclick="openPanel('track-panel')" class="text-left">TRACK ORDER</button>
-        <button onclick="enterAdmin()" class="opacity-10 text-[10px] text-left mt-20">ADMIN ACCESS</button>
+    <button onclick="togglePanel('menu-panel')" class="text-[10px] font-bold mb-10 opacity-40">← BACK</button>
+    <div class="flex flex-col gap-8 font-black text-3xl">
+        <button onclick="showSection('home')">01. HOME</button>
+        <button onclick="showSection('shop')">02. SHOP</button>
+        <button onclick="showSection('about')">03. ABOUT</button>
+        <button onclick="togglePanel('track-panel')">04. TRACK ORDER</button>
+        <button onclick="enterAdmin()" class="opacity-10 text-[10px] mt-20">05. ADMIN ACCESS</button>
+    </div>
+    <div class="mt-20 border-t border-white/10 pt-10">
+        <p class="text-[10px] opacity-40 mb-4">CONTACT</p>
+        <a href="https://instagram.com/ishaangund" class="text-red-600 font-bold tracking-widest">INSTAGRAM: @ISHAANGUND</a>
     </div>
 </div>
 
 <div id="cart-panel" class="panel">
-    <div class="btn-back" onclick="closePanels()">← BACK</div>
-    <h2 class="font-bold mb-5 tracking-widest uppercase">Your Selection</h2>
-    <div id="cart-items" class="space-y-4"></div>
-    
-    <div id="checkout-section" class="mt-10 hidden border-t border-white/10 pt-5">
-        <h3 class="text-[10px] font-bold mb-4 opacity-50">SHIPPING DETAILS</h3>
-        <input type="text" id="custName" class="admin-in" placeholder="FULL NAME">
-        <input type="text" id="custPhone" class="admin-in" placeholder="MOBILE NUMBER">
-        <textarea id="custAddr" class="admin-in h-20" placeholder="FULL ADDRESS"></textarea>
-        <button onclick="placeOrder()" class="btn-lux !bg-red-600 !text-white">PLACE ORDER</button>
-    </div>
-    
-    <div id="cart-summary" class="mt-5 border-t border-white/5 pt-5">
-        <div id="cart-total" class="font-bold text-xl mb-4">TOTAL: ₹0</div>
-        <button id="chk-btn" onclick="showCheckout()" class="btn-lux">PROCEED TO CHECKOUT</button>
+    <button onclick="togglePanel('cart-panel')" class="text-[10px] font-bold mb-10 opacity-40">← BACK</button>
+    <h2 class="font-sync text-xl mb-6">CART</h2>
+    <div id="cart-list" class="space-y-4"></div>
+    <div id="cart-foot" class="mt-10 border-t border-white/10 pt-6">
+        <div id="total-price" class="text-2xl font-black mb-6">TOTAL: ₹0</div>
+        <button onclick="goToCheckout()" class="btn-lux">PROCEED TO CHECKOUT</button>
     </div>
 </div>
 
 <div id="track-panel" class="panel">
-    <div class="btn-back" onclick="openPanel('menu-panel')">← BACK</div>
-    <h2 class="font-bold mb-5 uppercase tracking-widest">Trace Order</h2>
-    <input type="text" id="tInput" class="admin-in" placeholder="ORDER ID (YRM-XXXX)">
-    <button onclick="trackNow()" class="btn-lux">TRACE STATUS</button>
-    <div id="tResult" class="mt-10 text-center font-bold text-red-600 text-2xl uppercase"></div>
+    <button onclick="togglePanel('track-panel')" class="text-[10px] font-bold mb-10 opacity-40">← BACK</button>
+    <h2 class="font-sync text-xl mb-6">TRACKING</h2>
+    <input type="text" id="track-id-input" class="admin-in" placeholder="ENTER ORDER ID (YRM-XXXX)">
+    <button onclick="trackOrder()" class="btn-lux">FIND ORDER</button>
+    <div id="track-result" class="mt-12 text-center text-3xl font-black text-red-600 uppercase"></div>
 </div>
 
-<div id="admin-panel" class="panel !max-w-[600px]">
-    <div class="btn-back" onclick="closePanels()">← BACK</div>
-    <div class="flex gap-5 mb-5 border-b border-white/5 pb-2 text-[10px] font-bold">
-        <button onclick="switchTab('inv')">INVENTORY</button>
-        <button onclick="switchTab('ord')">CLIENT ORDERS</button>
+<div id="admin-panel" class="panel !max-w-[700px]">
+    <button onclick="togglePanel('admin-panel')" class="text-[10px] font-bold mb-10 opacity-40">← BACK</button>
+    <div class="flex gap-6 mb-8 border-b border-white/10 pb-4">
+        <button onclick="adminTab('list')" class="font-bold text-[10px]">LIST PRODUCT</button>
+        <button onclick="adminTab('orders')" class="font-bold text-[10px]">MANAGE ORDERS</button>
     </div>
-    
-    <div id="inv-view">
-        <input type="text" id="pName" class="admin-in" placeholder="ITEM NAME">
-        <input type="number" id="pPrice" class="admin-in" placeholder="PRICE">
-        <input type="text" id="pImg1" class="admin-in" placeholder="IMAGE 1 (MAIN)">
-        <input type="text" id="pImg2" class="admin-in" placeholder="IMAGE 2">
-        <input type="text" id="pImg3" class="admin-in" placeholder="IMAGE 3">
-        <button onclick="addP()" class="btn-lux">PUBLISH RELEASE</button>
-        <div id="admin-list" class="mt-8 space-y-2"></div>
+
+    <div id="admin-list-view">
+        <div class="grid grid-cols-2 gap-4">
+            <input type="text" id="adm-name" class="admin-in" placeholder="PRODUCT NAME">
+            <input type="text" id="adm-brand" class="admin-in" placeholder="BRAND NAME">
+            <input type="number" id="adm-price" class="admin-in" placeholder="PRICE (INR)">
+            <input type="number" id="adm-stock" class="admin-in" placeholder="STOCK QTY">
+            <select id="adm-cat" class="admin-in" onchange="toggleClothOpts()">
+                <option value="Clothing">Clothing</option>
+                <option value="Accessories">Accessories</option>
+                <option value="Watches">Watches</option>
+                <option value="Electricals">Electricals</option>
+                <option value="Home Decor">Home Decor</option>
+            </select>
+            <select id="adm-gender" class="admin-in">
+                <option value="Men">Men</option>
+                <option value="Women">Women</option>
+                <option value="Unisex">Unisex</option>
+            </select>
+        </div>
+        
+        <div id="cloth-opts" class="bg-white/5 p-4 mb-4 rounded">
+            <p class="text-[10px] font-bold mb-2">CLOTHING TYPE</p>
+            <select id="adm-wear" class="admin-in" onchange="updateSizes()">
+                <option value="Upper">Upper Wear (S-XXL)</option>
+                <option value="Lower">Lower Wear (Euro Sizes)</option>
+            </select>
+            <div id="size-box" class="flex gap-2 flex-wrap"></div>
+        </div>
+
+        <input type="text" id="adm-colors" class="admin-in" placeholder="COLORS (Red, Black, Blue)">
+        <input type="text" id="adm-img1" class="admin-in" placeholder="IMAGE URL 1 (MAIN)">
+        <input type="text" id="adm-img2" class="admin-in" placeholder="IMAGE URL 2">
+        <input type="text" id="adm-img3" class="admin-in" placeholder="IMAGE URL 3">
+        
+        <label class="flex items-center gap-2 text-[10px] mb-4">
+            <input type="checkbox" id="adm-limited"> LIMITED EDITION RELEASE
+        </label>
+
+        <button onclick="saveProduct()" class="btn-lux">PUBLISH TO VAULT</button>
     </div>
-    
-    <div id="ord-view" class="hidden">
-        <div id="admin-orders" class="space-y-6"></div>
-    </div>
+
+    <div id="admin-order-view" class="hidden space-y-4"></div>
 </div>
 
 <script>
-    let products = JSON.parse(localStorage.getItem('y_p')) || [];
-    let orders = JSON.parse(localStorage.getItem('y_o')) || [];
+    // Database
+    let db = JSON.parse(localStorage.getItem('yarma_db')) || { products: [], orders: [] };
     let cart = [];
 
-    function enterAdmin() { if(prompt("KEY:") === "ishaangund") { openPanel('admin-panel'); loadInv(); loadOrd(); } }
-
-    function addP() {
-        const name = document.getElementById('pName').value;
-        const price = document.getElementById('pPrice').value;
-        const imgs = [document.getElementById('pImg1').value, document.getElementById('pImg2').value, document.getElementById('pImg3').value].filter(u => u);
-        products.unshift({ id: Date.now(), name, price, imgs });
-        localStorage.setItem('y_p', JSON.stringify(products));
-        render(); loadInv();
+    // Core Navigation
+    function togglePanel(id) { document.getElementById(id).classList.toggle('active'); }
+    function closeAllPanels() { document.querySelectorAll('.panel').forEach(p => p.classList.remove('active')); }
+    
+    function showSection(id) {
+        closeAllPanels();
+        document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+        document.getElementById(id + '-sec').classList.remove('hidden');
+        if(id === 'shop') renderShop();
     }
 
-    function render() {
-        document.getElementById('product-list').innerHTML = products.map(p => `
-            <div class="bg-[#080808] border border-[#111] p-4">
-                <img src="${p.imgs[0]}" class="w-full aspect-[3/4] object-cover mb-4">
-                <p class="text-[9px] opacity-40 uppercase tracking-widest">${p.name}</p>
-                <p class="text-xl font-bold mb-4">₹${p.price}</p>
-                <button onclick="addToCart(${p.id})" class="btn-lux !bg-white !text-black">ADD TO VAULT</button>
+    // Admin Logic
+    function enterAdmin() { if(prompt("ACCESS KEY:") === "ishaangund") togglePanel('admin-panel'); }
+    function adminTab(t) {
+        document.getElementById('admin-list-view').classList.toggle('hidden', t!=='list');
+        document.getElementById('admin-order-view').classList.toggle('hidden', t!=='orders');
+        if(t === 'orders') renderAdminOrders();
+    }
+
+    function toggleClothOpts() {
+        document.getElementById('cloth-opts').classList.toggle('hidden', document.getElementById('adm-cat').value !== 'Clothing');
+    }
+
+    function updateSizes() {
+        const type = document.getElementById('adm-wear').value;
+        const box = document.getElementById('size-box');
+        const sizes = type === 'Upper' ? ['S', 'M', 'L', 'XL', 'XXL'] : ['30', '32', '34', '36', '38', '40'];
+        box.innerHTML = sizes.map(s => `
+            <label class="text-[10px] flex items-center gap-1 bg-white/10 px-2 py-1">
+                <input type="checkbox" value="${s}" class="size-check"> ${s}
+            </label>
+        `).join('');
+    }
+    updateSizes();
+
+    function saveProduct() {
+        const p = {
+            id: Date.now(),
+            name: document.getElementById('adm-name').value,
+            brand: document.getElementById('adm-brand').value,
+            price: document.getElementById('adm-price').value,
+            stock: document.getElementById('adm-stock').value,
+            cat: document.getElementById('adm-cat').value,
+            gender: document.getElementById('adm-gender').value,
+            limited: document.getElementById('adm-limited').checked,
+            images: [document.getElementById('adm-img1').value, document.getElementById('adm-img2').value, document.getElementById('adm-img3').value].filter(i => i),
+            colors: document.getElementById('adm-colors').value.split(',').map(c => c.trim()),
+            sizes: Array.from(document.querySelectorAll('.size-check:checked')).map(i => i.value)
+        };
+        db.products.unshift(p);
+        localStorage.setItem('yarma_db', JSON.stringify(db));
+        alert("Product Live!");
+        renderShop();
+    }
+
+    // Shop & PDP
+    function renderShop(filter = 'all') {
+        const grid = document.getElementById('product-grid');
+        let list = db.products;
+        if(filter !== 'all') list = list.filter(p => p.cat === filter);
+        
+        grid.innerHTML = list.map(p => `
+            <div class="relative group cursor-pointer bg-white/5 p-4 transition hover:bg-white/10" onclick="openPDP(${p.id})">
+                ${p.limited ? '<div class="tag-limited">LIMITED EDITION</div>' : ''}
+                <img src="${p.images[0]}" class="w-full aspect-[3/4] object-cover mb-4">
+                <p class="text-[9px] opacity-40 uppercase font-black">${p.brand}</p>
+                <h3 class="font-sync text-sm">${p.name}</h3>
+                <p class="text-xl font-black mt-2">₹${p.price}</p>
             </div>
         `).join('');
     }
 
-    function addToCart(id) { cart.push(products.find(x => x.id === id)); updateCart(); openPanel('cart-panel'); }
+    function openPDP(id) {
+        const p = db.products.find(x => x.id === id);
+        showSection('pdp');
+        document.getElementById('pdp-sec').innerHTML = `
+            <button onclick="showSection('shop')" class="text-[10px] font-bold mb-10 opacity-40">← BACK TO SHOP</button>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="space-y-4">
+                    ${p.images.map(img => `<img src="${img}" class="w-full border border-white/10">`).join('')}
+                </div>
+                <div>
+                    <p class="text-red-600 font-black tracking-widest text-xs uppercase">${p.brand} // ${p.gender}</p>
+                    <h1 class="font-sync text-4xl mt-4 mb-2">${p.name}</h1>
+                    <p class="text-2xl font-black mb-8">₹${p.price}</p>
+                    
+                    <div class="mb-6">
+                        <p class="text-[10px] font-bold mb-2">SELECT SIZE</p>
+                        <div class="flex gap-2">${p.sizes.map(s => `<button onclick="selSize(this)" class="size-btn border border-white/20 px-4 py-2 text-xs hover:bg-white hover:text-black transition">${s}</button>`).join('')}</div>
+                    </div>
+                    
+                    <div class="mb-10">
+                        <p class="text-[10px] font-bold mb-2">AVAILABLE COLORS</p>
+                        <div class="flex gap-2">${p.colors.map(c => `<button onclick="selCol(this)" class="col-btn border border-white/20 px-4 py-2 text-xs hover:bg-white hover:text-black transition">${c}</button>`).join('')}</div>
+                    </div>
 
-    function updateCart() {
+                    <button onclick="addToCart(${p.id})" class="btn-lux mb-4">ADD TO VAULT</button>
+                </div>
+            </div>
+        `;
+    }
+
+    let selectedSize = '';
+    let selectedColor = '';
+    function selSize(el) { document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('bg-white','text-black')); el.classList.add('bg-white','text-black'); selectedSize = el.innerText; }
+    function selCol(el) { document.querySelectorAll('.col-btn').forEach(b => b.classList.remove('bg-white','text-black')); el.classList.add('bg-white','text-black'); selectedColor = el.innerText; }
+
+    function addToCart(id) {
+        if(!selectedSize || !selectedColor) return alert("Select Size & Color!");
+        const p = db.products.find(x => x.id === id);
+        cart.push({...p, selectedSize, selectedColor});
+        updateCartUI();
+        togglePanel('cart-panel');
+    }
+
+    function updateCartUI() {
         document.getElementById('cart-count').innerText = cart.length;
-        document.getElementById('cart-items').innerHTML = cart.map(item => `<div class="flex justify-between text-[10px] border-b border-white/5 py-2"><span>${item.name}</span><span>₹${item.price}</span></div>`).join('');
+        document.getElementById('cart-list').innerHTML = cart.map((item, idx) => `
+            <div class="flex gap-4 bg-white/5 p-3 text-[10px]">
+                <img src="${item.images[0]}" class="w-16 h-20 object-cover">
+                <div class="flex-1">
+                    <p class="font-black">${item.name}</p>
+                    <p class="opacity-50">${item.selectedSize} / ${item.selectedColor}</p>
+                    <p class="mt-2 font-bold">₹${item.price}</p>
+                </div>
+                <button onclick="cart.splice(${idx},1);updateCartUI()" class="text-red-600 font-bold">REMOVE</button>
+            </div>
+        `).join('');
         const total = cart.reduce((s, i) => s + parseInt(i.price), 0);
-        document.getElementById('cart-total').innerText = 'TOTAL: ₹' + total;
+        document.getElementById('total-price').innerText = 'TOTAL: ₹' + total;
     }
 
-    function showCheckout() { document.getElementById('checkout-section').classList.remove('hidden'); document.getElementById('chk-btn').classList.add('hidden'); }
+    // Order Logic
+    function goToCheckout() {
+        if(cart.length === 0) return alert("Cart empty!");
+        showSection('checkout');
+        document.getElementById('checkout-sec').innerHTML = `
+            <h2 class="font-sync text-2xl mb-8">CLIENT INFO</h2>
+            <div class="space-y-4">
+                <input id="chk-name" class="admin-in" placeholder="FULL NAME">
+                <input id="chk-phone" class="admin-in" placeholder="MOBILE NUMBER">
+                <input id="chk-ig" class="admin-in" placeholder="INSTAGRAM ID (OPTIONAL)">
+                <input id="chk-area" class="admin-in" placeholder="AREA / LANDMARK">
+                <input id="chk-city" class="admin-in" placeholder="CITY">
+                <input id="chk-state" class="admin-in" placeholder="STATE">
+                <input id="chk-pin" class="admin-in" placeholder="POSTAL CODE">
+                <button onclick="reviewOrder()" class="btn-lux">REVIEW ORDER</button>
+            </div>
+        `;
+    }
 
-    function placeOrder() {
-        const id = 'YRM-' + Math.floor(1000 + Math.random() * 9000);
-        const order = { 
-            id, 
-            name: document.getElementById('custName').value, 
-            phone: document.getElementById('custPhone').value, 
-            addr: document.getElementById('custAddr').value,
-            items: cart.map(i => i.name).join(', '),
-            status: 'Order Packed' 
+    function reviewOrder() {
+        const data = {
+            name: document.getElementById('chk-name').value,
+            phone: document.getElementById('chk-phone').value,
+            ig: document.getElementById('chk-ig').value || 'N/A',
+            area: document.getElementById('chk-area').value,
+            city: document.getElementById('chk-city').value,
+            state: document.getElementById('chk-state').value,
+            pin: document.getElementById('chk-pin').value
         };
-        orders.unshift(order);
-        localStorage.setItem('y_o', JSON.stringify(orders));
-        alert("ORDER PLACED! ID: " + id);
-        cart = []; updateCart(); closePanels();
+
+        if(!data.name || !data.phone || !data.area || !data.city || !data.pin) return alert("Invalid Details! Fill everything except Instagram.");
+
+        document.getElementById('checkout-sec').innerHTML = `
+            <h2 class="font-sync text-2xl mb-8">REVIEW INFO</h2>
+            <div class="bg-white/5 p-6 space-y-2 text-xs uppercase tracking-widest mb-10">
+                <p><b>Name:</b> ${data.name}</p>
+                <p><b>Mobile:</b> ${data.phone}</p>
+                <p><b>Instagram:</b> ${data.ig}</p>
+                <p><b>Address:</b> ${data.area}, ${data.city}, ${data.state} - ${data.pin}</p>
+            </div>
+            <button onclick='finalizeOrder(${JSON.stringify(data)})' class="btn-lux !bg-red-600 !text-white">CONFIRM & PLACE ORDER</button>
+            <button onclick="goToCheckout()" class="mt-4 text-[10px] opacity-40 uppercase font-bold">Edit Details</button>
+        `;
     }
 
-    function loadOrd() {
-        document.getElementById('admin-orders').innerHTML = orders.map(o => `
-            <div class="p-4 bg-white/5 border border-white/10 text-[10px]">
-                <p><b>ID:</b> ${o.id} | <b>Name:</b> ${o.name}</p>
-                <p><b>Phone:</b> ${o.phone}</p>
-                <p><b>Address:</b> ${o.addr}</p>
-                <p class="text-red-600 font-bold mt-2 uppercase">Status: ${o.status}</p>
-                <select onchange="updateStatus('${o.id}', this.value)" class="bg-black border border-white/20 mt-2 w-full p-2">
-                    <option value="">Update Status...</option>
+    function finalizeOrder(client) {
+        const oid = 'YRM-' + Math.floor(10000 + Math.random() * 90000);
+        const order = {
+            id: oid,
+            client: client,
+            items: [...cart],
+            total: cart.reduce((s, i) => s + parseInt(i.price), 0),
+            status: 'Order Packed',
+            timestamp: new Date().toLocaleString()
+        };
+        db.orders.unshift(order);
+        localStorage.setItem('yarma_db', JSON.stringify(db));
+        
+        cart = []; updateCartUI();
+        showSection('thanks');
+        document.getElementById('final-oid').innerText = oid;
+    }
+
+    // Track & Admin Orders
+    function trackOrder() {
+        const input = document.getElementById('track-id-input').value.toUpperCase().trim();
+        const o = db.orders.find(x => x.id === input);
+        document.getElementById('track-result').innerText = o ? o.status : "NOT FOUND";
+    }
+
+    function renderAdminOrders() {
+        document.getElementById('admin-order-view').innerHTML = db.orders.map(o => `
+            <div class="p-6 bg-white/5 border border-white/10 rounded">
+                <div class="flex justify-between items-start mb-4">
+                    <span class="font-sync text-red-600">${o.id}</span>
+                    <span class="bg-red-600 text-[8px] font-black px-2 py-1">${o.status}</span>
+                </div>
+                <div class="text-[10px] opacity-60 space-y-1 mb-4">
+                    <p><b>Client:</b> ${o.client.name} (${o.client.phone})</p>
+                    <p><b>IG:</b> ${o.client.ig}</p>
+                    <p><b>Address:</b> ${o.client.area}, ${o.client.city}, ${o.client.state} - ${o.client.pin}</p>
+                    <p><b>Items:</b> ${o.items.map(i => `${i.name} (${i.selectedSize})`).join(', ')}</p>
+                </div>
+                <select onchange="updateOStatus('${o.id}', this.value)" class="admin-in !mb-0">
+                    <option value="">Update Tracking Status...</option>
                     <option value="Order Packed">Order Packed</option>
                     <option value="Ready to Ship">Ready to Ship</option>
                     <option value="Shipped">Shipped</option>
@@ -170,33 +385,28 @@
                     <option value="Delivered">Delivered</option>
                 </select>
             </div>
-        `).join('');
+        `).join('') || "No orders yet.";
     }
 
-    function updateStatus(id, s) { 
-        const o = orders.find(x => x.id === id); 
-        if(o) { o.status = s; localStorage.setItem('y_o', JSON.stringify(orders)); loadOrd(); }
+    function updateOStatus(id, s) {
+        if(!s) return;
+        const o = db.orders.find(x => x.id === id);
+        o.status = s;
+        localStorage.setItem('yarma_db', JSON.stringify(db));
+        renderAdminOrders();
     }
 
-    function trackNow() {
-        const o = orders.find(x => x.id === document.getElementById('tInput').value.trim().toUpperCase());
-        document.getElementById('tResult').innerText = o ? o.status : "NOT FOUND";
-    }
-
-    function openPanel(id) { closePanels(); document.getElementById(id).classList.add('active'); }
-    function closePanels() { document.querySelectorAll('.panel').forEach(p => p.classList.remove('active')); }
-    function switchTab(t) { document.getElementById('inv-view').classList.toggle('hidden', t!=='inv'); document.getElementById('ord-view').classList.toggle('hidden', t!=='ord'); }
-    function loadInv() { document.getElementById('admin-list').innerHTML = products.map(p => `<div class="flex justify-between p-2 bg-white/5 text-[10px]">${p.name}<button onclick="delP(${p.id})" class="text-red-600">DEL</button></div>`).join(''); }
-    function delP(id) { products = products.filter(x => x.id !== id); localStorage.setItem('y_p', JSON.stringify(products)); render(); loadInv(); }
-
+    // 3D Matrix Background
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('lux-bg'), alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    const knot = new THREE.Mesh(new THREE.TorusKnotGeometry(10, 3, 100, 16), new THREE.MeshBasicMaterial({ color: 0x440000, wireframe: true }));
-    scene.add(knot); camera.position.z = 30;
-    function anim() { requestAnimationFrame(anim); knot.rotation.y += 0.003; renderer.render(scene, camera); }
-    anim(); render();
+    const geometry = new THREE.IcosahedronGeometry(20, 1);
+    const material = new THREE.MeshBasicMaterial({ color: 0x330000, wireframe: true });
+    const sphere = new THREE.Mesh(geometry, material);
+    scene.add(sphere); camera.position.z = 40;
+    function anim() { requestAnimationFrame(anim); sphere.rotation.y += 0.002; sphere.rotation.x += 0.001; renderer.render(scene, camera); }
+    anim();
 </script>
 </body>
 </html>
