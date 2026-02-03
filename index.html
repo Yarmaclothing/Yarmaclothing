@@ -19,7 +19,7 @@
         .btn-lux { background:#fff; color:#000; padding:15px; width:100%; font-weight:900; font-size:10px; letter-spacing:3px; text-transform:uppercase; border:none; cursor:pointer; transition:0.3s; }
         .btn-lux:hover { background:var(--red); color:#fff; }
         .nav-main { position:fixed; top:0; width:100%; z-index:1000; padding:15px 20px; display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.9); backdrop-filter:blur(15px); border-bottom:1px solid #111; }
-        .tag-ltd { background:var(--red); color:#fff; font-size:8px; padding:3px 8px; font-weight:900; position:absolute; top:10px; left:10px; z-index:10; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
@@ -39,7 +39,7 @@
     <section id="home-sec" class="min-h-[85vh] flex flex-col justify-center items-center text-center px-6">
         <h1 class="font-sync text-4xl md:text-7xl mb-6">YARMA COLLECTIVE</h1>
         <p class="max-w-2xl text-[10px] md:text-[12px] uppercase tracking-[3px] opacity-70 leading-relaxed">
-            Yarma is a revolutionary nexus where high-performance street aesthetics meet architectural luxury. We craft limited-edition visions that serve as cultural artifacts for the modern era. Our collective rejects mass-production in favor of meticulous craftsmanship, ensuring that every garment and object tells a story of uncompromising identity, technical precision, and raw underground elegance.
+            Yarma is a revolutionary nexus where high-performance street aesthetics meet architectural luxury.
         </p>
         <button onclick="showSec('shop')" class="mt-10 border-b-2 border-red-600 pb-2 font-black text-[10px] tracking-[5px]">ENTER VAULT</button>
     </section>
@@ -57,15 +57,14 @@
 
     <section id="about-sec" class="hidden py-20 px-6 text-center max-w-3xl mx-auto">
         <h2 class="font-sync text-3xl mb-8">MANIFESTO</h2>
-        <p class="text-sm opacity-60 leading-loose">We exist in the shadows of fast fashion, providing limited artifacts for those who demand more. From European-cut lower wear to architectural home decor, Yarma is the final destination for the uncompromising individual.</p>
+        <p class="text-sm opacity-60 leading-loose">Limited artifacts for the uncompromising individual.</p>
     </section>
 
     <section id="pdp-sec" class="hidden py-10 px-6 max-w-6xl mx-auto"></section>
     <section id="checkout-sec" class="hidden py-10 px-6 max-w-xl mx-auto"></section>
     <section id="thanks-sec" class="hidden py-20 text-center">
         <h1 class="font-sync text-4xl text-red-600 mb-4">ORDER CONFIRMED</h1>
-        <p class="text-[10px] tracking-widest opacity-40 mb-10">DETAILS SAVED IN VAULT</p>
-        <div class="bg-white/5 p-10 border border-white/10 mb-10"><p class="text-[9px] mb-2">ORDER ID</p><h2 id="final-oid" class="text-3xl font-black"></h2></div>
+        <div class="bg-white/5 p-10 border border-white/10 mb-10"><h2 id="final-oid" class="text-3xl font-black"></h2></div>
         <button onclick="showSec('home')" class="btn-lux !w-auto px-10">EXIT</button>
     </section>
 </main>
@@ -77,7 +76,6 @@
         <button onclick="showSec('shop')">SHOP</button>
         <button onclick="showSec('about')">ABOUT</button>
         <button onclick="togglePanel('track-panel')">TRACK ORDER</button>
-        <a href="https://www.instagram.com/yarmaclothingbrand?igsh=NzZqNzI2em5lNWU=" target="_blank" class="text-red-600 text-sm mt-10">CONTACT @INSTAGRAM</a>
         <button onclick="enterAdmin()" class="opacity-10 text-[10px] mt-10">ADMIN</button>
     </div>
 </div>
@@ -94,7 +92,6 @@
 
 <div id="track-panel" class="panel">
     <button onclick="togglePanel('track-panel')" class="text-[10px] font-bold mb-10">CLOSE</button>
-    <h2 class="font-sync text-xl mb-10">TRACE ORDER</h2>
     <input type="text" id="track-input" class="admin-in !p-4" placeholder="YRM-XXXXXX">
     <button onclick="trackOrder()" class="btn-lux">SEARCH</button>
     <div id="track-result" class="mt-10 text-center font-black text-3xl text-red-600"></div>
@@ -110,22 +107,26 @@
     </div>
     <div id="admin-add-view">
         <div class="grid grid-cols-2 gap-3">
-            <input id="a-name" class="admin-in" placeholder="NAME">
+            <input id="a-name" class="admin-in" placeholder="PRODUCT NAME">
             <input id="a-brand" class="admin-in" placeholder="BRAND">
             <input id="a-price" class="admin-in" placeholder="PRICE">
-            <select id="a-cat" class="admin-in" onchange="checkClothing()"><option value="Clothing">Clothing</option><option value="Watphones">Watches</option><option value="Accessories">Accessories</option><option value="Home Decor">Home Decor</option></select>
-            <select id="a-gender" class="admin-in"><option value="Men">Men</option><option value="Women">Women</option></select>
+            <select id="a-cat" class="admin-in" onchange="checkClothing()"><option value="Clothing">Clothing</option><option value="Watches">Watches</option><option value="Accessories">Accessories</option><option value="Home Decor">Home Decor</option></select>
         </div>
         <div id="cloth-opts" class="bg-white/5 p-4 mt-2">
             <select id="a-wear" class="admin-in" onchange="genSizes()"><option value="Upper">Upper Wear</option><option value="Lower">Lower Wear</option></select>
             <div id="size-list" class="flex flex-wrap gap-2"></div>
         </div>
-        <input id="a-colors" class="admin-in mt-4" placeholder="COLORS (Red, Black)">
-        <input id="a-img1" class="admin-in" placeholder="IMG URL 1">
-        <input id="a-img2" class="admin-in" placeholder="IMG URL 2">
-        <input id="a-img3" class="admin-in" placeholder="IMG URL 3">
+        
+        <div class="mt-4">
+            <p class="text-[10px] mb-2 opacity-50">IMAGE URLS</p>
+            <div id="url-inputs" class="space-y-2">
+                <input class="admin-in img-url-input" placeholder="Image URL 1">
+            </div>
+            <button onclick="addUrlInput()" class="text-[9px] border border-white/20 px-3 py-1 mt-2">+ ADD MORE IMAGES</button>
+        </div>
+
         <button onclick="saveProduct()" class="btn-lux mt-6">PUBLISH</button>
-        <div id="admin-product-list" class="mt-10 space-y-2"></div>
+        <div id="admin-product-list" class="mt-10 space-y-2 border-t border-white/10 pt-6"></div>
     </div>
     <div id="admin-order-view" class="hidden space-y-4"></div>
 </div>
@@ -136,15 +137,32 @@
 
     function save() { localStorage.setItem('yarma_final_db', JSON.stringify(state)); }
     function togglePanel(id) { document.getElementById(id).classList.toggle('active'); }
+    
     function showSec(id) {
         document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-        document.getElementById(id + '-sec').classList.remove('hidden');
+        const target = document.getElementById(id + '-sec');
+        if(target) target.classList.remove('hidden');
         document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
         if(id === 'shop') renderShop('all');
+        window.scrollTo(0,0);
     }
 
-    // Admin Logic
-    function enterAdmin() { if(prompt("CODE:") === "ishaangund") togglePanel('admin-panel'); renderAdminProducts(); }
+    // Admin Functions
+    function enterAdmin() { 
+        if(prompt("CODE:") === "Munendrayadav") { 
+            togglePanel('admin-panel'); 
+            renderAdminProducts(); 
+        } 
+    }
+
+    function addUrlInput() {
+        const container = document.getElementById('url-inputs');
+        const input = document.createElement('input');
+        input.className = 'admin-in img-url-input';
+        input.placeholder = `Image URL ${container.children.length + 1}`;
+        container.appendChild(input);
+    }
+
     function adminTab(t) {
         document.getElementById('admin-add-view').classList.toggle('hidden', t !== 'add');
         document.getElementById('admin-order-view').classList.toggle('hidden', t !== 'orders');
@@ -161,18 +179,23 @@
     function checkClothing() { document.getElementById('cloth-opts').classList.toggle('hidden', document.getElementById('a-cat').value !== 'Clothing'); }
 
     function saveProduct() {
+        const imageUrls = Array.from(document.querySelectorAll('.img-url-input')).map(i => i.value).filter(v => v !== "");
         const p = {
             id: Date.now(),
             name: document.getElementById('a-name').value,
             brand: document.getElementById('a-brand').value,
             price: document.getElementById('a-price').value,
             cat: document.getElementById('a-cat').value,
-            images: [document.getElementById('a-img1').value, document.getElementById('a-img2').value, document.getElementById('a-img3').value].filter(i=>i),
+            images: imageUrls,
             sizes: Array.from(document.querySelectorAll('.sz-chk:checked')).map(x=>x.value),
-            colors: document.getElementById('a-colors').value.split(',')
         };
         if(!p.name || p.images.length === 0) return alert("MISSING INFO");
-        state.products.unshift(p); save(); renderAdminProducts(); alert("LIVE!");
+        state.products.unshift(p); 
+        save(); 
+        renderAdminProducts();
+        alert("PUBLISHED");
+        // Reset Inputs
+        document.getElementById('url-inputs').innerHTML = '<input class="admin-in img-url-input" placeholder="Image URL 1">';
     }
 
     function renderAdminProducts() {
@@ -184,7 +207,7 @@
         `).join('');
     }
 
-    function deleteP(id) { state.products = state.products.filter(p=>p.id!==id); save(); renderAdminProducts(); renderShop('all'); }
+    function deleteP(id) { state.products = state.products.filter(p=>p.id!==id); save(); renderAdminProducts(); }
 
     // Shop Logic
     function renderShop(cat = 'all') {
@@ -192,7 +215,7 @@
         let list = state.products;
         if(cat !== 'all') list = list.filter(p => p.cat === cat);
         grid.innerHTML = list.map(p => `
-            <div class="bg-white/5 p-4 border border-white/5" onclick="openPDP(${p.id})">
+            <div class="bg-white/5 p-4 border border-white/5 cursor-pointer" onclick="openPDP(${p.id})">
                 <img src="${p.images[0]}" class="w-full aspect-[4/5] object-cover mb-4">
                 <h3 class="font-sync text-sm">${p.name}</h3>
                 <p class="font-black text-lg mt-2">₹${p.price}</p>
@@ -204,13 +227,13 @@
         const p = state.products.find(x=>x.id===id);
         showSec('pdp');
         document.getElementById('pdp-sec').innerHTML = `
-            <button onclick="showSec('shop')" class="text-[10px] opacity-40 mb-10">BACK</button>
+            <button onclick="showSec('shop')" class="text-[10px] opacity-40 mb-10">← BACK TO SHOP</button>
             <div class="grid md:grid-cols-2 gap-10">
-                <div class="space-y-2">${p.images.map(img => `<img src="${img}" class="w-full">`).join('')}</div>
-                <div>
+                <div class="space-y-4">${p.images.map(img => `<img src="${img}" class="w-full">`).join('')}</div>
+                <div class="sticky top-24 h-fit">
                     <h1 class="font-sync text-4xl mb-4">${p.name}</h1>
                     <p class="text-2xl font-black mb-10">₹${p.price}</p>
-                    <div class="mb-6"><p class="text-[10px] mb-2 opacity-40">SIZE</p><div class="flex gap-2">${p.sizes.map(s=>`<button onclick="selSz(this)" class="pdp-sz border border-white/10 px-4 py-2 text-[10px]">${s}</button>`).join('')}</div></div>
+                    ${p.sizes.length > 0 ? `<div class="mb-6"><p class="text-[10px] mb-2 opacity-40">SIZE</p><div class="flex gap-2">${p.sizes.map(s=>`<button onclick="selSz(this)" class="pdp-sz border border-white/10 px-4 py-2 text-[10px]">${s}</button>`).join('')}</div></div>` : ''}
                     <button onclick="addToCart(${p.id})" class="btn-lux">ADD TO VAULT</button>
                 </div>
             </div>
@@ -219,29 +242,40 @@
 
     let sSz = '';
     function selSz(b) { document.querySelectorAll('.pdp-sz').forEach(x=>x.classList.remove('bg-white','text-black')); b.classList.add('bg-white','text-black'); sSz = b.innerText; }
-    function addToCart(id) { if(!sSz) return alert("SELECT SIZE"); cart.push({...state.products.find(x=>x.id===id), sSz}); updateCart(); togglePanel('cart-panel'); }
+    
+    function addToCart(id) { 
+        const p = state.products.find(x=>x.id===id);
+        if(p.sizes.length > 0 && !sSz) return alert("SELECT SIZE"); 
+        cart.push({...p, sSz}); 
+        updateCart(); 
+        togglePanel('cart-panel'); 
+    }
+
     function updateCart() {
         document.getElementById('cart-count').innerText = cart.length;
-        document.getElementById('cart-list').innerHTML = cart.map(i => `<div class="bg-white/5 p-3 text-[10px] flex justify-between"><span>${i.name} (${i.sSz})</span><span>₹${i.price}</span></div>`).join('');
+        document.getElementById('cart-list').innerHTML = cart.map(i => `<div class="bg-white/5 p-3 text-[10px] flex justify-between"><span>${i.name} ${i.sSz ? '('+i.sSz+')' : ''}</span><span>₹${i.price}</span></div>`).join('');
         document.getElementById('total-price').innerText = 'TOTAL: ₹' + cart.reduce((s,i)=>s+parseInt(i.price),0);
     }
 
     function startCheckout() {
+        if(cart.length === 0) return alert("CART EMPTY");
         showSec('checkout');
         document.getElementById('checkout-sec').innerHTML = `
+            <h2 class="font-sync text-2xl mb-8">SECURE CHECKOUT</h2>
             <div class="space-y-4">
-                <input id="c-n" class="admin-in" placeholder="NAME">
-                <input id="c-p" class="admin-in" placeholder="PHONE">
-                <input id="c-i" class="admin-in" placeholder="INSTAGRAM (OPTIONAL)">
-                <input id="c-a" class="admin-in" placeholder="ADDRESS">
+                <input id="c-n" class="admin-in" placeholder="FULL NAME">
+                <input id="c-p" class="admin-in" placeholder="PHONE NUMBER">
+                <input id="c-a" class="admin-in" placeholder="SHIPPING ADDRESS">
                 <button onclick="placeOrder()" class="btn-lux mt-4">CONFIRM ORDER</button>
             </div>
         `;
     }
 
     function placeOrder() {
+        const name = document.getElementById('c-n').value;
+        if(!name) return alert("NAME REQUIRED");
         const oid = 'YRM-'+Math.floor(Math.random()*900000);
-        state.orders.unshift({id:oid, items:[...cart], status:'Order Packed'});
+        state.orders.unshift({id:oid, items:[...cart], status:'Order Packed', customer: name});
         save(); cart=[]; updateCart(); showSec('thanks'); document.getElementById('final-oid').innerText = oid;
     }
 
@@ -254,8 +288,9 @@
     function renderOrders() {
         document.getElementById('admin-order-view').innerHTML = state.orders.map(o => `
             <div class="p-4 bg-white/5 border border-white/5">
-                <div class="flex justify-between"><span>${o.id}</span><span>${o.status}</span></div>
-                <select onchange="updStat('${o.id}', this.value)" class="admin-in mt-4">
+                <div class="flex justify-between text-[10px] mb-2"><span>${o.id}</span><span class="text-red-600">${o.status}</span></div>
+                <div class="text-[9px] opacity-60 mb-4">${o.customer} - ${o.items.length} Items</div>
+                <select onchange="updStat('${o.id}', this.value)" class="admin-in !mb-0">
                     <option>Update Status...</option>
                     <option value="Shipped">Shipped</option>
                     <option value="Out for Delivery">Out for Delivery</option>
@@ -266,27 +301,28 @@
     }
     function updStat(id, s) { state.orders.find(x=>x.id===id).status = s; save(); renderOrders(); }
 
-    // Three.js Cloth Background
+    // Background Animation
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('cloth-bg'), alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    const geometry = new THREE.PlaneGeometry(50, 50, 30, 30);
-    const material = new THREE.MeshBasicMaterial({ color: 0x220000, wireframe: true });
+    const geometry = new THREE.PlaneGeometry(50, 50, 20, 20);
+    const material = new THREE.MeshBasicMaterial({ color: 0x220000, wireframe: true, transparent: true, opacity: 0.2 });
     const plane = new THREE.Mesh(geometry, material);
     scene.add(plane); camera.position.z = 20; plane.rotation.x = -1;
+    
     function anim() {
         requestAnimationFrame(anim);
-        const time = Date.now() * 0.001;
+        const time = Date.now() * 0.0005;
         for(let i=0; i<geometry.attributes.position.count; i++) {
-            const z = Math.sin(geometry.attributes.position.getX(i) * 0.3 + time) * 2;
+            const z = Math.sin(geometry.attributes.position.getX(i) * 0.3 + time) * 1.5;
             geometry.attributes.position.setZ(i, z);
         }
         geometry.attributes.position.needsUpdate = true;
         renderer.render(scene, camera);
     }
     anim();
-    renderShop('all'); // Force load shop on start
+    renderShop('all');
 </script>
 </body>
 </html>
