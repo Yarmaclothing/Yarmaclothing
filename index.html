@@ -28,120 +28,180 @@
             border-color: #3b82f6;
             box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
         }
+        .no-break {
+            white-space: nowrap;
+        }
+        select option {
+            background-color: #111;
+            color: #fff;
+        }
     </style>
 </head>
 <body class="overflow-x-hidden">
 
     <div class="fixed top-[-10%] left-[-10%] w-[400px] h-[400px] bg-blue-900/20 rounded-full blur-[120px] z-0"></div>
-    <div class="fixed bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-purple-900/20 rounded-full blur-[120px] z-0"></div>
 
-    <nav class="flex justify-between items-center px-10 py-6 sticky top-0 z-50 glass">
-        <h1 class="text-2xl font-extrabold tracking-tight">YRM<span class="text-blue-500">MEDIA</span></h1>
+    <nav class="flex justify-between items-center px-6 md:px-10 py-6 sticky top-0 z-50 glass">
+        <h1 class="text-2xl font-extrabold tracking-tight uppercase">YRM<span class="text-blue-500">MEDIA</span></h1>
         <div class="hidden md:flex space-x-10 text-sm font-medium tracking-wide uppercase">
-            <a href="#about" class="hover:text-blue-400 transition">Strategy</a>
+            <a href="#creators" class="hover:text-blue-400 transition">Creators</a>
             <a href="#campaigns" class="hover:text-blue-400 transition">Mandates</a>
-            <a href="#contact" class="text-blue-500">Contact</a>
+            <a href="#contact" class="text-blue-500 font-bold">Contact</a>
         </div>
     </nav>
 
-    <section class="relative h-[90vh] flex flex-col justify-center items-center text-center px-6">
+    <section class="relative min-h-[85vh] flex flex-col justify-center items-center text-center px-6 pt-10">
         <span class="px-4 py-1 rounded-full border border-blue-500/30 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6 glass">
             The Gold Standard of Influencer Marketing
         </span>
-        <h2 class="text-6xl md:text-8xl font-extrabold mb-6 leading-none text-gradient">
+        <h2 class="text-5xl md:text-8xl font-extrabold mb-6 leading-tight text-gradient">
             SCALE BEYOND <br> LIMITS.
         </h2>
         <p class="text-gray-400 max-w-xl text-lg mb-10 leading-relaxed">
             YRM MEDIA transforms premium brands into cultural icons through curated influencer architecture.
         </p>
-        <div class="flex gap-6">
-            <a href="#campaigns" class="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-full font-bold transition-all shadow-xl shadow-blue-600/20">
+        
+        <div class="flex flex-wrap justify-center gap-4">
+            <a href="#campaigns" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full font-bold transition-all shadow-xl shadow-blue-600/20 min-w-[160px]">
                 View Mandates
             </a>
-            <a href="https://wa.me/918433432480" target="_blank" class="glass px-10 py-4 rounded-full font-bold hover:bg-white/5 transition-all">
+            <a href="mailto:yarmamedia@gmail.com?subject=Collaboration Inquiry" 
+               onclick="setTimeout(() => { window.location.href='#contact' }, 500);"
+               class="bg-white text-black hover:bg-gray-200 px-8 py-4 rounded-full font-bold transition-all min-w-[160px]">
+                Let's Collab
+            </a>
+            <a href="https://wa.me/918433432480" target="_blank" class="glass px-8 py-4 rounded-full font-bold hover:bg-white/5 transition-all min-w-[160px]">
                 WhatsApp Us
             </a>
         </div>
     </section>
 
-    <section class="py-20 px-10 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto border-y border-white/5">
-        <div class="text-center">
-            <h3 class="text-4xl font-bold text-blue-500">50M+</h3>
-            <p class="text-gray-500 text-sm uppercase mt-2">Total Reach</p>
-        </div>
-        <div class="text-center">
-            <h3 class="text-4xl font-bold text-blue-500">500+</h3>
-            <p class="text-gray-500 text-sm uppercase mt-2">Elite Creators</p>
-        </div>
-        <div class="text-center">
-            <h3 class="text-4xl font-bold text-blue-500">20+</h3>
-            <p class="text-gray-500 text-sm uppercase mt-2">Premium Brands</p>
-        </div>
-        <div class="text-center">
-            <h3 class="text-4xl font-bold text-blue-500">100%</h3>
-            <p class="text-gray-500 text-sm uppercase mt-2">Execution Rate</p>
-        </div>
-    </section>
-
-    <section id="campaigns" class="py-32 px-10 max-w-7xl mx-auto">
-        <div class="flex justify-between items-end mb-16">
-            <div>
-                <h3 class="text-4xl font-bold mb-4">Active Mandates</h3>
-                <p class="text-gray-500">Managing the most influential names in the industry.</p>
-            </div>
-        </div>
+    <section id="creators" class="py-20 px-6 max-w-7xl mx-auto">
+        <h3 class="text-4xl font-bold mb-4 text-center">Our Elite Creators</h3>
+        <p class="text-gray-500 text-center mb-12">Exclusive management of India's most impactful digital voices.</p>
         
-        <div class="grid md:grid-cols-2 gap-10">
-            <div class="group glass p-1 rounded-[40px] transition-all card-hover overflow-hidden">
-                <div class="p-10 h-full flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-10">
-                            <h4 class="text-4xl font-bold tracking-tighter italic">THE SLEEP <br> COMPANY</h4>
-                            <span class="text-xs font-bold text-blue-500 border border-blue-500 px-3 py-1 rounded-full uppercase">Exclusive</span>
-                        </div>
-                        <p class="text-gray-400 mb-8 leading-relaxed">Scaling SmartGRID tech across India's lifestyle & luxury niches. 100+ creators onboarded.</p>
-                    </div>
-                    <div class="flex gap-2">
-                        <span class="text-[10px] bg-white/5 px-3 py-1 rounded-md text-gray-300">Strategy</span>
-                        <span class="text-[10px] bg-white/5 px-3 py-1 rounded-md text-gray-300">Execution</span>
-                    </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="glass p-8 rounded-[35px] text-center card-hover transition-all border-white/5">
+                <div class="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden border-2 border-blue-500 p-1">
+                    <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/e6f65a2b-f8fc-40e7-9862-a5e5b9b6d3e8.jpg" alt="Manjeet Yadav" class="w-full h-full rounded-full object-cover">
                 </div>
+                <h4 class="text-xl font-bold mb-1 uppercase tracking-tighter">Manjeet Yadav</h4>
+                <p class="text-blue-500 text-[11px] font-bold uppercase tracking-widest mb-4">@techy.titu</p>
+                <p class="text-gray-400 text-sm mb-6 leading-relaxed">Expert in high-end tech reviews and digital lifestyle storytelling.</p>
+                <a href="https://www.instagram.com/techy.titu" target="_blank" class="text-xs font-bold border border-white/20 px-6 py-2 rounded-full hover:bg-white hover:text-black transition uppercase">View Profile</a>
             </div>
 
-            <div class="group glass p-1 rounded-[40px] transition-all card-hover overflow-hidden">
-                <div class="p-10 h-full flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-start mb-10">
-                            <h4 class="text-4xl font-bold tracking-tighter">FRIDO.</h4>
-                            <span class="text-xs font-bold text-blue-500 border border-blue-500 px-3 py-1 rounded-full uppercase">Growth</span>
-                        </div>
-                        <p class="text-gray-400 mb-8 leading-relaxed">Dominating the premium ergonomic space. High-conversion influencer funnels.</p>
-                    </div>
-                    <div class="flex gap-2">
-                        <span class="text-[10px] bg-white/5 px-3 py-1 rounded-md text-gray-300">Management</span>
-                        <span class="text-[10px] bg-white/5 px-3 py-1 rounded-md text-gray-300">Creatives</span>
-                    </div>
+            <div class="glass p-8 rounded-[35px] text-center card-hover transition-all border-white/5">
+                <div class="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden border-2 border-blue-500 p-1">
+                    <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/8c83efbf-d5a3-45b0-93c2-d54157bd6495.jpg" alt="Raaj Mishra" class="w-full h-full rounded-full object-cover">
                 </div>
+                <h4 class="text-xl font-bold mb-1 uppercase tracking-tighter">Raaj Mishra</h4>
+                <p class="text-blue-500 text-[11px] font-bold uppercase tracking-widest mb-4">@raajexplains</p>
+                <p class="text-gray-400 text-sm mb-6 leading-relaxed">Deep-dive tech analysis and simplifying complex innovations for everyone.</p>
+                <a href="https://www.instagram.com/raajexplains" target="_blank" class="text-xs font-bold border border-white/20 px-6 py-2 rounded-full hover:bg-white hover:text-black transition uppercase">View Profile</a>
+            </div>
+
+            <div class="glass p-8 rounded-[35px] text-center card-hover transition-all border-white/5">
+                <div class="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden border-2 border-blue-500 p-1">
+                    <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/f9e48d4d-a2ea-4f22-a125-a1b7a866987a.jpg" alt="Ashish Jha" class="w-full h-full rounded-full object-cover">
+                </div>
+                <h4 class="text-xl font-bold mb-1 uppercase tracking-tighter">Ashish Jha</h4>
+                <p class="text-blue-500 text-[11px] font-bold uppercase tracking-widest mb-4">@techinsiderashish</p>
+                <p class="text-gray-400 text-sm mb-6 leading-relaxed">The ultimate source for insider tech news and gadget breakdowns.</p>
+                <a href="https://www.instagram.com/techinsiderashish" target="_blank" class="text-xs font-bold border border-white/20 px-6 py-2 rounded-full hover:bg-white hover:text-black transition uppercase">View Profile</a>
+            </div>
+
+            <div class="glass p-8 rounded-[35px] text-center card-hover transition-all border-white/5">
+                <div class="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden border-2 border-blue-500 p-1">
+                    <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/617e3157-41ca-4db2-bbbd-f2dcee3cf161.jpg" alt="Yuvraj Gautam" class="w-full h-full rounded-full object-cover">
+                </div>
+                <h4 class="text-xl font-bold mb-1 uppercase tracking-tighter">Yuvraj Gautam</h4>
+                <p class="text-blue-500 text-[11px] font-bold uppercase tracking-widest mb-4">@techyg.co</p>
+                <p class="text-gray-400 text-sm mb-6 leading-relaxed">Modern tech aesthetics and premium product cinematography.</p>
+                <a href="https://www.instagram.com/techyg.co" target="_blank" class="text-xs font-bold border border-white/20 px-6 py-2 rounded-full hover:bg-white hover:text-black transition uppercase">View Profile</a>
+            </div>
+
+            <div class="glass p-8 rounded-[35px] text-center card-hover transition-all border-white/5">
+                <div class="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden border-2 border-blue-500 p-1">
+                    <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/fcbc4185-62e6-4b7c-81d0-1df79dd41c4e.jpg" alt="Rohan Mehra" class="w-full h-full rounded-full object-cover">
+                </div>
+                <h4 class="text-xl font-bold mb-1 uppercase tracking-tighter">Rohan Mehra</h4>
+                <p class="text-blue-500 text-[11px] font-bold uppercase tracking-widest mb-4">@techrohann</p>
+                <p class="text-gray-400 text-sm mb-6 leading-relaxed">Fast-paced tech tips and software hacks for the digital generation.</p>
+                <a href="https://www.instagram.com/techrohann" target="_blank" class="text-xs font-bold border border-white/20 px-6 py-2 rounded-full hover:bg-white hover:text-black transition uppercase">View Profile</a>
+            </div>
+
+            <div class="glass p-8 rounded-[35px] text-center card-hover transition-all border-white/5">
+                <div class="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden border-2 border-blue-500 p-1">
+                    <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/f1ef47fd-342d-4e5d-bd95-b6791cecb649.jpg" alt="Farhan Nezami" class="w-full h-full rounded-full object-cover">
+                </div>
+                <h4 class="text-xl font-bold mb-1 uppercase tracking-tighter">Farhan Nezami</h4>
+                <p class="text-blue-500 text-[11px] font-bold uppercase tracking-widest mb-4">@mrsneakofficial</p>
+                <p class="text-gray-400 text-sm mb-6 leading-relaxed">Bold fashion statements and urban lifestyle influence.</p>
+                <a href="https://www.instagram.com/mrsneakofficial" target="_blank" class="text-xs font-bold border border-white/20 px-6 py-2 rounded-full hover:bg-white hover:text-black transition uppercase">View Profile</a>
             </div>
         </div>
     </section>
 
-    <section id="contact" class="py-32 px-6">
-        <div class="max-w-4xl mx-auto glass p-16 rounded-[50px] text-center border-blue-500/20">
-            <h3 class="text-4xl font-bold mb-6">Ready to dominate the market?</h3>
-            <p class="text-gray-400 mb-10 text-lg">Direct reach to our management team.</p>
-            <div class="space-y-4">
-                <a href="tel:+918433432480" class="block text-2xl font-bold text-blue-500 hover:underline">+91 8433432480</a>
-                <a href="mailto:contact@yrmmedia.com" class="block text-xl text-gray-300 hover:text-white">contact@yrmmedia.com</a>
+    <section id="campaigns" class="py-20 px-6 max-w-7xl mx-auto border-t border-white/5">
+        <h3 class="text-4xl font-bold mb-12 text-center">Active Mandates</h3>
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="glass p-8 rounded-[30px] card-hover transition-all">
+                <h4 class="text-2xl font-bold mb-4 italic text-blue-400 uppercase tracking-tighter">THE SLEEP COMPANY</h4>
+                <p class="text-gray-400 mb-6 text-sm">Scaling SmartGRID tech across India's lifestyle & luxury niches. 100+ creators onboarded.</p>
+                <span class="text-[10px] bg-white/5 px-3 py-1 rounded-md text-gray-400 uppercase tracking-widest">Growth & Strategy</span>
+            </div>
+            <div class="glass p-8 rounded-[30px] card-hover transition-all">
+                <h4 class="text-2xl font-bold mb-4 text-blue-400 uppercase tracking-tighter">FRIDO</h4>
+                <p class="text-gray-400 mb-6 text-sm">Dominating the premium ergonomic space. High-conversion influencer funnels and talent management.</p>
+                <span class="text-[10px] bg-white/5 px-3 py-1 rounded-md text-gray-400 uppercase tracking-widest">Brand Scale</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 px-6 max-w-4xl mx-auto">
+        <div class="glass p-8 md:p-12 rounded-[40px] border-blue-500/20">
+            <h3 class="text-3xl font-bold mb-4 text-center text-gradient uppercase">Get In Touch</h3>
+            <p class="text-center text-gray-500 mb-10 text-sm">Fill the form and our team will get back to you within 24 hours.</p>
+            
+            <form action="https://formspree.io/f/mjglbyya" method="POST" class="space-y-6">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-widest text-blue-400 mb-2 px-1">I am a:</label>
+                    <select name="Category" required class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition cursor-pointer text-gray-300">
+                        <option value="" disabled selected>Select Category</option>
+                        <option value="Brand">Brand</option>
+                        <option value="Influencer">Influencer</option>
+                        <option value="Agency">Agency</option>
+                    </select>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <input type="text" name="Name" placeholder="Full Name" required class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
+                    <input type="email" name="Email" placeholder="Email Address" required class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
+                </div>
+
+                <input type="tel" name="WhatsApp" placeholder="WhatsApp Number" required class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
+
+                <textarea name="Message" placeholder="Tell us about your brand / your goals" rows="4" required class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition"></textarea>
+                
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 py-4 rounded-2xl font-bold transition shadow-lg shadow-blue-600/20">Send Proposal</button>
+            </form>
+            
+            <div class="mt-12 text-center space-y-4">
+                <p class="text-2xl font-bold text-blue-500">
+                    <a href="tel:+918433432480" class="no-break hover:underline">+91 8433432480</a>
+                </p>
+                <p class="text-gray-400 text-lg">
+                    <a href="mailto:yarmamedia@gmail.com" class="hover:text-white transition">yarmamedia@gmail.com</a>
+                </p>
             </div>
         </div>
     </section>
 
     <footer class="py-10 text-center text-gray-600 text-sm border-t border-white/5">
         &copy; 2026 YRM MEDIA. DEFINING EXCELLENCE. <br>
-        <span class="text-[10px] uppercase tracking-widest mt-2 block">Contact: +91 8433432480</span>
+        <span class="text-[10px] uppercase tracking-widest mt-2 block no-break">Support: +91 8433432480</span>
     </footer>
 
 </body>
 </html>
-
