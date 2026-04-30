@@ -38,11 +38,15 @@
             background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 60%);
             z-index: -1;
         }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        @media (max-width: 768px) {
+            .stats-grid { display: flex !important; justify-content: space-between !important; gap: 5px !important; }
+            .stats-item h3 { font-size: 1.25rem !important; }
+            .stats-item p { font-size: 7px !important; }
+            .creator-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+            .creator-card { padding: 1rem !important; border-radius: 20px !important; }
+            .creator-card h4 { font-size: 0.9rem !important; }
+            .creator-card p { font-size: 7px !important; }
         }
-        .floating { animation: float 5s ease-in-out infinite; }
     </style>
 </head>
 <body class="overflow-x-hidden">
@@ -57,115 +61,109 @@
             <a href="#commission" class="hover:text-blue-400 transition">Pricing</a>
             <a href="#contact" class="text-blue-500">Contact</a>
         </div>
-        <a href="mailto:yarmamedia@gmail.com?subject=Collaboration Inquiry" class="glow-button bg-blue-600 px-5 py-2 rounded-full text-[9px] font-bold uppercase">Let's Collab</a>
+        <a href="mailto:yarmamedia@gmail.com?subject=Collaboration Inquiry" class="glow-button bg-blue-600 px-8 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest">Let's Collab</a>
     </nav>
 
     <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative">
-        <div data-aos="fade-up" data-aos-duration="1200" class="floating">
+        <div data-aos="fade-up" data-aos-duration="1200">
             <span class="px-3 py-1 rounded-full glass border border-blue-500/30 text-blue-400 text-[9px] font-bold uppercase tracking-[0.2em] mb-6 inline-block">
                 Influencer Marketing Agency
             </span>
-            <h2 class="text-4xl md:text-8xl font-extrabold leading-tight tracking-tighter text-gradient mb-6 uppercase">
+            <h2 class="text-5xl md:text-8xl font-extrabold leading-tight tracking-tighter text-gradient mb-6 uppercase">
                 CRAFTING <br> INFLUENCERS
             </h2>
-            <p class="text-gray-400 max-w-md mx-auto text-sm md:text-base mb-8 leading-relaxed">
+            <p class="text-gray-400 max-w-md mx-auto text-sm md:text-base mb-10 leading-relaxed">
                 YRM MEDIA turns brands into legends. We manage the elite, execute the premium, and dominate the digital space.
             </p>
             <div class="flex flex-wrap justify-center gap-3">
-                <a href="#campaigns" class="glow-button bg-blue-600 text-white px-7 py-3 rounded-full font-bold uppercase text-[10px] tracking-widest">View Mandates</a>
-                <a href="mailto:yarmamedia@gmail.com?subject=Collaboration Inquiry" class="bg-white text-black px-7 py-3 rounded-full font-bold uppercase text-[10px] tracking-widest hover:bg-gray-200 transition">Let's Collab</a>
-                <a href="https://wa.me/918433432480" target="_blank" class="glass px-7 py-3 rounded-full font-bold uppercase text-[10px] tracking-widest border border-white/10">WhatsApp</a>
+                <a href="#campaigns" class="glow-button bg-blue-600 text-white px-8 py-4 rounded-full font-bold uppercase text-[10px] tracking-widest min-w-[140px]">View Mandates</a>
+                <a href="mailto:yarmamedia@gmail.com?subject=Collaboration Inquiry" class="bg-white text-black px-8 py-4 rounded-full font-bold uppercase text-[10px] tracking-widest min-w-[140px] hover:bg-gray-200 transition">Let's Collab</a>
             </div>
         </div>
     </section>
 
-    <section class="py-12 glass border-y border-white/5">
-        <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div data-aos="fade-up">
-                <h3 class="text-3xl md:text-4xl font-black text-blue-500 mb-1">20M+</h3>
-                <p class="text-[9px] text-gray-500 uppercase font-bold tracking-widest">Total Reach</p>
+    <section class="py-10 glass border-y border-white/5">
+        <div class="max-w-6xl mx-auto px-4 stats-grid grid grid-cols-3 gap-2 text-center">
+            <div class="stats-item" data-aos="fade-up">
+                <h3 class="text-2xl md:text-4xl font-black text-blue-500">20M+</h3>
+                <p class="text-[8px] md:text-[10px] text-gray-500 uppercase font-bold tracking-widest">Reach</p>
             </div>
-            <div data-aos="fade-up" data-aos-delay="100">
-                <h3 class="text-3xl md:text-4xl font-black text-blue-500 mb-1">100+</h3>
-                <p class="text-[9px] text-gray-500 uppercase font-bold tracking-widest">Elite Creators</p>
+            <div class="stats-item" data-aos="fade-up" data-aos-delay="100">
+                <h3 class="text-2xl md:text-4xl font-black text-blue-500">100+</h3>
+                <p class="text-[8px] md:text-[10px] text-gray-500 uppercase font-bold tracking-widest">Creators</p>
             </div>
-            <div data-aos="fade-up" data-aos-delay="200">
-                <h3 class="text-3xl md:text-4xl font-black text-blue-500 mb-1">100%</h3>
-                <p class="text-[9px] text-gray-500 uppercase font-bold tracking-widest">Growth ROI</p>
+            <div class="stats-item" data-aos="fade-up" data-aos-delay="200">
+                <h3 class="text-2xl md:text-4xl font-black text-blue-500">100%</h3>
+                <p class="text-[8px] md:text-[10px] text-gray-500 uppercase font-bold tracking-widest">ROI</p>
             </div>
         </div>
     </section>
 
-    <section id="creators" class="py-20 px-6 max-w-6xl mx-auto">
+    <section id="creators" class="py-20 px-4 max-w-6xl mx-auto">
         <h3 class="text-3xl md:text-5xl font-black mb-12 text-center uppercase italic tracking-tighter">Elite Creators</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            <div class="glass p-6 rounded-[30px] hover:border-blue-500 transition-all group" data-aos="fade-up">
-                <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/3298c55e-0cb0-4b2a-83c4-e23e9365fc69.jpg" class="w-full aspect-square object-cover rounded-2xl mb-4 group-hover:scale-105 transition-transform duration-500">
-                <h4 class="text-xl font-bold mb-1">Udit Purviya</h4>
-                <p class="text-blue-500 text-[9px] font-bold mb-4 uppercase">@uditgpt • 796K Followers</p>
-                <a href="https://www.instagram.com/uditgpt" target="_blank" class="block text-center py-2 glass rounded-lg text-[9px] font-bold uppercase hover:bg-white hover:text-black transition">Profile</a>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 creator-grid">
+            <div class="glass p-4 rounded-[25px] creator-card group" data-aos="fade-up">
+                <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/3298c55e-0cb0-4b2a-83c4-e23e9365fc69.jpg" class="w-full aspect-square object-cover rounded-xl mb-3">
+                <h4 class="text-lg font-bold">Udit Purviya</h4>
+                <p class="text-blue-500 text-[8px] font-bold mb-3 uppercase">@uditgpt • 796K</p>
+                <a href="https://www.instagram.com/uditgpt" target="_blank" class="block text-center py-2 glass rounded-lg text-[8px] font-bold uppercase hover:bg-white hover:text-black transition">Profile</a>
             </div>
-            <div class="glass p-6 rounded-[30px] hover:border-blue-500 transition-all group" data-aos="fade-up" data-aos-delay="100">
-                <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/e6f65a2b-f8fc-40e7-9862-a5e5b9b6d3e8.jpg" class="w-full aspect-square object-cover rounded-2xl mb-4 group-hover:scale-105 transition-transform duration-500">
-                <h4 class="text-xl font-bold mb-1">Manjeet Yadav</h4>
-                <p class="text-blue-500 text-[9px] font-bold mb-4 uppercase">@techy.titu • 595K Followers</p>
-                <a href="https://www.instagram.com/techy.titu" target="_blank" class="block text-center py-2 glass rounded-lg text-[9px] font-bold uppercase hover:bg-white hover:text-black transition">Profile</a>
+            <div class="glass p-4 rounded-[25px] creator-card group" data-aos="fade-up" data-aos-delay="100">
+                <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/e6f65a2b-f8fc-40e7-9862-a5e5b9b6d3e8.jpg" class="w-full aspect-square object-cover rounded-xl mb-3">
+                <h4 class="text-lg font-bold">Manjeet Yadav</h4>
+                <p class="text-blue-500 text-[8px] font-bold mb-3 uppercase">@techy.titu • 595K</p>
+                <a href="https://www.instagram.com/techy.titu" target="_blank" class="block text-center py-2 glass rounded-lg text-[8px] font-bold uppercase hover:bg-white hover:text-black transition">Profile</a>
             </div>
-            <div class="glass p-6 rounded-[30px] hover:border-blue-500 transition-all group" data-aos="fade-up" data-aos-delay="200">
-                <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/8c83efbf-d5a3-45b0-93c2-d54157bd6495.jpg" class="w-full aspect-square object-cover rounded-2xl mb-4 group-hover:scale-105 transition-transform duration-500">
-                <h4 class="text-xl font-bold mb-1">Raaj Mishra</h4>
-                <p class="text-blue-500 text-[9px] font-bold mb-4 uppercase">@raajexplains • 345K Followers</p>
-                <a href="https://www.instagram.com/raajexplains" target="_blank" class="block text-center py-2 glass rounded-lg text-[9px] font-bold uppercase hover:bg-white hover:text-black transition">Profile</a>
+            <div class="glass p-4 rounded-[25px] creator-card group" data-aos="fade-up" data-aos-delay="200">
+                <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/8c83efbf-d5a3-45b0-93c2-d54157bd6495.jpg" class="w-full aspect-square object-cover rounded-xl mb-3">
+                <h4 class="text-lg font-bold">Raaj Mishra</h4>
+                <p class="text-blue-500 text-[8px] font-bold mb-3 uppercase">@raajexplains • 345K</p>
+                <a href="https://www.instagram.com/raajexplains" target="_blank" class="block text-center py-2 glass rounded-lg text-[8px] font-bold uppercase hover:bg-white hover:text-black transition">Profile</a>
             </div>
-            <div class="glass p-6 rounded-[30px] hover:border-blue-500 transition-all group" data-aos="fade-up">
-                <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/f9e48d4d-a2ea-4f22-a125-a1b7a866987a.jpg" class="w-full aspect-square object-cover rounded-2xl mb-4 group-hover:scale-105 transition-transform duration-500">
-                <h4 class="text-xl font-bold mb-1">Ashish Jha</h4>
-                <p class="text-blue-500 text-[9px] font-bold mb-4 uppercase">@techinsiderashish • 474K Followers</p>
-                <a href="https://www.instagram.com/techinsiderashish" target="_blank" class="block text-center py-2 glass rounded-lg text-[9px] font-bold uppercase hover:bg-white hover:text-black transition">Profile</a>
+            <div class="glass p-4 rounded-[25px] creator-card group" data-aos="fade-up">
+                <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/f9e48d4d-a2ea-4f22-a125-a1b7a866987a.jpg" class="w-full aspect-square object-cover rounded-xl mb-3">
+                <h4 class="text-lg font-bold">Ashish Jha</h4>
+                <p class="text-blue-500 text-[8px] font-bold mb-3 uppercase">@techinsiderashish • 474K</p>
+                <a href="https://www.instagram.com/techinsiderashish" target="_blank" class="block text-center py-2 glass rounded-lg text-[8px] font-bold uppercase hover:bg-white hover:text-black transition">Profile</a>
             </div>
-            <div class="glass p-6 rounded-[30px] hover:border-blue-500 transition-all group" data-aos="fade-up" data-aos-delay="100">
-                <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/617e3157-41ca-4db2-bbbd-f2dcee3cf161.jpg" class="w-full aspect-square object-cover rounded-2xl mb-4 group-hover:scale-105 transition-transform duration-500">
-                <h4 class="text-xl font-bold mb-1">Yuvraj Gautam</h4>
-                <p class="text-blue-500 text-[9px] font-bold mb-4 uppercase">@techyg.co • 349K Followers</p>
-                <a href="https://www.instagram.com/techyg.co" target="_blank" class="block text-center py-2 glass rounded-lg text-[9px] font-bold uppercase hover:bg-white hover:text-black transition">Profile</a>
+            <div class="glass p-4 rounded-[25px] creator-card group" data-aos="fade-up" data-aos-delay="100">
+                <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/617e3157-41ca-4db2-bbbd-f2dcee3cf161.jpg" class="w-full aspect-square object-cover rounded-xl mb-3">
+                <h4 class="text-lg font-bold">Yuvraj Gautam</h4>
+                <p class="text-blue-500 text-[8px] font-bold mb-3 uppercase">@techyg.co • 349K</p>
+                <a href="https://www.instagram.com/techyg.co" target="_blank" class="block text-center py-2 glass rounded-lg text-[8px] font-bold uppercase hover:bg-white hover:text-black transition">Profile</a>
             </div>
-            <div class="glass p-6 rounded-[30px] hover:border-blue-500 transition-all group" data-aos="fade-up" data-aos-delay="200">
-                <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/f1ef47fd-342d-4e5d-bd95-b6791cecb649.jpg" class="w-full aspect-square object-cover rounded-2xl mb-4 group-hover:scale-105 transition-transform duration-500">
-                <h4 class="text-xl font-bold mb-1">Farhan Nezami</h4>
-                <p class="text-blue-500 text-[9px] font-bold mb-4 uppercase">@mrsneakofficial • 285K Followers</p>
-                <a href="https://www.instagram.com/mrsneakofficial" target="_blank" class="block text-center py-2 glass rounded-lg text-[9px] font-bold uppercase hover:bg-white hover:text-black transition">Profile</a>
+            <div class="glass p-4 rounded-[25px] creator-card group" data-aos="fade-up" data-aos-delay="200">
+                <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/f1ef47fd-342d-4e5d-bd95-b6791cecb649.jpg" class="w-full aspect-square object-cover rounded-xl mb-3">
+                <h4 class="text-lg font-bold">Farhan Nezami</h4>
+                <p class="text-blue-500 text-[8px] font-bold mb-3 uppercase">@mrsneakofficial • 285K</p>
+                <a href="https://www.instagram.com/mrsneakofficial" target="_blank" class="block text-center py-2 glass rounded-lg text-[8px] font-bold uppercase hover:bg-white hover:text-black transition">Profile</a>
             </div>
         </div>
     </section>
 
-    <section id="services" class="py-20 bg-zinc-950/40">
-        <div class="max-w-6xl mx-auto px-6">
+    <section id="services" class="py-20 bg-zinc-950/40 px-6">
+        <div class="max-w-6xl mx-auto">
             <h3 class="text-2xl font-black mb-12 text-center uppercase tracking-widest">Our Expertise</h3>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="glass p-8 rounded-[30px]" data-aos="fade-up">
-                    <div class="w-10 h-10 bg-blue-600 rounded-full mb-4 flex items-center justify-center font-bold text-xs">01</div>
-                    <h4 class="text-lg font-bold mb-2">Talent Management</h4>
-                    <p class="text-gray-500 text-xs">Exclusive access to industry voices.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass p-6 rounded-[30px]" data-aos="fade-up">
+                    <h4 class="text-lg font-bold mb-2">Talent Mgmt</h4>
+                    <p class="text-gray-500 text-[10px]">Exclusive access to elite voices.</p>
                 </div>
-                <div class="glass p-8 rounded-[30px]" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-10 h-10 bg-blue-600 rounded-full mb-4 flex items-center justify-center font-bold text-xs">02</div>
+                <div class="glass p-6 rounded-[30px]" data-aos="fade-up" data-aos-delay="100">
                     <h4 class="text-lg font-bold mb-2">Brand Strategy</h4>
-                    <p class="text-gray-500 text-xs">Data-driven campaigns for ROI.</p>
+                    <p class="text-gray-500 text-[10px]">Data-driven campaign ROI.</p>
                 </div>
-                <div class="glass p-8 rounded-[30px]" data-aos="fade-up" data-aos-delay="200">
-                    <div class="w-10 h-10 bg-blue-600 rounded-full mb-4 flex items-center justify-center font-bold text-xs">03</div>
-                    <h4 class="text-lg font-bold mb-2">Digital Marketing</h4>
-                    <p class="text-gray-500 text-xs">End-to-end digital presence management.</p>
+                <div class="glass p-6 rounded-[30px]" data-aos="fade-up" data-aos-delay="200">
+                    <h4 class="text-lg font-bold mb-2">Digital Mkt</h4>
+                    <p class="text-gray-500 text-[10px]">End-to-end presence mgmt.</p>
                 </div>
-                <div class="glass p-8 rounded-[30px]" data-aos="fade-up">
-                    <div class="w-10 h-10 bg-blue-600 rounded-full mb-4 flex items-center justify-center font-bold text-xs">04</div>
+                <div class="glass p-6 rounded-[30px]" data-aos="fade-up">
                     <h4 class="text-lg font-bold mb-2">Trend Scouting</h4>
-                    <p class="text-gray-500 text-xs">Staying ahead of viral trends.</p>
+                    <p class="text-gray-500 text-[10px]">Viral trend analysis.</p>
                 </div>
-                <div class="glass p-8 rounded-[30px]" data-aos="fade-up" data-aos-delay="100">
-                    <div class="w-10 h-10 bg-blue-600 rounded-full mb-4 flex items-center justify-center font-bold text-xs">05</div>
-                    <h4 class="text-lg font-bold mb-2">Influencer Auditing</h4>
-                    <p class="text-gray-500 text-xs">Deep-dive engagement analysis.</p>
+                <div class="glass p-6 rounded-[30px]" data-aos="fade-up" data-aos-delay="100">
+                    <h4 class="text-lg font-bold mb-2">Auditing</h4>
+                    <p class="text-gray-500 text-[10px]">Engagement authenticity analysis.</p>
                 </div>
             </div>
         </div>
@@ -174,55 +172,37 @@
     <section id="commission" class="py-20 px-6">
         <div class="max-w-3xl mx-auto glass p-10 rounded-[40px] border-t-2 border-t-blue-600 text-center" data-aos="zoom-in">
             <h3 class="text-2xl font-black mb-4 uppercase tracking-widest">Commission Model</h3>
-            <p class="text-gray-400 text-sm mb-6">Transparent performance-driven structure.</p>
             <div class="inline-block bg-blue-600/10 border border-blue-600 px-8 py-4 rounded-2xl">
-                <span class="text-4xl md:text-5xl font-black text-blue-500">10-15%</span>
-                <p class="text-[8px] font-bold uppercase tracking-widest mt-1 text-white/70">Standard Agency Commission</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="campaigns" class="py-20 px-6 max-w-6xl mx-auto">
-        <h3 class="text-2xl font-black mb-10 text-center italic tracking-widest">Mandates</h3>
-        <div class="glass p-8 rounded-[30px] border-l-4 border-l-blue-600 flex flex-col md:flex-row justify-between items-center" data-aos="flip-up">
-            <div class="text-center md:text-left mb-6 md:mb-0">
-                <h4 class="text-xl font-black uppercase text-blue-500">Upcoming Mega Projects</h4>
-                <p class="text-gray-400 text-xs mt-1">High-budget tech campaigns arriving soon.</p>
-            </div>
-            <div class="flex items-center space-x-3">
-                <span class="animate-pulse w-2 h-2 bg-blue-500 rounded-full"></span>
-                <span class="text-[9px] font-bold uppercase tracking-widest text-blue-500">Loading New Mandates</span>
+                <span class="text-4xl font-black text-blue-500">10-15%</span>
+                <p class="text-[8px] font-bold mt-1 text-white/70 uppercase">Standard Agency Commission</p>
             </div>
         </div>
     </section>
 
     <section id="contact" class="py-20 px-6 max-w-3xl mx-auto">
-        <div class="glass p-8 md:p-16 rounded-[40px] border border-blue-500/20" data-aos="zoom-in">
+        <div class="glass p-8 rounded-[40px] border border-blue-500/20" data-aos="zoom-in">
             <h3 class="text-3xl md:text-5xl font-black text-center mb-10 text-gradient uppercase">Let's Collab</h3>
-            <form action="https://formspree.io/f/mjglbyya" method="POST" class="space-y-8">
-                <div class="grid md:grid-cols-2 gap-8">
-                    <input type="text" name="Name" placeholder="FULL NAME" required class="w-full bg-transparent border-b border-white/10 py-3 focus:border-blue-500 outline-none transition font-bold text-xs uppercase">
-                    <input type="email" name="Email" placeholder="EMAIL ADDRESS" required class="w-full bg-transparent border-b border-white/10 py-3 focus:border-blue-500 outline-none transition font-bold text-xs uppercase">
+            <form action="https://formspree.io/f/mjglbyya" method="POST" class="space-y-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <input type="text" name="Name" placeholder="NAME" required class="w-full bg-transparent border-b border-white/10 py-3 focus:border-blue-500 outline-none text-[10px] font-bold">
+                    <input type="email" name="Email" placeholder="EMAIL" required class="w-full bg-transparent border-b border-white/10 py-3 focus:border-blue-500 outline-none text-[10px] font-bold">
                 </div>
-                <input type="tel" name="WhatsApp" placeholder="WHATSAPP NUMBER" required class="w-full bg-transparent border-b border-white/10 py-3 focus:border-blue-500 outline-none transition font-bold text-xs uppercase">
-                <select name="Category" required class="w-full bg-black border-b border-white/10 py-3 focus:border-blue-500 outline-none transition font-bold text-xs text-gray-400">
-                    <option value="" disabled selected>CHOOSE CATEGORY</option>
+                <input type="tel" name="WhatsApp" placeholder="WHATSAPP" required class="w-full bg-transparent border-b border-white/10 py-3 focus:border-blue-500 outline-none text-[10px] font-bold">
+                <select name="Category" required class="w-full bg-black border-b border-white/10 py-3 text-[10px] font-bold text-gray-400">
+                    <option value="" disabled selected>CATEGORY</option>
                     <option value="Brand">BRAND</option>
                     <option value="Influencer">INFLUENCER</option>
                     <option value="Agency">AGENCY</option>
                 </select>
-                <textarea name="Message" placeholder="TELL US YOUR VISION" rows="2" required class="w-full bg-transparent border-b border-white/10 py-3 focus:border-blue-500 outline-none transition font-bold text-xs uppercase"></textarea>
+                <textarea name="Message" placeholder="VISION" rows="2" required class="w-full bg-transparent border-b border-white/10 py-3 outline-none text-[10px] font-bold"></textarea>
                 <button type="submit" class="glow-button w-full bg-blue-600 py-4 rounded-full font-black uppercase text-[10px] tracking-widest">Send Proposal</button>
             </form>
         </div>
     </section>
 
-    <footer class="py-10 border-t border-white/5 text-center">
-        <p class="text-gray-600 text-[8px] font-bold uppercase tracking-[0.5em] mb-4">&copy; 2026 YRM MEDIA. Moradabad | India</p>
-        <div class="flex justify-center space-x-6 text-gray-500 text-[8px] font-bold">
-            <span>+91 8433432480</span>
-            <span>yarmamedia@gmail.com</span>
-        </div>
+    <footer class="py-10 text-center border-t border-white/5">
+        <p class="text-gray-600 text-[8px] font-bold uppercase tracking-[0.5em] mb-4">&copy; 2026 YRM MEDIA</p>
+        <p class="text-gray-500 text-[8px] uppercase tracking-widest">+91 8433432480 | yarmamedia@gmail.com</p>
     </footer>
 
     <script>
@@ -230,4 +210,5 @@
     </script>
 </body>
 </html>
+
 
