@@ -39,10 +39,11 @@
             z-index: -1;
         }
         @media (max-width: 768px) {
+            /* Header Overlap Prevention */
             .nav-container { padding-left: 8px !important; padding-right: 8px !important; }
-            .nav-links { gap: 8px !important; margin-left: 10px !important; margin-right: 10px !important; }
-            .nav-links a { font-size: 7px !important; letter-spacing: 0.02em !important; }
-            .collab-btn { padding: 6px 10px !important; font-size: 7px !important; flex-shrink: 0 !important; }
+            .nav-links { gap: 8px !important; margin-left: 6px !important; margin-right: 6px !important; }
+            .nav-links a { font-size: 6.5px !important; letter-spacing: 0.01em !important; white-space: nowrap !important; }
+            .collab-btn { padding: 5px 8px !important; font-size: 6.5px !important; flex-shrink: 0 !important; }
             
             /* Stats strictly in one line */
             .stats-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 5px !important; }
@@ -53,7 +54,7 @@
             .creator-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
             .creator-card { padding: 1rem !important; border-radius: 20px !important; }
 
-            /* Expertise Strictly 1 line mein 3 items for mobile */
+            /* Expertise Strictly 1 line mein 3 items */
             .expertise-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; }
             .expertise-card { padding: 12px 8px !important; border-radius: 15px !important; }
             .expertise-card h4 { font-size: 8.5px !important; margin-bottom: 4px !important; }
@@ -65,10 +66,10 @@
 
     <div class="hero-mesh"></div>
 
-    <nav class="fixed top-0 w-full z-[100] px-4 md:px-12 py-4 flex justify-between items-center glass nav-container">
+    <nav class="fixed top-0 w-full z-[100] px-4 md:px-12 py-4 flex justify-between items-center glass nav-container flex-nowrap">
         <h1 class="text-base md:text-xl font-black tracking-tighter uppercase shrink-0">YRM<span class="text-blue-500">MEDIA</span></h1>
         
-        <div class="nav-links flex items-center space-x-4 md:space-x-16 text-[8px] md:text-[10px] font-bold uppercase tracking-widest mx-auto flex-nowrap">
+        <div class="nav-links flex items-center space-x-3 md:space-x-12 text-[8px] md:text-[10px] font-bold uppercase tracking-widest mx-auto flex-nowrap">
             <a href="#creators" class="hover:text-blue-400 transition">Creators</a>
             <a href="#services" class="hover:text-blue-400 transition">Services</a>
             <a href="#commission" class="hover:text-blue-400 transition text-blue-500">Pricing</a>
@@ -99,7 +100,7 @@
 
     <section class="py-10 glass border-y border-white/5">
         <h4 class="text-center text-[9px] font-bold text-gray-500 uppercase tracking-[0.3em] mb-6">Agency Landscape</h4>
-        <div class="max-w-6xl mx-auto stats-grid grid grid-cols-3 gap-2 text-center">
+        <div class="max-w-6xl mx-auto px-4 stats-grid grid grid-cols-3 gap-2 text-center">
             <div class="stats-item" data-aos="fade-up">
                 <h3 class="text-3xl md:text-4xl font-black text-blue-500">20M+</h3>
                 <p class="text-[9px] md:text-[10px] text-gray-500 uppercase font-bold tracking-widest">Reach</p>
@@ -195,7 +196,21 @@
         </div>
     </section>
 
-    <section id="vision" class="py-20 px-6 max-w-6xl mx-auto text-center">
+    <section id="campaigns" class="py-20 px-6 max-w-6xl mx-auto">
+        <h3 class="text-2xl font-black mb-10 text-center italic tracking-widest">Mandates</h3>
+        <div class="glass p-8 rounded-[30px] border-l-4 border-l-blue-600 flex flex-col md:flex-row justify-between items-center" data-aos="flip-up">
+            <div class="text-center md:text-left mb-6 md:mb-0">
+                <h4 class="text-xl font-black uppercase text-blue-500">Mega Campaigns Loading</h4>
+                <p class="text-gray-400 text-xs mt-1">High-budget tech and lifestyle mandates arriving soon. Stay tuned.</p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span class="animate-pulse w-2 h-2 bg-blue-500 rounded-full"></span>
+                <span class="text-[9px] font-bold uppercase tracking-widest text-blue-500">Processing New Projects</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="vision" class="py-10 px-6 max-w-6xl mx-auto text-center">
         <div class="glass p-12 rounded-[40px] border-y border-blue-500/10" data-aos="fade-up">
             <h3 class="text-xl md:text-3xl font-light italic text-gray-300 leading-relaxed">
                 "We don't follow <span class="text-blue-500 font-bold">trends</span>; we create the <span class="text-white font-black">icons</span> that set them."
@@ -235,4 +250,3 @@
     </script>
 </body>
 </html>
-
