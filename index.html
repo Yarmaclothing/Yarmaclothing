@@ -39,15 +39,22 @@
             z-index: -1;
         }
         @media (max-width: 768px) {
-            /* Stats 1 line mein 2 items */
-            .stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 15px !important; }
-            .stats-item h3 { font-size: 1.5rem !important; }
-            .stats-item p { font-size: 8px !important; }
+            /* Stats strictly in one line */
+            .stats-grid { 
+                display: grid !important; 
+                grid-template-columns: repeat(3, 1fr) !important; 
+                gap: 5px !important; 
+                padding: 0 10px !important;
+            }
+            .stats-item h3 { font-size: 1.1rem !important; }
+            .stats-item p { font-size: 6px !important; }
             /* Influencer 1 line mein 2 items */
             .creator-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
             .creator-card { padding: 1rem !important; border-radius: 20px !important; }
             .creator-card h4 { font-size: 0.9rem !important; }
             .creator-card p { font-size: 7px !important; }
+            /* Nav links display on mobile */
+            .nav-links { display: flex !important; gap: 8px !important; font-size: 7px !important; }
         }
     </style>
 </head>
@@ -57,13 +64,13 @@
 
     <nav class="fixed top-0 w-full z-[100] px-4 md:px-12 py-4 flex justify-between items-center glass">
         <h1 class="text-lg md:text-xl font-black tracking-tighter uppercase">YRM<span class="text-blue-500">MEDIA</span></h1>
-        <div class="hidden md:flex space-x-8 text-[10px] font-bold uppercase tracking-widest">
+        <div class="nav-links flex space-x-4 md:space-x-8 text-[8px] md:text-[10px] font-bold uppercase tracking-widest">
             <a href="#creators" class="hover:text-blue-400 transition">Creators</a>
             <a href="#services" class="hover:text-blue-400 transition">Services</a>
             <a href="#commission" class="hover:text-blue-400 transition">Pricing</a>
             <a href="#contact" class="text-blue-500">Contact</a>
         </div>
-        <a href="mailto:yarmamedia@gmail.com?subject=Collaboration Inquiry" class="glow-button bg-blue-600 px-8 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest">Let's Collab</a>
+        <a href="mailto:yarmamedia@gmail.com?subject=Collaboration Inquiry" class="glow-button bg-blue-600 px-4 md:px-8 py-2 md:py-2.5 rounded-full text-[8px] md:text-[10px] font-black uppercase tracking-widest">Let's Collab</a>
     </nav>
 
     <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative">
@@ -87,7 +94,8 @@
     </section>
 
     <section class="py-10 glass border-y border-white/5">
-        <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-3 gap-6 stats-grid text-center">
+        <h4 class="text-center text-[9px] font-bold text-gray-500 uppercase tracking-[0.3em] mb-6">Agency Landscape</h4>
+        <div class="max-w-6xl mx-auto stats-grid grid grid-cols-3 gap-2 text-center">
             <div class="stats-item" data-aos="fade-up">
                 <h3 class="text-3xl md:text-4xl font-black text-blue-500">20M+</h3>
                 <p class="text-[9px] md:text-[10px] text-gray-500 uppercase font-bold tracking-widest">Reach</p>
