@@ -39,22 +39,25 @@
             z-index: -1;
         }
         @media (max-width: 768px) {
+            .nav-container { padding-left: 8px !important; padding-right: 8px !important; }
+            .nav-links { gap: 8px !important; margin-left: 10px !important; margin-right: 10px !important; }
+            .nav-links a { font-size: 7px !important; letter-spacing: 0.02em !important; }
+            .collab-btn { padding: 6px 10px !important; font-size: 7px !important; flex-shrink: 0 !important; }
+            
             /* Stats strictly in one line */
-            .stats-grid { 
-                display: grid !important; 
-                grid-template-columns: repeat(3, 1fr) !important; 
-                gap: 5px !important; 
-                padding: 0 10px !important;
-            }
+            .stats-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 5px !important; }
             .stats-item h3 { font-size: 1.1rem !important; }
             .stats-item p { font-size: 6px !important; }
+            
             /* Influencer 1 line mein 2 items */
             .creator-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
             .creator-card { padding: 1rem !important; border-radius: 20px !important; }
-            .creator-card h4 { font-size: 0.9rem !important; }
-            .creator-card p { font-size: 7px !important; }
-            /* Nav links display on mobile */
-            .nav-links { display: flex !important; gap: 8px !important; font-size: 7px !important; }
+
+            /* Expertise Strictly 1 line mein 3 items for mobile */
+            .expertise-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; }
+            .expertise-card { padding: 12px 8px !important; border-radius: 15px !important; }
+            .expertise-card h4 { font-size: 8.5px !important; margin-bottom: 4px !important; }
+            .expertise-card p { font-size: 6px !important; line-height: 1.2 !important; }
         }
     </style>
 </head>
@@ -62,15 +65,16 @@
 
     <div class="hero-mesh"></div>
 
-    <nav class="fixed top-0 w-full z-[100] px-4 md:px-12 py-4 flex justify-between items-center glass">
-        <h1 class="text-lg md:text-xl font-black tracking-tighter uppercase">YRM<span class="text-blue-500">MEDIA</span></h1>
-        <div class="nav-links flex space-x-4 md:space-x-8 text-[8px] md:text-[10px] font-bold uppercase tracking-widest">
+    <nav class="fixed top-0 w-full z-[100] px-4 md:px-12 py-4 flex justify-between items-center glass nav-container">
+        <h1 class="text-base md:text-xl font-black tracking-tighter uppercase shrink-0">YRM<span class="text-blue-500">MEDIA</span></h1>
+        
+        <div class="nav-links flex items-center space-x-4 md:space-x-16 text-[8px] md:text-[10px] font-bold uppercase tracking-widest mx-auto flex-nowrap">
             <a href="#creators" class="hover:text-blue-400 transition">Creators</a>
             <a href="#services" class="hover:text-blue-400 transition">Services</a>
-            <a href="#commission" class="hover:text-blue-400 transition">Pricing</a>
-            <a href="#contact" class="text-blue-500">Contact</a>
+            <a href="#commission" class="hover:text-blue-400 transition text-blue-500">Pricing</a>
         </div>
-        <a href="mailto:yarmamedia@gmail.com?subject=Collaboration Inquiry" class="glow-button bg-blue-600 px-4 md:px-8 py-2 md:py-2.5 rounded-full text-[8px] md:text-[10px] font-black uppercase tracking-widest">Let's Collab</a>
+
+        <a href="mailto:yarmamedia@gmail.com?subject=Collaboration Inquiry" class="collab-btn glow-button bg-blue-600 px-4 md:px-8 py-2 md:py-2.5 rounded-full text-[7px] md:text-[10px] font-black uppercase tracking-widest shrink-0">Let's Collab</a>
     </nav>
 
     <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative">
@@ -153,27 +157,27 @@
         </div>
     </section>
 
-    <section id="services" class="py-20 bg-zinc-950/40 px-6">
+    <section id="services" class="py-20 bg-zinc-950/40 px-4">
         <div class="max-w-6xl mx-auto">
             <h3 class="text-2xl font-black mb-12 text-center uppercase tracking-widest">Our Expertise</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="glass p-6 rounded-[30px]" data-aos="fade-up">
+            <div class="grid grid-cols-3 gap-3 expertise-grid">
+                <div class="glass p-6 rounded-[30px] expertise-card" data-aos="fade-up">
                     <h4 class="text-lg font-bold mb-2">Talent Mgmt</h4>
                     <p class="text-gray-500 text-[10px]">Exclusive access to elite voices.</p>
                 </div>
-                <div class="glass p-6 rounded-[30px]" data-aos="fade-up" data-aos-delay="100">
+                <div class="glass p-6 rounded-[30px] expertise-card" data-aos="fade-up" data-aos-delay="100">
                     <h4 class="text-lg font-bold mb-2">Brand Strategy</h4>
                     <p class="text-gray-500 text-[10px]">Data-driven campaign ROI.</p>
                 </div>
-                <div class="glass p-6 rounded-[30px]" data-aos="fade-up" data-aos-delay="200">
+                <div class="glass p-6 rounded-[30px] expertise-card" data-aos="fade-up" data-aos-delay="200">
                     <h4 class="text-lg font-bold mb-2">Digital Mkt</h4>
                     <p class="text-gray-500 text-[10px]">End-to-end presence mgmt.</p>
                 </div>
-                <div class="glass p-6 rounded-[30px]" data-aos="fade-up">
+                <div class="glass p-6 rounded-[30px] expertise-card" data-aos="fade-up">
                     <h4 class="text-lg font-bold mb-2">Trend Scouting</h4>
                     <p class="text-gray-500 text-[10px]">Viral trend analysis.</p>
                 </div>
-                <div class="glass p-6 rounded-[30px]" data-aos="fade-up" data-aos-delay="100">
+                <div class="glass p-6 rounded-[30px] expertise-card" data-aos="fade-up" data-aos-delay="100">
                     <h4 class="text-lg font-bold mb-2">Auditing</h4>
                     <p class="text-gray-500 text-[10px]">Engagement authenticity analysis.</p>
                 </div>
@@ -231,3 +235,4 @@
     </script>
 </body>
 </html>
+
