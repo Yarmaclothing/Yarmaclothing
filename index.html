@@ -39,9 +39,11 @@
             z-index: -1;
         }
         @media (max-width: 768px) {
-            .stats-grid { display: flex !important; justify-content: space-between !important; gap: 5px !important; }
-            .stats-item h3 { font-size: 1.25rem !important; }
-            .stats-item p { font-size: 7px !important; }
+            /* Stats 1 line mein 2 items */
+            .stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 15px !important; }
+            .stats-item h3 { font-size: 1.5rem !important; }
+            .stats-item p { font-size: 8px !important; }
+            /* Influencer 1 line mein 2 items */
             .creator-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
             .creator-card { padding: 1rem !important; border-radius: 20px !important; }
             .creator-card h4 { font-size: 0.9rem !important; }
@@ -76,25 +78,27 @@
                 YRM MEDIA turns brands into legends. We manage the elite, execute the premium, and dominate the digital space.
             </p>
             <div class="flex flex-wrap justify-center gap-3">
-                <a href="#campaigns" class="glow-button bg-blue-600 text-white px-8 py-4 rounded-full font-bold uppercase text-[10px] tracking-widest min-w-[140px]">View Mandates</a>
-                <a href="mailto:yarmamedia@gmail.com?subject=Collaboration Inquiry" class="bg-white text-black px-8 py-4 rounded-full font-bold uppercase text-[10px] tracking-widest min-w-[140px] hover:bg-gray-200 transition">Let's Collab</a>
+                <a href="https://wa.me/918433432480" target="_blank" class="glow-button bg-green-600 text-white px-8 py-4 rounded-full font-bold uppercase text-[10px] tracking-widest min-w-[140px] flex items-center justify-center">
+                    WhatsApp Us
+                </a>
+                <a href="mailto:yarmamedia@gmail.com?subject=Collaboration Inquiry" class="bg-white text-black px-8 py-4 rounded-full font-bold uppercase text-[10px] tracking-widest min-w-[140px] hover:bg-gray-200 transition">Email Us</a>
             </div>
         </div>
     </section>
 
     <section class="py-10 glass border-y border-white/5">
-        <div class="max-w-6xl mx-auto px-4 stats-grid grid grid-cols-3 gap-2 text-center">
+        <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-3 gap-6 stats-grid text-center">
             <div class="stats-item" data-aos="fade-up">
-                <h3 class="text-2xl md:text-4xl font-black text-blue-500">20M+</h3>
-                <p class="text-[8px] md:text-[10px] text-gray-500 uppercase font-bold tracking-widest">Reach</p>
+                <h3 class="text-3xl md:text-4xl font-black text-blue-500">20M+</h3>
+                <p class="text-[9px] md:text-[10px] text-gray-500 uppercase font-bold tracking-widest">Reach</p>
             </div>
             <div class="stats-item" data-aos="fade-up" data-aos-delay="100">
-                <h3 class="text-2xl md:text-4xl font-black text-blue-500">100+</h3>
-                <p class="text-[8px] md:text-[10px] text-gray-500 uppercase font-bold tracking-widest">Creators</p>
+                <h3 class="text-3xl md:text-4xl font-black text-blue-500">100+</h3>
+                <p class="text-[9px] md:text-[10px] text-gray-500 uppercase font-bold tracking-widest">Creators</p>
             </div>
             <div class="stats-item" data-aos="fade-up" data-aos-delay="200">
-                <h3 class="text-2xl md:text-4xl font-black text-blue-500">100%</h3>
-                <p class="text-[8px] md:text-[10px] text-gray-500 uppercase font-bold tracking-widest">ROI</p>
+                <h3 class="text-3xl md:text-4xl font-black text-blue-500">100%</h3>
+                <p class="text-[9px] md:text-[10px] text-gray-500 uppercase font-bold tracking-widest">ROI</p>
             </div>
         </div>
     </section>
@@ -179,22 +183,31 @@
         </div>
     </section>
 
+    <section id="vision" class="py-20 px-6 max-w-6xl mx-auto text-center">
+        <div class="glass p-12 rounded-[40px] border-y border-blue-500/10" data-aos="fade-up">
+            <h3 class="text-xl md:text-3xl font-light italic text-gray-300 leading-relaxed">
+                "We don't follow <span class="text-blue-500 font-bold">trends</span>; we create the <span class="text-white font-black">icons</span> that set them."
+            </h3>
+            <p class="mt-6 text-[10px] font-bold uppercase tracking-[0.5em] text-blue-500">— YRM MEDIA VISION</p>
+        </div>
+    </section>
+
     <section id="contact" class="py-20 px-6 max-w-3xl mx-auto">
         <div class="glass p-8 rounded-[40px] border border-blue-500/20" data-aos="zoom-in">
             <h3 class="text-3xl md:text-5xl font-black text-center mb-10 text-gradient uppercase">Let's Collab</h3>
             <form action="https://formspree.io/f/mjglbyya" method="POST" class="space-y-6">
                 <div class="grid md:grid-cols-2 gap-6">
-                    <input type="text" name="Name" placeholder="NAME" required class="w-full bg-transparent border-b border-white/10 py-3 focus:border-blue-500 outline-none text-[10px] font-bold">
-                    <input type="email" name="Email" placeholder="EMAIL" required class="w-full bg-transparent border-b border-white/10 py-3 focus:border-blue-500 outline-none text-[10px] font-bold">
+                    <input type="text" name="Name" placeholder="NAME" required class="w-full bg-transparent border-b border-white/10 py-3 focus:border-blue-500 outline-none text-[10px] font-bold uppercase">
+                    <input type="email" name="Email" placeholder="EMAIL" required class="w-full bg-transparent border-b border-white/10 py-3 focus:border-blue-500 outline-none text-[10px] font-bold uppercase">
                 </div>
-                <input type="tel" name="WhatsApp" placeholder="WHATSAPP" required class="w-full bg-transparent border-b border-white/10 py-3 focus:border-blue-500 outline-none text-[10px] font-bold">
+                <input type="tel" name="WhatsApp" placeholder="WHATSAPP" required class="w-full bg-transparent border-b border-white/10 py-3 focus:border-blue-500 outline-none text-[10px] font-bold uppercase">
                 <select name="Category" required class="w-full bg-black border-b border-white/10 py-3 text-[10px] font-bold text-gray-400">
                     <option value="" disabled selected>CATEGORY</option>
                     <option value="Brand">BRAND</option>
                     <option value="Influencer">INFLUENCER</option>
                     <option value="Agency">AGENCY</option>
                 </select>
-                <textarea name="Message" placeholder="VISION" rows="2" required class="w-full bg-transparent border-b border-white/10 py-3 outline-none text-[10px] font-bold"></textarea>
+                <textarea name="Message" placeholder="VISION" rows="2" required class="w-full bg-transparent border-b border-white/10 py-3 outline-none text-[10px] font-bold uppercase"></textarea>
                 <button type="submit" class="glow-button w-full bg-blue-600 py-4 rounded-full font-black uppercase text-[10px] tracking-widest">Send Proposal</button>
             </form>
         </div>
@@ -210,5 +223,3 @@
     </script>
 </body>
 </html>
-
-
