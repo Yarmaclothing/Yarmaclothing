@@ -3,250 +3,206 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YRM MEDIA | Elite Influence</title>
+    <title>YRM MEDIA | Global Digital Agency</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: #000000;
-            color: #ffffff;
-            scroll-behavior: smooth;
-        }
-        .glass {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .text-gradient {
-            background: linear-gradient(to right, #ffffff, #3b82f6, #60a5fa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .glow-button {
-            transition: all 0.3s ease;
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
-        }
-        .glow-button:hover {
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-            transform: scale(1.02);
-        }
-        .hero-mesh {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 60%);
-            z-index: -1;
-        }
-        @media (max-width: 768px) {
-            /* Header Overlap Prevention */
-            .nav-container { padding-left: 8px !important; padding-right: 8px !important; }
-            .nav-links { gap: 8px !important; margin-left: 6px !important; margin-right: 6px !important; }
-            .nav-links a { font-size: 6.5px !important; letter-spacing: 0.01em !important; white-space: nowrap !important; }
-            .collab-btn { padding: 5px 8px !important; font-size: 6.5px !important; flex-shrink: 0 !important; }
-            
-            /* Stats strictly in one line */
-            .stats-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 5px !important; }
-            .stats-item h3 { font-size: 1.1rem !important; }
-            .stats-item p { font-size: 6px !important; }
-            
-            /* Influencer 1 line mein 2 items */
-            .creator-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
-            .creator-card { padding: 1rem !important; border-radius: 20px !important; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@900&family=Plus+Jakarta+Sans:wght@300;500;800&display=swap');
+        
+        body { background-color: #000; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
+        .huge-text { font-family: 'Inter', sans-serif; font-size: clamp(2.5rem, 10vw, 8rem); line-height: 0.9; letter-spacing: -0.05em; }
+        
+        .p-card { transition: all 0.4s ease; border: 1px solid rgba(255,255,255,0.1); }
+        .p-card:hover { border-color: #6366f1; transform: translateY(-10px); background: rgba(99, 102, 241, 0.05); }
 
-            /* Expertise Strictly 1 line mein 3 items */
-            .expertise-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; }
-            .expertise-card { padding: 12px 8px !important; border-radius: 15px !important; }
-            .expertise-card h4 { font-size: 8.5px !important; margin-bottom: 4px !important; }
-            .expertise-card p { font-size: 6px !important; line-height: 1.2 !important; }
-        }
+        .glass { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #6366f1; border-radius: 10px; }
     </style>
 </head>
-<body class="overflow-x-hidden">
+<body>
 
-    <div class="hero-mesh"></div>
-
-    <nav class="fixed top-0 w-full z-[100] px-4 md:px-12 py-4 flex justify-between items-center glass nav-container flex-nowrap">
-        <h1 class="text-base md:text-xl font-black tracking-tighter uppercase shrink-0">YRM<span class="text-blue-500">MEDIA</span></h1>
-        
-        <div class="nav-links flex items-center space-x-3 md:space-x-12 text-[8px] md:text-[10px] font-bold uppercase tracking-widest mx-auto flex-nowrap">
-            <a href="#creators" class="hover:text-blue-400 transition">Creators</a>
-            <a href="#services" class="hover:text-blue-400 transition">Services</a>
-            <a href="#commission" class="hover:text-blue-400 transition text-blue-500">Pricing</a>
+    <!-- 1. Navigation -->
+    <nav class="fixed top-0 w-full z-50 p-6 flex justify-between items-center bg-black/80 backdrop-blur-md border-b border-white/5">
+        <div class="font-black text-2xl tracking-tighter italic text-indigo-500">YRM MEDIA.</div>
+        <div class="hidden lg:flex gap-8 text-[10px] font-bold uppercase tracking-[0.3em]">
+            <a href="#packages" class="hover:text-indigo-400">Packages</a>
+            <a href="#services" class="hover:text-indigo-400">Services</a>
+            <a href="#workflow" class="hover:text-indigo-400">Workflow</a>
         </div>
-
-        <a href="mailto:yarmamedia@gmail.com?subject=Collaboration Inquiry" class="collab-btn glow-button bg-blue-600 px-4 md:px-8 py-2 md:py-2.5 rounded-full text-[7px] md:text-[10px] font-black uppercase tracking-widest shrink-0">Let's Collab</a>
+        <!-- WhatsApp Button 1 -->
+        <a href="https://api.whatsapp.com/send?phone=918433432480&text=Hello%20YRM%20MEDIA,%20I%20want%20to%20book%20a%20slot%20for%20my%20new%20project." 
+           class="bg-white text-black px-5 py-2 text-[10px] font-black uppercase tracking-widest hover:bg-indigo-600 hover:text-white transition">
+           Book Slot
+        </a>
     </nav>
 
-    <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative">
-        <div data-aos="fade-up" data-aos-duration="1200">
-            <span class="px-3 py-1 rounded-full glass border border-blue-500/30 text-blue-400 text-[9px] font-bold uppercase tracking-[0.2em] mb-6 inline-block">
-                Influencer Marketing Agency
-            </span>
-            <h2 class="text-5xl md:text-8xl font-extrabold leading-tight tracking-tighter text-gradient mb-6 uppercase">
-                CRAFTING <br> INFLUENCERS
-            </h2>
-            <p class="text-gray-400 max-w-md mx-auto text-sm md:text-base mb-10 leading-relaxed">
-                YRM MEDIA turns brands into legends. We manage the elite, execute the premium, and dominate the digital space.
+    <!-- 2. Hero Section -->
+    <section class="h-screen flex flex-col justify-center px-10" data-aos="fade-up">
+        <h1 class="huge-text uppercase">Digital <br> <span class="text-zinc-800">Architects</span> <br> Worldwide.</h1>
+        <div class="mt-10 flex flex-col md:flex-row gap-8 items-start">
+            <p class="max-w-md text-zinc-500 text-sm leading-relaxed">
+                High-performance digital identities for brands that demand dominance.
             </p>
-            <div class="flex flex-wrap justify-center gap-3">
-                <a href="https://wa.me/918433432480" target="_blank" class="glow-button bg-green-600 text-white px-8 py-4 rounded-full font-bold uppercase text-[10px] tracking-widest min-w-[140px] flex items-center justify-center">
-                    WhatsApp Us
+        </div>
+    </section>
+
+    <!-- 3. Packages (Wide Layout) -->
+    <section id="packages" class="py-32 px-10">
+        <h2 class="text-[10px] uppercase tracking-[0.5em] text-zinc-600 mb-16">Price Tiers_</h2>
+        <div class="grid lg:grid-cols-3 gap-6">
+            <!-- Package Button 2: Classic -->
+            <div class="p-card p-10 rounded-2xl flex flex-col justify-between h-full" data-aos="fade-up">
+                <div>
+                    <h3 class="text-3xl font-black mb-2 italic">CLASSIC</h3>
+                    <p class="text-zinc-500 text-[10px] uppercase tracking-widest mb-8">Landing Page Solution</p>
+                    <div class="text-4xl font-black mb-10">₹6,999</div>
+                    <ul class="space-y-4 mb-10 text-xs text-zinc-400 font-medium">
+                        <li><i class="fa-solid fa-check text-indigo-500 mr-2"></i> Single Page Design</li>
+                        <li><i class="fa-solid fa-check text-indigo-500 mr-2"></i> 5 Days Delivery</li>
+                    </ul>
+                </div>
+                <a href="https://api.whatsapp.com/send?phone=918433432480&text=I%20am%20interested%20in%20the%20Classic%20Package%20(₹6,999)." 
+                   class="block text-center py-4 border border-white/20 font-bold uppercase text-[10px] tracking-widest hover:bg-white hover:text-black transition">
+                   Inquire Classic
                 </a>
-                <a href="mailto:yarmamedia@gmail.com?subject=Collaboration Inquiry" class="bg-white text-black px-8 py-4 rounded-full font-bold uppercase text-[10px] tracking-widest min-w-[140px] hover:bg-gray-200 transition">Email Us</a>
             </div>
-        </div>
-    </section>
-
-    <section class="py-10 glass border-y border-white/5">
-        <h4 class="text-center text-[9px] font-bold text-gray-500 uppercase tracking-[0.3em] mb-6">Agency Landscape</h4>
-        <div class="max-w-6xl mx-auto px-4 stats-grid grid grid-cols-3 gap-2 text-center">
-            <div class="stats-item" data-aos="fade-up">
-                <h3 class="text-3xl md:text-4xl font-black text-blue-500">20M+</h3>
-                <p class="text-[9px] md:text-[10px] text-gray-500 uppercase font-bold tracking-widest">Reach</p>
-            </div>
-            <div class="stats-item" data-aos="fade-up" data-aos-delay="100">
-                <h3 class="text-3xl md:text-4xl font-black text-blue-500">100+</h3>
-                <p class="text-[9px] md:text-[10px] text-gray-500 uppercase font-bold tracking-widest">Creators</p>
-            </div>
-            <div class="stats-item" data-aos="fade-up" data-aos-delay="200">
-                <h3 class="text-3xl md:text-4xl font-black text-blue-500">100%</h3>
-                <p class="text-[9px] md:text-[10px] text-gray-500 uppercase font-bold tracking-widest">ROI</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="creators" class="py-20 px-4 max-w-6xl mx-auto">
-        <h3 class="text-3xl md:text-5xl font-black mb-12 text-center uppercase italic tracking-tighter">Elite Creators</h3>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 creator-grid">
-            <div class="glass p-4 rounded-[25px] creator-card group" data-aos="fade-up">
-                <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/3298c55e-0cb0-4b2a-83c4-e23e9365fc69.jpg" class="w-full aspect-square object-cover rounded-xl mb-3">
-                <h4 class="text-lg font-bold">Udit Purviya</h4>
-                <p class="text-blue-500 text-[8px] font-bold mb-3 uppercase">@uditgpt • 796K</p>
-                <a href="https://www.instagram.com/uditgpt" target="_blank" class="block text-center py-2 glass rounded-lg text-[8px] font-bold uppercase hover:bg-white hover:text-black transition">Profile</a>
-            </div>
-            <div class="glass p-4 rounded-[25px] creator-card group" data-aos="fade-up" data-aos-delay="100">
-                <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/e6f65a2b-f8fc-40e7-9862-a5e5b9b6d3e8.jpg" class="w-full aspect-square object-cover rounded-xl mb-3">
-                <h4 class="text-lg font-bold">Manjeet Yadav</h4>
-                <p class="text-blue-500 text-[8px] font-bold mb-3 uppercase">@techy.titu • 595K</p>
-                <a href="https://www.instagram.com/techy.titu" target="_blank" class="block text-center py-2 glass rounded-lg text-[8px] font-bold uppercase hover:bg-white hover:text-black transition">Profile</a>
-            </div>
-            <div class="glass p-4 rounded-[25px] creator-card group" data-aos="fade-up" data-aos-delay="200">
-                <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/8c83efbf-d5a3-45b0-93c2-d54157bd6495.jpg" class="w-full aspect-square object-cover rounded-xl mb-3">
-                <h4 class="text-lg font-bold">Raaj Mishra</h4>
-                <p class="text-blue-500 text-[8px] font-bold mb-3 uppercase">@raajexplains • 345K</p>
-                <a href="https://www.instagram.com/raajexplains" target="_blank" class="block text-center py-2 glass rounded-lg text-[8px] font-bold uppercase hover:bg-white hover:text-black transition">Profile</a>
-            </div>
-            <div class="glass p-4 rounded-[25px] creator-card group" data-aos="fade-up">
-                <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/f9e48d4d-a2ea-4f22-a125-a1b7a866987a.jpg" class="w-full aspect-square object-cover rounded-xl mb-3">
-                <h4 class="text-lg font-bold">Ashish Jha</h4>
-                <p class="text-blue-500 text-[8px] font-bold mb-3 uppercase">@techinsiderashish • 474K</p>
-                <a href="https://www.instagram.com/techinsiderashish" target="_blank" class="block text-center py-2 glass rounded-lg text-[8px] font-bold uppercase hover:bg-white hover:text-black transition">Profile</a>
-            </div>
-            <div class="glass p-4 rounded-[25px] creator-card group" data-aos="fade-up" data-aos-delay="100">
-                <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/617e3157-41ca-4db2-bbbd-f2dcee3cf161.jpg" class="w-full aspect-square object-cover rounded-xl mb-3">
-                <h4 class="text-lg font-bold">Yuvraj Gautam</h4>
-                <p class="text-blue-500 text-[8px] font-bold mb-3 uppercase">@techyg.co • 349K</p>
-                <a href="https://www.instagram.com/techyg.co" target="_blank" class="block text-center py-2 glass rounded-lg text-[8px] font-bold uppercase hover:bg-white hover:text-black transition">Profile</a>
-            </div>
-            <div class="glass p-4 rounded-[25px] creator-card group" data-aos="fade-up" data-aos-delay="200">
-                <img src="https://i.supaimg.com/f969c314-72c5-4ad3-b7eb-1ad6e07c5a06/f1ef47fd-342d-4e5d-bd95-b6791cecb649.jpg" class="w-full aspect-square object-cover rounded-xl mb-3">
-                <h4 class="text-lg font-bold">Farhan Nezami</h4>
-                <p class="text-blue-500 text-[8px] font-bold mb-3 uppercase">@mrsneakofficial • 285K</p>
-                <a href="https://www.instagram.com/mrsneakofficial" target="_blank" class="block text-center py-2 glass rounded-lg text-[8px] font-bold uppercase hover:bg-white hover:text-black transition">Profile</a>
-            </div>
-        </div>
-    </section>
-
-    <section id="services" class="py-20 bg-zinc-950/40 px-4">
-        <div class="max-w-6xl mx-auto">
-            <h3 class="text-2xl font-black mb-12 text-center uppercase tracking-widest">Our Expertise</h3>
-            <div class="grid grid-cols-3 gap-3 expertise-grid">
-                <div class="glass p-6 rounded-[30px] expertise-card" data-aos="fade-up">
-                    <h4 class="text-lg font-bold mb-2">Talent Mgmt</h4>
-                    <p class="text-gray-500 text-[10px]">Exclusive access to elite voices.</p>
+            <!-- Package Button 3: Premium -->
+            <div class="p-card p-10 rounded-2xl flex flex-col justify-between h-full bg-zinc-950" data-aos="fade-up" data-aos-delay="100">
+                <div>
+                    <h3 class="text-3xl font-black mb-2 italic text-indigo-500">PREMIUM</h3>
+                    <p class="text-zinc-500 text-[10px] uppercase tracking-widest mb-8">Business Site Upgrade</p>
+                    <div class="text-4xl font-black mb-10">₹11,999</div>
+                    <ul class="space-y-4 mb-10 text-xs text-zinc-400 font-medium">
+                        <li><i class="fa-solid fa-check text-indigo-500 mr-2"></i> Multi-page Website</li>
+                        <li><i class="fa-solid fa-check text-indigo-500 mr-2"></i> Advanced SEO</li>
+                    </ul>
                 </div>
-                <div class="glass p-6 rounded-[30px] expertise-card" data-aos="fade-up" data-aos-delay="100">
-                    <h4 class="text-lg font-bold mb-2">Brand Strategy</h4>
-                    <p class="text-gray-500 text-[10px]">Data-driven campaign ROI.</p>
+                <a href="https://api.whatsapp.com/send?phone=918433432480&text=I%20am%20interested%20in%20the%20Premium%20Package%20(₹11,999)." 
+                   class="block text-center py-4 bg-indigo-600 font-bold uppercase text-[10px] tracking-widest hover:bg-white hover:text-black transition">
+                   Inquire Premium
+                </a>
+            </div>
+            <!-- Package Button 4: Iconic -->
+            <div class="p-card p-10 rounded-2xl flex flex-col justify-between h-full" data-aos="fade-up" data-aos-delay="200">
+                <div>
+                    <h3 class="text-3xl font-black mb-2 italic">ICONIC</h3>
+                    <p class="text-zinc-500 text-[10px] uppercase tracking-widest mb-8">Bespoke Experience</p>
+                    <div class="text-4xl font-black mb-10">₹18,999</div>
+                    <ul class="space-y-4 mb-10 text-xs text-zinc-400 font-medium">
+                        <li><i class="fa-solid fa-check text-indigo-500 mr-2"></i> Custom Animations</li>
+                        <li><i class="fa-solid fa-check text-indigo-500 mr-2"></i> Priority Support</li>
+                    </ul>
                 </div>
-                <div class="glass p-6 rounded-[30px] expertise-card" data-aos="fade-up" data-aos-delay="200">
-                    <h4 class="text-lg font-bold mb-2">Digital Mkt</h4>
-                    <p class="text-gray-500 text-[10px]">End-to-end presence mgmt.</p>
-                </div>
-                <div class="glass p-6 rounded-[30px] expertise-card" data-aos="fade-up">
-                    <h4 class="text-lg font-bold mb-2">Trend Scouting</h4>
-                    <p class="text-gray-500 text-[10px]">Viral trend analysis.</p>
-                </div>
-                <div class="glass p-6 rounded-[30px] expertise-card" data-aos="fade-up" data-aos-delay="100">
-                    <h4 class="text-lg font-bold mb-2">Auditing</h4>
-                    <p class="text-gray-500 text-[10px]">Engagement authenticity analysis.</p>
-                </div>
+                <a href="https://api.whatsapp.com/send?phone=918433432480&text=I%20am%20interested%20in%20the%20Iconic%20Package%20(₹18,999)." 
+                   class="block text-center py-4 border border-white/20 font-bold uppercase text-[10px] tracking-widest hover:bg-white hover:text-black transition">
+                   Inquire Iconic
+                </a>
             </div>
         </div>
     </section>
 
-    <section id="commission" class="py-20 px-6">
-        <div class="max-w-3xl mx-auto glass p-10 rounded-[40px] border-t-2 border-t-blue-600 text-center" data-aos="zoom-in">
-            <h3 class="text-2xl font-black mb-4 uppercase tracking-widest">Commission Model</h3>
-            <div class="inline-block bg-blue-600/10 border border-blue-600 px-8 py-4 rounded-2xl">
-                <span class="text-4xl font-black text-blue-500">10-15%</span>
-                <p class="text-[8px] font-bold mt-1 text-white/70 uppercase">Standard Agency Commission</p>
+    <!-- 4. Services Grid -->
+    <section id="services" class="py-32 px-10 border-t border-white/5">
+        <div class="grid lg:grid-cols-4 gap-10">
+            <h2 class="text-5xl font-black uppercase tracking-tighter" data-aos="fade-right">Expertise.</h2>
+            <div class="glass p-8 rounded-xl" data-aos="zoom-in">UI/UX DESIGN</div>
+            <div class="glass p-8 rounded-xl" data-aos="zoom-in" data-aos-delay="100">DEVELOPMENT</div>
+            <div class="glass p-8 rounded-xl" data-aos="zoom-in" data-aos-delay="200">SEO STRATEGY</div>
+        </div>
+    </section>
+
+    <!-- 5. Workflow -->
+    <section id="workflow" class="py-32 px-10 bg-zinc-950">
+        <div class="grid lg:grid-cols-3 gap-0 border border-white/10">
+            <div class="p-12 border-r border-white/10 hover:bg-white hover:text-black transition group" data-aos="fade-up">
+                <span class="font-black text-indigo-500 group-hover:text-black">01/ Concept</span>
+                <p class="mt-4 text-xs">Defining your global brand vision.</p>
+            </div>
+            <div class="p-12 border-r border-white/10 hover:bg-white hover:text-black transition group" data-aos="fade-up" data-aos-delay="100">
+                <span class="font-black text-indigo-500 group-hover:text-black">02/ Build</span>
+                <p class="mt-4 text-xs">High-speed coding with precision.</p>
+            </div>
+            <div class="p-12 hover:bg-white hover:text-black transition group" data-aos="fade-up" data-aos-delay="200">
+                <span class="font-black text-indigo-500 group-hover:text-black">03/ Launch</span>
+                <p class="mt-4 text-xs">Going live to the global market.</p>
             </div>
         </div>
     </section>
 
-    <section id="campaigns" class="py-20 px-6 max-w-6xl mx-auto">
-        <h3 class="text-2xl font-black mb-10 text-center italic tracking-widest">Mandates</h3>
-        <div class="glass p-8 rounded-[30px] border-l-4 border-l-blue-600 flex flex-col md:flex-row justify-between items-center" data-aos="flip-up">
-            <div class="text-center md:text-left mb-6 md:mb-0">
-                <h4 class="text-xl font-black uppercase text-blue-500">Mega Campaigns Loading</h4>
-                <p class="text-gray-400 text-xs mt-1">High-budget tech and lifestyle mandates arriving soon. Stay tuned.</p>
+    <!-- 6. Stats Section -->
+    <section class="py-32 px-10 flex flex-wrap justify-between gap-10">
+        <div class="text-center" data-aos="fade-up">
+            <div class="text-6xl font-black tracking-tighter">50+</div>
+            <p class="text-[10px] text-zinc-500 uppercase">Projects</p>
+        </div>
+        <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+            <div class="text-6xl font-black tracking-tighter">99%</div>
+            <p class="text-[10px] text-zinc-500 uppercase">Success</p>
+        </div>
+        <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+            <div class="text-6xl font-black tracking-tighter">24H</div>
+            <p class="text-[10px] text-zinc-500 uppercase">Response</p>
+        </div>
+    </section>
+
+    <!-- 7. Why Us -->
+    <section class="py-32 px-10">
+        <h2 class="text-5xl font-black tracking-tighter mb-10">Why YRM MEDIA?</h2>
+        <p class="text-zinc-400 text-sm max-w-2xl leading-relaxed">We don't use templates. We build bespoke digital tools that give your business a competitive edge globally. Speed, efficiency, and aesthetics are our core pillars.</p>
+    </section>
+
+    <!-- 8. Tech Stack -->
+    <section class="py-20 px-10 bg-zinc-900/20 text-center opacity-30 grayscale hover:grayscale-0 transition flex flex-wrap justify-center gap-10">
+        <span class="font-black text-xl italic uppercase">Next.js</span>
+        <span class="font-black text-xl italic uppercase">Tailwind</span>
+        <span class="font-black text-xl italic uppercase">React</span>
+        <span class="font-black text-xl italic uppercase">Figma</span>
+    </section>
+
+    <!-- 9. FAQ -->
+    <section class="py-32 px-10 max-w-4xl">
+        <h2 class="text-3xl font-black mb-12 uppercase">FAQ_</h2>
+        <div class="border-b border-white/10 pb-4 mb-6">
+            <p class="font-bold">Global delivery time?</p>
+            <p class="text-zinc-500 text-xs">Standard projects are delivered within 5-14 business days.</p>
+        </div>
+        <div class="border-b border-white/10 pb-4">
+            <p class="font-bold">Maintenance included?</p>
+            <p class="text-zinc-500 text-xs">All packages come with 30 days of complimentary support.</p>
+        </div>
+    </section>
+
+    <!-- 10. Final CTA Button 5: Final Order -->
+    <section id="contact" class="min-h-screen bg-white text-black flex flex-col justify-center items-center text-center p-10">
+        <h2 class="huge-text" data-aos="zoom-in">Launch.</h2>
+        <div class="mt-20 flex flex-wrap justify-center gap-20">
+            <div class="text-left border-l-4 border-black pl-4">
+                <p class="text-[10px] uppercase font-bold text-zinc-400">Email</p>
+                <a href="mailto:yarmamedia@gmail.com" class="text-2xl font-black italic underline">yarmamedia@gmail.com</a>
             </div>
-            <div class="flex items-center space-x-3">
-                <span class="animate-pulse w-2 h-2 bg-blue-500 rounded-full"></span>
-                <span class="text-[9px] font-bold uppercase tracking-widest text-blue-500">Processing New Projects</span>
+            <div class="text-left border-l-4 border-black pl-4">
+                <p class="text-[10px] uppercase font-bold text-zinc-400">WhatsApp</p>
+                <p class="text-2xl font-black italic">+91 84334 32480</p>
             </div>
         </div>
+        <a href="https://api.whatsapp.com/send?phone=918433432480&text=Hello%20YRM%20MEDIA,%20I%20am%20ready%20to%20start%20my%20digital%20transformation." 
+           class="mt-20 bg-black text-white px-16 py-8 font-black uppercase tracking-[0.4em] hover:bg-indigo-600 transition scale-110">
+           Start Project
+        </a>
     </section>
 
-    <section id="vision" class="py-10 px-6 max-w-6xl mx-auto text-center">
-        <div class="glass p-12 rounded-[40px] border-y border-blue-500/10" data-aos="fade-up">
-            <h3 class="text-xl md:text-3xl font-light italic text-gray-300 leading-relaxed">
-                "We don't follow <span class="text-blue-500 font-bold">trends</span>; we create the <span class="text-white font-black">icons</span> that set them."
-            </h3>
-            <p class="mt-6 text-[10px] font-bold uppercase tracking-[0.5em] text-blue-500">— YRM MEDIA VISION</p>
-        </div>
-    </section>
-
-    <section id="contact" class="py-20 px-6 max-w-3xl mx-auto">
-        <div class="glass p-8 rounded-[40px] border border-blue-500/20" data-aos="zoom-in">
-            <h3 class="text-3xl md:text-5xl font-black text-center mb-10 text-gradient uppercase">Let's Collab</h3>
-            <form action="https://formspree.io/f/mjglbyya" method="POST" class="space-y-6">
-                <div class="grid md:grid-cols-2 gap-6">
-                    <input type="text" name="Name" placeholder="NAME" required class="w-full bg-transparent border-b border-white/10 py-3 focus:border-blue-500 outline-none text-[10px] font-bold uppercase">
-                    <input type="email" name="Email" placeholder="EMAIL" required class="w-full bg-transparent border-b border-white/10 py-3 focus:border-blue-500 outline-none text-[10px] font-bold uppercase">
-                </div>
-                <input type="tel" name="WhatsApp" placeholder="WHATSAPP" required class="w-full bg-transparent border-b border-white/10 py-3 focus:border-blue-500 outline-none text-[10px] font-bold uppercase">
-                <select name="Category" required class="w-full bg-black border-b border-white/10 py-3 text-[10px] font-bold text-gray-400">
-                    <option value="" disabled selected>CATEGORY</option>
-                    <option value="Brand">BRAND</option>
-                    <option value="Influencer">INFLUENCER</option>
-                    <option value="Agency">AGENCY</option>
-                </select>
-                <textarea name="Message" placeholder="VISION" rows="2" required class="w-full bg-transparent border-b border-white/10 py-3 outline-none text-[10px] font-bold uppercase"></textarea>
-                <button type="submit" class="glow-button w-full bg-blue-600 py-4 rounded-full font-black uppercase text-[10px] tracking-widest">Send Proposal</button>
-            </form>
-        </div>
-    </section>
-
-    <footer class="py-10 text-center border-t border-white/5">
-        <p class="text-gray-600 text-[8px] font-bold uppercase tracking-[0.5em] mb-4">&copy; 2026 YRM MEDIA</p>
-        <p class="text-gray-500 text-[8px] uppercase tracking-widest">+91 8433432480 | yarmamedia@gmail.com</p>
+    <footer class="p-10 text-[10px] uppercase tracking-widest text-zinc-600 flex justify-between border-t border-zinc-900">
+        <p>©2026 YRM MEDIA GROUP</p>
+        <p>Built for the Elite.</p>
     </footer>
 
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({ duration: 1000, once: true });
     </script>
 </body>
 </html>
+
