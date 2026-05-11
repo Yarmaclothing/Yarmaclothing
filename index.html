@@ -3,252 +3,1772 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YRM MEDIA | Global Digital Collective</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <title>YRM MEDIA | Premium Website Development Agency</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@900&family=Plus+Jakarta+Sans:wght@300;500;700&display=swap');
-        
-        :root { --accent: #6366f1; }
-        body { background-color: #000; color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
-        .huge-title { font-family: 'Unbounded', sans-serif; font-size: clamp(2.5rem, 8vw, 6rem); line-height: 0.9; }
-        
-        /* Mobile-Friendly Horizontal Scrolling Packages */
-        .package-wrapper { overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
-        .package-card { scroll-snap-align: center; min-width: 85%; transition: 0.4s; border: 1px solid rgba(255,255,255,0.1); }
-        @media (min-width: 1024px) { .package-card { min-width: 32%; } }
-
-        /* Neon Glow Button */
-        .neon-btn {
-            background: var(--accent); color: #fff; border-radius: 0; font-weight: 800; 
-            text-transform: uppercase; letter-spacing: 0.2em; transition: 0.4s;
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --accent: #06b6d4;
+            --accent-glow: rgba(6, 182, 212, 0.4);
+            --dark: #0a0a0f;
+            --darker: #050508;
+            --card: #111118;
+            --card-hover: #1a1a24;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border: rgba(255,255,255,0.08);
+            --gradient-1: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
+            --gradient-2: linear-gradient(135deg, #06b6d4 0%, #6366f1 100%);
         }
-        .neon-btn:hover { box-shadow: 0 0 40px rgba(99, 102, 241, 0.6); transform: translateY(-3px); }
 
-        /* Thin workflow lines */
-        .wf-line { height: 1px; background: linear-gradient(90deg, var(--accent), transparent); width: 100%; margin: 20px 0; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        ::-webkit-scrollbar { display: none; } /* Hide scrollbar for clean look */
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--darker);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--dark); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+
+        #bgCanvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(10, 10, 15, 0.95);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .logo span { font-weight: 300; -webkit-text-fill-color: var(--text); }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px; left: 0;
+            width: 0; height: 2px;
+            background: var(--gradient-2);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover { color: var(--text); }
+        .nav-links a:hover::after { width: 100%; }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 2px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        section {
+            position: relative;
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 50px;
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        .section-title .gradient {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 80px;
+            position: relative;
+        }
+
+        .hero-content { max-width: 900px; z-index: 2; }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 .gradient {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item { text-align: center; }
+
+        .stat-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--gradient-1);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 0;
+        }
+
+        .service-card:hover::before { opacity: 0.05; }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .service-icon {
+            width: 60px; height: 60px;
+            background: var(--gradient-1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .portfolio-card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            aspect-ratio: 16/10;
+            background: var(--card);
+            border: 1px solid var(--border);
+            cursor: pointer;
+        }
+
+        .portfolio-card img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .portfolio-card:hover img { transform: scale(1.1); }
+
+        .portfolio-overlay {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 2rem;
+            background: linear-gradient(transparent, rgba(10,10,15,0.95));
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .portfolio-card:hover .portfolio-overlay { transform: translateY(0); }
+
+        .portfolio-overlay h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .portfolio-overlay p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .portfolio-tag {
+            display: inline-block;
+            padding: 0.35rem 1rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            position: relative;
+        }
+
+        .process-step {
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .step-number {
+            width: 70px; height: 70px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin: 0 auto 1.5rem;
+            position: relative;
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+        }
+
+        .step-number::after {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            animation: ripple 2s infinite;
+        }
+
+        @keyframes ripple {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        .process-step h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .process-step p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .review-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .review-stars {
+            color: #fbbf24;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .review-text {
+            color: var(--text);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .reviewer {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .reviewer-avatar {
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .reviewer-info h4 { font-weight: 600; font-size: 1rem; }
+        .reviewer-info p { color: var(--text-muted); font-size: 0.85rem; }
+
+        .reviewer-location {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .pricing-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            border-color: var(--primary);
+            transform: scale(1.05);
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.2);
+        }
+
+        .pricing-card.featured::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: -12px; left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient-1);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .pricing-card.featured:hover {
+            transform: scale(1.05) translateY(-8px);
+        }
+
+        .pricing-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-price {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.25rem;
+        }
+
+        .pricing-price span {
+            font-size: 1rem;
+            -webkit-text-fill-color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .pricing-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .pricing-features li i { color: var(--accent); }
+
+        .faq-container { max-width: 800px; margin: 0 auto; }
+
+        .faq-item {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover { border-color: rgba(99, 102, 241, 0.3); }
+
+        .faq-question {
+            width: 100%;
+            padding: 1.5rem 2rem;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question i {
+            color: var(--primary);
+            transition: transform 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .faq-item.active .faq-question i { transform: rotate(180deg); }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+        }
+
+        .faq-item.active .faq-answer { max-height: 300px; }
+
+        .faq-answer p {
+            padding: 0 2rem 1.5rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .contact-info h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info > p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .contact-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            padding: 1.25rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .contact-method:hover {
+            border-color: var(--primary);
+            transform: translateX(5px);
+            background: var(--card-hover);
+        }
+
+        .contact-icon {
+            width: 50px; height: 50px;
+            background: var(--gradient-1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .contact-method div h4 { font-weight: 600; margin-bottom: 0.25rem; }
+        .contact-method div p { color: var(--text-muted); font-size: 0.9rem; }
+
+        .contact-form {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2.5rem;
+        }
+
+        .form-group { margin-bottom: 1.5rem; }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            background: var(--dark);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-group textarea { min-height: 140px; resize: vertical; }
+
+        footer {
+            background: var(--dark);
+            border-top: 1px solid var(--border);
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-container { max-width: 1400px; margin: 0 auto; }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand .logo { margin-bottom: 1rem; display: inline-block; }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .footer-links h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links ul { list-style: none; }
+        .footer-links li { margin-bottom: 0.75rem; }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .footer-links a:hover { color: var(--primary); }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-bottom p { color: var(--text-muted); font-size: 0.9rem; }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            width: 40px; height: 40px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--darker);
+            z-index: 999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .mobile-menu.active { display: flex; }
+
+        .mobile-menu a {
+            color: var(--text);
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .mobile-menu-close {
+            position: absolute;
+            top: 2rem; right: 2rem;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .particle {
+            position: fixed;
+            width: 4px; height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.3;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+
+        @media (max-width: 1024px) {
+            .contact-container { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+            .hero-stats { gap: 2rem; }
+            .pricing-card.featured { transform: scale(1); }
+            .pricing-card.featured:hover { transform: scale(1) translateY(-8px); }
+            .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+            section { padding: 4rem 1.5rem; }
+        }
+
+        @media (max-width: 480px) {
+            .portfolio-grid { grid-template-columns: 1fr; }
+            .services-grid { grid-template-columns: 1fr; }
+        }
     </style>
+<base target="_blank">
 </head>
 <body>
+    <!-- Animated Background -->
+    <canvas id="bgCanvas"></canvas>
 
-    <!-- Nav -->
-    <nav class="fixed top-0 w-full z-50 p-6 flex justify-between items-center bg-black/90 backdrop-blur-md border-b border-white/5">
-        <div class="font-black text-xl tracking-tighter italic text-indigo-500 uppercase">YRM MEDIA</div>
-        <a href="https://api.whatsapp.com/send?phone=918433432480&text=Hi%20YRM%20MEDIA,%20I%20want%20to%20discuss%20a%20project." 
-           class="text-[10px] font-bold uppercase tracking-widest border-b-2 border-indigo-500 pb-1">Book Project</a>
+    <!-- Floating Particles -->
+    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+    <div class="particle" style="left: 35%; animation-delay: 4s;"></div>
+    <div class="particle" style="left: 50%; animation-delay: 1s;"></div>
+    <div class="particle" style="left: 65%; animation-delay: 3s;"></div>
+    <div class="particle" style="left: 80%; animation-delay: 5s;"></div>
+    <div class="particle" style="left: 90%; animation-delay: 2.5s;"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">YRM <span>MEDIA</span></div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#process">Process</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
     </nav>
 
-    <!-- Hero -->
-    <section class="min-h-screen flex flex-col justify-center px-6 pt-20">
-        <span class="text-indigo-500 text-xs font-bold uppercase tracking-[0.4em] mb-4" data-aos="fade-right">Creative Collective</span>
-        <h1 class="huge-title uppercase" data-aos="fade-up">Webs <br> That <br> <span class="text-zinc-800">Convert.</span></h1>
-        <p class="mt-8 text-zinc-500 text-sm max-w-sm leading-relaxed" data-aos="fade-up" data-aos-delay="200">
-            We build high-octane digital weapons for modern brands. Fast, bold, and unapologetically premium.
-        </p>
-    </section>
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-menu-close" onclick="toggleMobileMenu()">
+            <i class="fas fa-times"></i>
+        </button>
+        <a href="#home" onclick="toggleMobileMenu()">Home</a>
+        <a href="#services" onclick="toggleMobileMenu()">Services</a>
+        <a href="#portfolio" onclick="toggleMobileMenu()">Portfolio</a>
+        <a href="#process" onclick="toggleMobileMenu()">Process</a>
+        <a href="#pricing" onclick="toggleMobileMenu()">Pricing</a>
+        <a href="#reviews" onclick="toggleMobileMenu()">Reviews</a>
+        <a href="#faq" onclick="toggleMobileMenu()">FAQ</a>
+        <a href="#contact" onclick="toggleMobileMenu()">Contact</a>
+    </div>
 
-    <!-- Wide Stats -->
-    <section class="py-20 px-6 border-y border-white/5">
-        <div class="flex justify-between items-center">
-            <div class="text-center">
-                <p class="text-2xl font-bold italic">50+</p>
-                <p class="text-[8px] uppercase tracking-widest text-zinc-600">Built</p>
+    <!-- Section 1: Hero -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-rocket"></i>
+                Premium Website Development Agency
             </div>
-            <div class="text-center">
-                <p class="text-2xl font-bold italic">24H</p>
-                <p class="text-[8px] uppercase tracking-widest text-zinc-600">Reply</p>
+            <h1>
+                We Build <span class="gradient">Digital Experiences</span><br>
+                That Drive Results
+            </h1>
+            <p>
+                Transform your business with stunning, high-performance websites crafted by India leading web development experts. From startups to enterprises, we deliver excellence.
+            </p>
+            <div class="hero-buttons">
+                <a href="#contact" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i>
+                    Start Your Project
+                </a>
+                <a href="#portfolio" class="btn btn-outline">
+                    <i class="fas fa-eye"></i>
+                    View Our Work
+                </a>
             </div>
-            <div class="text-center">
-                <p class="text-2xl font-bold italic">GLOBAL</p>
-                <p class="text-[8px] uppercase tracking-widest text-zinc-600">Reach</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Packages (Optimized for Mobile Swipe & Desktop Wide) -->
-    <section id="packages" class="py-24">
-        <div class="px-6 mb-12">
-            <h2 class="text-3xl font-black uppercase italic tracking-tighter">Pricing_</h2>
-        </div>
-        
-        <div class="package-wrapper flex gap-4 px-6">
-            <!-- Classic -->
-            <div class="package-card p-8 bg-zinc-950 rounded-xl flex flex-col justify-between">
-                <div>
-                    <h3 class="text-2xl font-black mb-4">CLASSIC</h3>
-                    <p class="text-zinc-500 text-xs mb-8">Landing pages that launch your brand.</p>
-                    <div class="text-4xl font-bold mb-8 text-indigo-500">₹6,999</div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number">150+</div>
+                    <div class="stat-label">Projects Delivered</div>
                 </div>
-                <a href="https://api.whatsapp.com/send?phone=918433432480&text=I%20want%20to%20order%20the%20Classic%20Package." 
-                   class="neon-btn py-4 text-center text-[10px]">Select Classic</a>
-            </div>
-
-            <!-- Premium -->
-            <div class="package-card p-8 bg-zinc-950 rounded-xl border-indigo-500/50 flex flex-col justify-between">
-                <div>
-                    <h3 class="text-2xl font-black mb-4">PREMIUM</h3>
-                    <p class="text-zinc-500 text-xs mb-8">Full-scale business identities.</p>
-                    <div class="text-4xl font-bold mb-8 text-indigo-500">₹11,999</div>
+                <div class="stat-item">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Happy Clients</div>
                 </div>
-                <a href="https://api.whatsapp.com/send?phone=918433432480&text=I%20want%20to%20order%20the%20Premium%20Package." 
-                   class="neon-btn py-4 text-center text-[10px]">Select Premium</a>
-            </div>
-
-            <!-- Iconic -->
-            <div class="package-card p-8 bg-zinc-950 rounded-xl flex flex-col justify-between">
-                <div>
-                    <h3 class="text-2xl font-black mb-4">ICONIC</h3>
-                    <p class="text-zinc-500 text-xs mb-8">Bespoke digital masterpieces.</p>
-                    <div class="text-4xl font-bold mb-8 text-indigo-500">₹18,999</div>
+                <div class="stat-item">
+                    <div class="stat-number">99%</div>
+                    <div class="stat-label">Client Satisfaction</div>
                 </div>
-                <a href="https://api.whatsapp.com/send?phone=918433432480&text=I%20want%20to%20order%20the%20Iconic%20Package." 
-                   class="neon-btn py-4 text-center text-[10px]">Select Iconic</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Workflow (Clean & Wide) -->
-    <section class="py-24 px-6 bg-white text-black">
-        <h2 class="text-3xl font-black mb-16 uppercase tracking-tighter italic">Workflow_</h2>
-        <div class="grid lg:grid-cols-3 gap-12">
-            <div data-aos="fade-up">
-                <p class="font-black text-4xl opacity-10 mb-4">01</p>
-                <h4 class="font-bold text-xl uppercase mb-4">Strategy</h4>
-                <p class="text-sm opacity-60">Mapping the blueprint for your growth.</p>
-            </div>
-            <div data-aos="fade-up" data-aos-delay="100">
-                <p class="font-black text-4xl opacity-10 mb-4">02</p>
-                <h4 class="font-bold text-xl uppercase mb-4">Execution</h4>
-                <p class="text-sm opacity-60">Crafting pixels with clean, fast code.</p>
-            </div>
-            <div data-aos="fade-up" data-aos-delay="200">
-                <p class="font-black text-4xl opacity-10 mb-4">03</p>
-                <h4 class="font-bold text-xl uppercase mb-4">Deployment</h4>
-                <p class="text-sm opacity-60">Global launch and search dominance.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tech & Trust -->
-    <section class="py-24 px-6 bg-zinc-950">
-        <div class="grid lg:grid-cols-2 gap-20">
-            <div>
-                <h3 class="text-2xl font-black mb-8 italic">WE ONLY USE THE BEST_</h3>
-                <div class="flex flex-wrap gap-4 text-[10px] font-bold opacity-30">
-                    <span class="px-4 py-2 border border-white">NEXT.JS</span>
-                    <span class="px-4 py-2 border border-white">REACT</span>
-                    <span class="px-4 py-2 border border-white">TAILWIND</span>
-                    <span class="px-4 py-2 border border-white">FIGMA</span>
-                </div>
-            </div>
-            <div>
-                <h3 class="text-2xl font-black mb-8 italic">FAQ_</h3>
-                <div class="space-y-6 text-xs text-zinc-500">
-                    <p><b>Time?</b> 5-14 Business Days.</p>
-                    <p><b>Support?</b> 30 Days Post-Launch.</p>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Support Available</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- NEW SECTION 1: WHY CHOOSE US -->
-    <section class="py-24 px-6 border-t border-white/5 bg-black">
-        <h2 class="text-3xl font-black mb-12 uppercase italic tracking-tighter" data-aos="fade-right">Why Us_</h2>
-        <div class="grid gap-8">
-            <div class="p-6 border-l-2 border-indigo-500 bg-zinc-900/30" data-aos="fade-left">
-                <h4 class="font-bold uppercase text-sm mb-2">Precision Coding</h4>
-                <p class="text-xs text-zinc-500">No bloated templates. We write clean code that search engines love.</p>
-            </div>
-            <div class="p-6 border-l-2 border-indigo-500 bg-zinc-900/30" data-aos="fade-left" data-aos-delay="100">
-                <h4 class="font-bold uppercase text-sm mb-2">Performance First</h4>
-                <p class="text-xs text-zinc-500">Every millisecond counts. Our sites are built for blazing speed.</p>
-            </div>
+    <!-- Section 2: Services -->
+    <section id="services">
+        <div class="section-header fade-in">
+            <div class="section-tag">What We Do</div>
+            <h2 class="section-title">
+                Our <span class="gradient">Services</span>
+            </h2>
+            <p class="section-subtitle">
+                Comprehensive web solutions tailored to elevate your brand and accelerate your business growth.
+            </p>
         </div>
-    </section>
-
-    <!-- NEW SECTION 2: GLOBAL IMPACT -->
-    <section class="py-32 px-6 bg-white text-black text-center">
-        <h2 class="text-5xl font-black uppercase mb-6" data-aos="zoom-in">Global <br> Standards.</h2>
-        <p class="text-[10px] uppercase tracking-[0.5em] font-bold opacity-40">Serving Clients Worldwide</p>
-        <div class="mt-16 grid grid-cols-2 gap-4">
-            <div class="border border-black/10 p-6">
-                <p class="text-3xl font-bold">99%</p>
-                <p class="text-[8px] uppercase font-bold">Uptime</p>
-            </div>
-            <div class="border border-black/10 p-6">
-                <p class="text-3xl font-bold">100%</p>
-                <p class="text-[8px] uppercase font-bold">Secure</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- NEW SECTION 3: CORE VALUES -->
-    <section class="py-24 px-6 bg-zinc-950 border-y border-white/5">
-        <div class="flex flex-col gap-12">
-            <div data-aos="fade-up">
-                <h3 class="text-zinc-700 font-black text-6xl mb-2">01</h3>
-                <h4 class="font-bold uppercase tracking-widest text-indigo-500">Transparency</h4>
-                <p class="text-xs text-zinc-500 mt-2 leading-relaxed">Honest pricing and clear communication throughout the build.</p>
-            </div>
-            <div data-aos="fade-up" data-aos-delay="100">
-                <h3 class="text-zinc-700 font-black text-6xl mb-2">02</h3>
-                <h4 class="font-bold uppercase tracking-widest text-indigo-500">Innovation</h4>
-                <p class="text-xs text-zinc-500 mt-2 leading-relaxed">Using the latest tech stacks to give you a competitive edge.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- NEW SECTION 4: MAINTENANCE -->
-    <section class="py-24 px-6 bg-black">
-        <div class="p-10 border border-indigo-500/30 rounded-2xl bg-indigo-500/5" data-aos="flip-up">
-            <h3 class="font-black text-xl italic uppercase mb-4 text-indigo-500 text-center">Support Tiers_</h3>
-            <p class="text-center text-xs text-zinc-500 mb-8">Ongoing care for your digital empire.</p>
-            <div class="grid gap-6">
-                <div class="flex justify-between items-center text-[10px] font-bold border-b border-white/5 pb-2">
-                    <span>SECURITY UPDATES</span>
-                    <span class="text-indigo-400">INCLUDED</span>
+        <div class="services-grid">
+            <div class="service-card fade-in">
+                <div class="service-icon">
+                    <i class="fas fa-laptop-code"></i>
                 </div>
-                <div class="flex justify-between items-center text-[10px] font-bold border-b border-white/5 pb-2">
-                    <span>HOSTING SETUP</span>
-                    <span class="text-indigo-400">FREE</span>
+                <h3>Custom Website Development</h3>
+                <p>Bespoke websites built from scratch with cutting-edge technologies, optimized for performance, SEO, and user experience.</p>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-icon">
+                    <i class="fas fa-shopping-cart"></i>
                 </div>
-                <div class="flex justify-between items-center text-[10px] font-bold border-b border-white/5 pb-2">
-                    <span>BACKUP RECOVERY</span>
-                    <span class="text-indigo-400">LIFETIME</span>
+                <h3>E-Commerce Solutions</h3>
+                <p>Powerful online stores with secure payment gateways, inventory management, and conversion-optimized designs.</p>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Responsive Design</h3>
+                <p>Pixel-perfect designs that adapt seamlessly across all devices - mobile, tablet, and desktop.</p>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>SEO Optimization</h3>
+                <p>Strategic SEO implementation to boost your rankings, drive organic traffic, and increase visibility.</p>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-icon">
+                    <i class="fas fa-paint-brush"></i>
+                </div>
+                <h3>UI/UX Design</h3>
+                <p>Stunning, intuitive interfaces designed to captivate users and maximize engagement and conversions.</p>
+            </div>
+            <div class="service-card fade-in">
+                <div class="service-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <h3>Website Maintenance</h3>
+                <p>Reliable ongoing support, updates, security monitoring, and performance optimization for your website.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Portfolio -->
+    <section id="portfolio">
+        <div class="section-header fade-in">
+            <div class="section-tag">Our Work</div>
+            <h2 class="section-title">
+                Featured <span class="gradient">Projects</span>
+            </h2>
+            <p class="section-subtitle">
+                Explore our portfolio of successful projects delivered for clients across India.
+            </p>
+        </div>
+        <div class="portfolio-grid">
+            <div class="portfolio-card fade-in">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" alt="E-Commerce Platform">
+                <div class="portfolio-overlay">
+                    <span class="portfolio-tag">E-Commerce</span>
+                    <h3>Luxury Fashion Store</h3>
+                    <p>Full-featured e-commerce platform for a premium fashion brand in Mumbai</p>
+                </div>
+            </div>
+            <div class="portfolio-card fade-in">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80" alt="SaaS Dashboard">
+                <div class="portfolio-overlay">
+                    <span class="portfolio-tag">SaaS</span>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Real-time data visualization platform for a Bangalore-based fintech startup</p>
+                </div>
+            </div>
+            <div class="portfolio-card fade-in">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80" alt="Corporate Website">
+                <div class="portfolio-overlay">
+                    <span class="portfolio-tag">Corporate</span>
+                    <h3>Real Estate Portal</h3>
+                    <p>Property listing and management system for a leading Delhi real estate firm</p>
+                </div>
+            </div>
+            <div class="portfolio-card fade-in">
+                <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80" alt="Restaurant Website">
+                <div class="portfolio-overlay">
+                    <span class="portfolio-tag">Hospitality</span>
+                    <h3>Fine Dining Experience</h3>
+                    <p>Elegant website with online reservation system for a 5-star restaurant chain</p>
+                </div>
+            </div>
+            <div class="portfolio-card fade-in">
+                <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80" alt="Healthcare Portal">
+                <div class="portfolio-overlay">
+                    <span class="portfolio-tag">Healthcare</span>
+                    <h3>Medical Clinic Portal</h3>
+                    <p>Patient management and appointment booking system for multi-city clinic chain</p>
+                </div>
+            </div>
+            <div class="portfolio-card fade-in">
+                <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80" alt="EdTech Platform">
+                <div class="portfolio-overlay">
+                    <span class="portfolio-tag">EdTech</span>
+                    <h3>Online Learning Platform</h3>
+                    <p>Interactive LMS with video streaming, quizzes, and progress tracking for coaching institute</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- NEW SECTION 5: BRAND PHILOSOPHY -->
-    <section class="py-40 px-6 bg-zinc-900 text-center">
-        <p class="text-indigo-500 text-[10px] font-bold uppercase tracking-[0.6em] mb-6">Our DNA</p>
-        <h2 class="font-black text-4xl uppercase tracking-tighter italic" data-aos="fade-up">"Digital is not an <br> expense. It's <br> an asset."</h2>
-    </section>
-
-    <!-- Contact CTA -->
-    <section class="min-h-screen flex flex-col justify-center items-center text-center px-6">
-        <h2 class="huge-title mb-10" data-aos="zoom-in">LET'S <br> GO.</h2>
-        <div class="space-y-8 mb-20">
-            <a href="mailto:yarmamedia@gmail.com" class="block text-xl font-bold italic border-b border-indigo-500">yarmamedia@gmail.com</a>
-            <p class="text-zinc-500 tracking-widest text-[10px] uppercase font-bold">+91 84334 32480</p>
+    <!-- Section 4: Process -->
+    <section id="process">
+        <div class="section-header fade-in">
+            <div class="section-tag">How We Work</div>
+            <h2 class="section-title">
+                Our <span class="gradient">Process</span>
+            </h2>
+            <p class="section-subtitle">
+                A streamlined workflow designed to deliver exceptional results on time, every time.
+            </p>
         </div>
-        <a href="https://api.whatsapp.com/send?phone=918433432480&text=Hi%20YRM%20MEDIA,%20I%20want%20to%20start%20my%20project%20now." 
-           class="neon-btn px-12 py-6 text-xs scale-110">Book Slot Now</a>
+        <div class="process-steps">
+            <div class="process-step fade-in">
+                <div class="step-number">1</div>
+                <h3>Discovery</h3>
+                <p>We understand your business goals, target audience, and project requirements through detailed consultation.</p>
+            </div>
+            <div class="process-step fade-in">
+                <div class="step-number">2</div>
+                <h3>Strategy</h3>
+                <p>Our team crafts a comprehensive plan including sitemap, wireframes, and technical architecture.</p>
+            </div>
+            <div class="process-step fade-in">
+                <div class="step-number">3</div>
+                <h3>Design</h3>
+                <p>We create stunning visual designs with interactive prototypes for your approval before development.</p>
+            </div>
+            <div class="process-step fade-in">
+                <div class="step-number">4</div>
+                <h3>Development</h3>
+                <p>Clean, efficient code with modern frameworks ensuring speed, security, and scalability.</p>
+            </div>
+            <div class="process-step fade-in">
+                <div class="step-number">5</div>
+                <h3>Launch</h3>
+                <p>Thorough testing, deployment, and post-launch support to ensure everything runs perfectly.</p>
+            </div>
+        </div>
     </section>
 
-    <footer class="p-8 text-[8px] uppercase tracking-[0.5em] text-zinc-700 flex justify-between border-t border-white/5">
-        <p>©2026 YRM MEDIA</p>
-        <p>Global Standard</p>
+    <!-- Section 5: Pricing -->
+    <section id="pricing">
+        <div class="section-header fade-in">
+            <div class="section-tag">Investment</div>
+            <h2 class="section-title">
+                Transparent <span class="gradient">Pricing</span>
+            </h2>
+            <p class="section-subtitle">
+                Choose a package that fits your business needs. No hidden fees, complete transparency.
+            </p>
+        </div>
+        <div class="pricing-grid">
+            <div class="pricing-card fade-in">
+                <div class="pricing-name">Starter</div>
+                <div class="pricing-desc">Perfect for small businesses & startups</div>
+                <div class="pricing-price">Rs 15,000<span>/one-time</span></div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> 5-Page Responsive Website</li>
+                    <li><i class="fas fa-check"></i> Mobile & Tablet Optimized</li>
+                    <li><i class="fas fa-check"></i> Basic SEO Setup</li>
+                    <li><i class="fas fa-check"></i> Contact Form Integration</li>
+                    <li><i class="fas fa-check"></i> 1 Month Free Support</li>
+                    <li><i class="fas fa-check"></i> Social Media Links</li>
+                </ul>
+                <a href="#contact" class="btn btn-outline" style="width: 100%; justify-content: center;">Get Started</a>
+            </div>
+            <div class="pricing-card featured fade-in">
+                <div class="pricing-name">Business</div>
+                <div class="pricing-desc">Best for growing businesses</div>
+                <div class="pricing-price">Rs 35,000<span>/one-time</span></div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> 10-Page Responsive Website</li>
+                    <li><i class="fas fa-check"></i> Custom UI/UX Design</li>
+                    <li><i class="fas fa-check"></i> Advanced SEO Optimization</li>
+                    <li><i class="fas fa-check"></i> Blog & CMS Integration</li>
+                    <li><i class="fas fa-check"></i> Google Analytics Setup</li>
+                    <li><i class="fas fa-check"></i> WhatsApp Chat Integration</li>
+                    <li><i class="fas fa-check"></i> 3 Months Free Support</li>
+                </ul>
+                <a href="#contact" class="btn btn-primary" style="width: 100%; justify-content: center;">Get Started</a>
+            </div>
+            <div class="pricing-card fade-in">
+                <div class="pricing-name">Enterprise</div>
+                <div class="pricing-desc">For large-scale projects</div>
+                <div class="pricing-price">Custom<span> pricing</span></div>
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check"></i> Unlimited Pages</li>
+                    <li><i class="fas fa-check"></i> E-Commerce Functionality</li>
+                    <li><i class="fas fa-check"></i> Custom Web Applications</li>
+                    <li><i class="fas fa-check"></i> API Integrations</li>
+                    <li><i class="fas fa-check"></i> Premium Hosting Setup</li>
+                    <li><i class="fas fa-check"></i> 6 Months Free Support</li>
+                    <li><i class="fas fa-check"></i> Dedicated Project Manager</li>
+                </ul>
+                <a href="#contact" class="btn btn-outline" style="width: 100%; justify-content: center;">Contact Us</a>
+            </div>
+        </div>
+    </section>
+    <!-- Section 6: Reviews -->
+    <section id="reviews">
+        <div class="section-header fade-in">
+            <div class="section-tag">Testimonials</div>
+            <h2 class="section-title">
+                Client <span class="gradient">Reviews</span>
+            </h2>
+            <p class="section-subtitle">
+                Hear what our Indian clients say about working with YRM MEDIA.
+            </p>
+        </div>
+        <div class="reviews-grid">
+            <div class="review-card fade-in">
+                <div class="review-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="review-text">"YRM MEDIA transformed our online presence completely. Our website traffic increased by 300% within 3 months. The team is incredibly professional and responsive."</p>
+                <div class="reviewer">
+                    <div class="reviewer-avatar">RK</div>
+                    <div class="reviewer-info">
+                        <h4>Rajesh Kumar</h4>
+                        <p>CEO, TechSolutions Pvt Ltd</p>
+                        <span class="reviewer-location"><i class="fas fa-map-marker-alt"></i> Bangalore, India</span>
+                    </div>
+                </div>
+            </div>
+            <div class="review-card fade-in">
+                <div class="review-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="review-text">"The e-commerce website they built for us is phenomenal. Sales have doubled since launch. Their attention to detail and understanding of Indian market is unmatched."</p>
+                <div class="reviewer">
+                    <div class="reviewer-avatar">PS</div>
+                    <div class="reviewer-info">
+                        <h4>Priya Sharma</h4>
+                        <p>Founder, EthnicWear Boutique</p>
+                        <span class="reviewer-location"><i class="fas fa-map-marker-alt"></i> Jaipur, India</span>
+                    </div>
+                </div>
+            </div>
+            <div class="review-card fade-in">
+                <div class="review-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+                <p class="review-text">"Best web development agency in India! They delivered our real estate portal ahead of schedule with features we did not even know we needed. Highly recommended!"</p>
+                <div class="reviewer">
+                    <div class="reviewer-avatar">AP</div>
+                    <div class="reviewer-info">
+                        <h4>Amit Patel</h4>
+                        <p>Director, Metro Properties</p>
+                        <span class="reviewer-location"><i class="fas fa-map-marker-alt"></i> Mumbai, India</span>
+                    </div>
+                </div>
+            </div>
+            <div class="review-card fade-in">
+                <div class="review-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="review-text">"Our coaching institute LMS is running flawlessly. Students love the interface. YRM MEDIA understood our educational needs perfectly and delivered beyond expectations."</p>
+                <div class="reviewer">
+                    <div class="reviewer-avatar">SG</div>
+                    <div class="reviewer-info">
+                        <h4>Dr. Suresh Gupta</h4>
+                        <p>Founder, BrightFuture Academy</p>
+                        <span class="reviewer-location"><i class="fas fa-map-marker-alt"></i> Delhi, India</span>
+                    </div>
+                </div>
+            </div>
+            <div class="review-card fade-in">
+                <div class="review-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="review-text">"From design to deployment, the entire experience was seamless. Our restaurant online ordering system has increased revenue by 40%. Thank you YRM MEDIA!"</p>
+                <div class="reviewer">
+                    <div class="reviewer-avatar">VR</div>
+                    <div class="reviewer-info">
+                        <h4>Vikram Reddy</h4>
+                        <p>Owner, Spice Garden Restaurants</p>
+                        <span class="reviewer-location"><i class="fas fa-map-marker-alt"></i> Hyderabad, India</span>
+                    </div>
+                </div>
+            </div>
+            <div class="review-card fade-in">
+                <div class="review-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="review-text">"Exceptional work on our fintech dashboard. The UI is intuitive, performance is blazing fast, and the team provided outstanding post-launch support. True professionals!"</p>
+                <div class="reviewer">
+                    <div class="reviewer-avatar">KN</div>
+                    <div class="reviewer-info">
+                        <h4>Karthik Nair</h4>
+                        <p>CTO, PaySwift Technologies</p>
+                        <span class="reviewer-location"><i class="fas fa-map-marker-alt"></i> Chennai, India</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 7: FAQ -->
+    <section id="faq">
+        <div class="section-header fade-in">
+            <div class="section-tag">Got Questions?</div>
+            <h2 class="section-title">
+                Frequently Asked <span class="gradient">Questions</span>
+            </h2>
+            <p class="section-subtitle">
+                Find answers to common questions about our web development services.
+            </p>
+        </div>
+        <div class="faq-container">
+            <div class="faq-item fade-in">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    How long does it take to build a website?
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Typically, a standard business website takes 2-4 weeks from concept to launch. E-commerce sites may take 4-6 weeks, and complex custom projects can take 8-12 weeks. We provide a detailed timeline during our initial consultation based on your specific requirements.</p>
+                </div>
+            </div>
+            <div class="faq-item fade-in">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Do you provide website hosting and domain services?
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes! We offer complete hosting solutions with SSL certificates, CDN integration, and regular backups. We can also help you purchase and configure your domain name. Our hosting packages start at Rs 2,999/year with 99.9% uptime guarantee.</p>
+                </div>
+            </div>
+            <div class="faq-item fade-in">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Will my website be mobile-friendly and responsive?
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Absolutely! Every website we build is fully responsive and mobile-optimized. We test across all major devices and screen sizes to ensure your site looks and performs perfectly on smartphones, tablets, laptops, and desktops.</p>
+                </div>
+            </div>
+            <div class="faq-item fade-in">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Can I update the website content myself after launch?
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes, we integrate user-friendly Content Management Systems (CMS) like WordPress or custom admin panels that allow you to easily update text, images, and content without any coding knowledge. We also provide training sessions to get you comfortable with managing your site.</p>
+                </div>
+            </div>
+            <div class="faq-item fade-in">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    What technologies do you use for development?
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>We use modern, industry-standard technologies including React, Next.js, Node.js, PHP, WordPress, Shopify, and custom HTML/CSS/JS. Our tech stack is chosen based on your project requirements to ensure optimal performance, security, and scalability.</p>
+                </div>
+            </div>
+            <div class="faq-item fade-in">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    Do you offer post-launch support and maintenance?
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes, we provide comprehensive maintenance packages including security updates, performance monitoring, content updates, and technical support. All our packages include free support for the initial period, and we offer affordable monthly maintenance plans thereafter.</p>
+                </div>
+            </div>
+            <div class="faq-item fade-in">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    How do we get started with our project?
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Simply reach out to us via WhatsApp, email, or the contact form on this page. We will schedule a free consultation to discuss your requirements, goals, and budget. After understanding your needs, we will provide a detailed proposal and timeline for your approval.</p>
+                </div>
+            </div>
+            <div class="faq-item fade-in">
+                <button class="faq-question" onclick="toggleFaq(this)">
+                    What is your payment structure?
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>We typically work with a 50% advance payment to start the project, 25% upon design approval, and the remaining 25% before final delivery. For larger projects, we can discuss milestone-based payments. We accept UPI, bank transfer, and all major payment methods.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 8: Contact -->
+    <section id="contact">
+        <div class="section-header fade-in">
+            <div class="section-tag">Get In Touch</div>
+            <h2 class="section-title">
+                Let's Build Something <span class="gradient">Amazing</span>
+            </h2>
+            <p class="section-subtitle">
+                Ready to transform your digital presence? Reach out and let's discuss your project.
+            </p>
+        </div>
+        <div class="contact-container">
+            <div class="contact-info fade-in">
+                <h3>Start Your Project Today</h3>
+                <p>Whether you need a simple business website or a complex web application, we are here to help. Contact us through any of the channels below.</p>
+                <div class="contact-methods">
+                    <a href="https://wa.me/918433432480" target="_blank" class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div>
+                            <h4>WhatsApp</h4>
+                            <p>+91 84334 32480</p>
+                        </div>
+                    </a>
+                    <a href="tel:+918433432480" class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>+91 84334 32480</p>
+                        </div>
+                    </a>
+                    <a href="mailto:yrmmediaa@gmail.com" class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h4>Email</h4>
+                            <p>yrmmediaa@gmail.com</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="contact-form fade-in">
+                <form action="https://api.web3forms.com/submit" method="POST">
+                    <input type="hidden" name="access_key" value="bdb207a9-d24f-41c9-b43a-93f01c2b0dab">
+                    <input type="hidden" name="subject" value="New Lead from YRM MEDIA Website">
+                    <input type="hidden" name="from_name" value="YRM MEDIA Website">
+
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" name="name" placeholder="Your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" placeholder="your@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" name="phone" placeholder="+91 98765 43210" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Project Type</label>
+                        <select name="project_type" required>
+                            <option value="">Select a service</option>
+                            <option value="Business Website">Business Website</option>
+                            <option value="E-Commerce Store">E-Commerce Store</option>
+                            <option value="Custom Web Application">Custom Web Application</option>
+                            <option value="Website Redesign">Website Redesign</option>
+                            <option value="Maintenance & Support">Maintenance & Support</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Project Details</label>
+                        <textarea name="message" placeholder="Tell us about your project, goals, and timeline..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        <i class="fas fa-paper-plane"></i>
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 9: CTA Banner -->
+    <section style="text-align: center; padding: 4rem 2rem;">
+        <div class="fade-in" style="background: var(--gradient-1); border-radius: 24px; padding: 4rem 2rem; position: relative; overflow: hidden;">
+            <div style="position: relative; z-index: 1;">
+                <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.5rem, 4vw, 2.5rem); font-weight: 700; margin-bottom: 1rem; color: white;">
+                    Ready to Launch Your Dream Website?
+                </h2>
+                <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; max-width: 600px; margin: 0 auto 2rem;">
+                    Join 50+ satisfied Indian businesses who trusted YRM MEDIA for their digital transformation.
+                </p>
+                <a href="https://wa.me/918433432480" target="_blank" class="btn" style="background: white; color: var(--primary-dark); font-weight: 700;">
+                    <i class="fab fa-whatsapp"></i>
+                    Chat on WhatsApp Now
+                </a>
+            </div>
+            <div style="position: absolute; top: -50%; right: -20%; width: 400px; height: 400px; background: rgba(255,255,255,0.1); border-radius: 50%; filter: blur(60px);"></div>
+            <div style="position: absolute; bottom: -50%; left: -20%; width: 400px; height: 400px; background: rgba(255,255,255,0.1); border-radius: 50%; filter: blur(60px);"></div>
+        </div>
+    </section>
+
+    <!-- Section 10: Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">YRM <span>MEDIA</span></div>
+                    <p>India premium web development agency crafting digital experiences that drive real business results. We combine creativity with technology to build websites that convert.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#services">Web Development</a></li>
+                        <li><a href="#services">E-Commerce</a></li>
+                        <li><a href="#services">UI/UX Design</a></li>
+                        <li><a href="#services">SEO Services</a></li>
+                        <li><a href="#services">Maintenance</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#portfolio">Portfolio</a></li>
+                        <li><a href="#process">Our Process</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#reviews">Reviews</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><a href="https://wa.me/918433432480" target="_blank">WhatsApp: +91 84334 32480</a></li>
+                        <li><a href="tel:+918433432480">Phone: +91 84334 32480</a></li>
+                        <li><a href="mailto:yrmmediaa@gmail.com">yrmmediaa@gmail.com</a></li>
+                        <li><a href="#contact">India</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Copyright 2025 YRM MEDIA. All rights reserved.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
     </footer>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 1000, once: true });
+        // Animated Background Canvas
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 2 + 1;
+                this.color = Math.random() > 0.5 ? 'rgba(99, 102, 241, 0.3)' : 'rgba(6, 182, 212, 0.3)';
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const count = Math.min(80, Math.floor(width * height / 15000));
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function drawLines() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(99, 102, 241, ${0.1 * (1 - dist / 150)})`;
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            drawLines();
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            resize();
+            initParticles();
+        });
+
+        resize();
+        initParticles();
+        animate();
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('active');
+            document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+        }
+
+        // FAQ toggle
+        function toggleFaq(button) {
+            const item = button.parentElement;
+            const isActive = item.classList.contains('active');
+
+            // Close all FAQ items
+            document.querySelectorAll('.faq-item').forEach(faq => {
+                faq.classList.remove('active');
+            });
+
+            // Open clicked item if it was not active
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        }
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Form submission success message (for Web3Forms redirect)
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('success') === 'true') {
+            alert('Thank you! Your message has been sent successfully. We will contact you within 24 hours.');
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
     </script>
 </body>
 </html>
-
