@@ -31,25 +31,196 @@
         ::-webkit-scrollbar-track { background:var(--bg) }
         ::-webkit-scrollbar-thumb { background:var(--p); border-radius:3px }
 
-        /* LOADER */
-        #loader { position:fixed; inset:0; background:var(--bg); z-index:99999; display:flex; flex-direction:column; align-items:center; justify-content:center; transition:opacity .6s, visibility .6s }
-        #loader.hidden { opacity:0; visibility:hidden; pointer-events:none }
-        .loader-logo { font-family:'Space Grotesk',sans-serif; font-size:3.5rem; font-weight:800; letter-spacing:6px; background:linear-gradient(90deg,var(--p),var(--s),var(--a),var(--p)); background-size:300% 100%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation:gradShift 2.5s ease infinite }
-        @keyframes gradShift { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
-        .loader-bar { width:180px; height:2px; background:rgba(255,255,255,0.1); border-radius:2px; overflow:hidden; margin-top:1.5rem }
-        .loader-bar::after { content:''; display:block; width:40%; height:100%; background:var(--p); border-radius:2px; animation:loadSlide 1s ease-in-out infinite }
-        @keyframes loadSlide { 0%{transform:translateX(-250%)} 100%{transform:translateX(400%)} }
+        /* ===== LOADER - UPWORK STYLE TEXT REVEAL ===== */
+        #loader {
+            position:fixed; inset:0;
+            background:var(--bg);
+            z-index:99999;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            transition:opacity .8s ease, visibility .8s ease, transform .8s ease;
+        }
+        #loader.hidden {
+            opacity:0; visibility:hidden; pointer-events:none;
+            transform:scale(1.1);
+        }
 
-        /* BG */
-        .bg-grid { position:fixed; inset:0; background-image:linear-gradient(rgba(0,240,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,240,255,0.02) 1px,transparent 1px); background-size:50px 50px; z-index:-2; pointer-events:none }
-        .orb { position:fixed; border-radius:50%; filter:blur(80px); z-index:-1; pointer-events:none; opacity:.3 }
-        .orb-1 { width:300px;height:300px;background:var(--p); top:-5%;left:-5%;animation:orb1 12s ease-in-out infinite }
-        .orb-2 { width:250px;height:250px;background:var(--s); bottom:-5%;right:-5%;animation:orb2 12s ease-in-out infinite }
+        .loader-text-container {
+            position:relative;
+            height:80px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            overflow:hidden;
+        }
+
+        .loader-yrm {
+            font-family:'Space Grotesk',sans-serif;
+            font-size:4.5rem;
+            font-weight:800;
+            letter-spacing:4px;
+            background:linear-gradient(135deg, var(--p), var(--s));
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+            background-clip:text;
+            display:inline-block;
+            animation:yrmSlide 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            transform:translateX(-20px);
+            opacity:0;
+        }
+
+        .loader-media {
+            font-family:'Space Grotesk',sans-serif;
+            font-size:4.5rem;
+            font-weight:300;
+            color:var(--text);
+            display:inline-block;
+            overflow:hidden;
+            white-space:nowrap;
+            width:0;
+            animation:mediaReveal 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.2s forwards;
+            letter-spacing:2px;
+        }
+
+        .loader-media span {
+            display:inline-block;
+            padding-left:8px;
+        }
+
+        @keyframes yrmSlide {
+            0% { transform:translateX(-80px) rotate(-5deg); opacity:0; }
+            40% { transform:translateX(10px) rotate(2deg); opacity:1; }
+            60% { transform:translateX(-5px) rotate(-1deg); }
+            80% { transform:translateX(2px) rotate(0.5deg); }
+            100% { transform:translateX(0) rotate(0deg); opacity:1; }
+        }
+
+        @keyframes mediaReveal {
+            0% { width:0; opacity:0; }
+            20% { opacity:1; }
+            100% { width:280px; opacity:1; }
+        }
+
+        .loader-bar-container {
+            position:absolute;
+            bottom:-30px;
+            left:50%;
+            transform:translateX(-50%);
+            width:200px;
+            height:2px;
+            background:rgba(255,255,255,0.08);
+            border-radius:2px;
+            overflow:hidden;
+        }
+
+        .loader-bar-fill {
+            height:100%;
+            width:0%;
+            background:linear-gradient(90deg, var(--p), var(--s));
+            border-radius:2px;
+            animation:barFill 2s ease-in-out 0.5s forwards;
+            box-shadow:0 0 10px var(--p);
+        }
+
+        @keyframes barFill {
+            0% { width:0%; }
+            50% { width:70%; }
+            80% { width:90%; }
+            100% { width:100%; }
+        }
+
+        .loader-glow {
+            position:absolute;
+            top:50%; left:50%;
+            transform:translate(-50%, -50%);
+            width:400px; height:400px;
+            background:radial-gradient(circle, rgba(0,240,255,0.08), transparent 70%);
+            border-radius:50%;
+            animation:glowPulse 2s ease-in-out infinite;
+            pointer-events:none;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { opacity:0.3; transform:translate(-50%, -50%) scale(1); }
+            50% { opacity:0.6; transform:translate(-50%, -50%) scale(1.2); }
+        }
+
+        /* ===== SCROLL ANIMATIONS ===== */
+        .reveal {
+            opacity:0;
+            transform:translateY(50px);
+            transition:all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .reveal.visible {
+            opacity:1;
+            transform:translateY(0);
+        }
+        .reveal-left {
+            opacity:0;
+            transform:translateX(-60px);
+            transition:all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .reveal-left.visible {
+            opacity:1;
+            transform:translateX(0);
+        }
+        .reveal-right {
+            opacity:0;
+            transform:translateX(60px);
+            transition:all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .reveal-right.visible {
+            opacity:1;
+            transform:translateX(0);
+        }
+        .reveal-scale {
+            opacity:0;
+            transform:scale(0.8);
+            transition:all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .reveal-scale.visible {
+            opacity:1;
+            transform:scale(1);
+        }
+        .delay-1 { transition-delay:0.1s }
+        .delay-2 { transition-delay:0.2s }
+        .delay-3 { transition-delay:0.3s }
+        .delay-4 { transition-delay:0.4s }
+        .delay-5 { transition-delay:0.5s }
+
+        /* ===== BACKGROUND ===== */
+        .bg-grid {
+            position:fixed; inset:0;
+            background-image:linear-gradient(rgba(0,240,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(0,240,255,0.015) 1px,transparent 1px);
+            background-size:50px 50px;
+            z-index:-2; pointer-events:none;
+        }
+        .orb {
+            position:fixed; border-radius:50%;
+            filter:blur(80px); z-index:-1;
+            pointer-events:none; opacity:.25;
+        }
+        .orb-1 { width:300px;height:300px;background:var(--p); top:-5%;left:-5%;animation:orb1 15s ease-in-out infinite }
+        .orb-2 { width:250px;height:250px;background:var(--s); bottom:-5%;right:-5%;animation:orb2 15s ease-in-out infinite }
         @keyframes orb1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(40px,30px)} }
         @keyframes orb2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-30px,-40px)} }
 
-        /* NAV */
-        nav { position:fixed; top:0; width:100%; z-index:1000; background:rgba(3,3,8,0.85); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); transition:all .3s }
+        /* ===== NAV ===== */
+        nav {
+            position:fixed; top:0; width:100%;
+            z-index:1000;
+            background:rgba(3,3,8,0.85);
+            backdrop-filter:blur(16px);
+            border-bottom:1px solid var(--border);
+            transition:all .3s;
+            transform:translateY(-100%);
+            animation:navSlide 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 2.2s forwards;
+        }
+        @keyframes navSlide {
+            0% { transform:translateY(-100%); }
+            100% { transform:translateY(0); }
+        }
         nav.scrolled { background:rgba(3,3,8,0.95); box-shadow:0 0 30px rgba(0,240,255,0.08) }
         .nav-c { max-width:1300px; margin:0 auto; padding:1rem 2rem; display:flex; justify-content:space-between; align-items:center }
         .logo { font-family:'Space Grotesk',sans-serif; font-size:1.6rem; font-weight:800; letter-spacing:2px }
@@ -62,71 +233,179 @@
         .nav-links a:hover::after { width:100% }
         .mob-btn { display:none; background:none; border:none; color:var(--p); font-size:1.4rem; cursor:pointer }
 
-        /* BTN */
-        .btn { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; padding:.9rem 2rem; border-radius:8px; font-weight:600; font-size:.9rem; text-decoration:none; transition:all .3s; cursor:pointer; border:none; font-family:'Outfit',sans-serif; letter-spacing:.5px }
-        .btn-p { background:linear-gradient(135deg,var(--p),var(--s)); color:var(--bg); box-shadow:0 4px 20px rgba(0,240,255,0.25) }
+        /* ===== BUTTONS ===== */
+        .btn {
+            display:inline-flex; align-items:center; justify-content:center;
+            gap:.5rem; padding:.9rem 2rem; border-radius:8px;
+            font-weight:600; font-size:.9rem; text-decoration:none;
+            transition:all .3s; cursor:pointer; border:none;
+            font-family:'Outfit',sans-serif; letter-spacing:.5px;
+            position:relative; overflow:hidden;
+        }
+        .btn-p {
+            background:linear-gradient(135deg,var(--p),var(--s));
+            color:var(--bg); box-shadow:0 4px 20px rgba(0,240,255,0.25);
+        }
         .btn-p:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(0,240,255,0.4) }
-        .btn-o { background:transparent; color:var(--p); border:1px solid var(--p); box-shadow:0 0 15px rgba(0,240,255,0.08) }
+        .btn-o {
+            background:transparent; color:var(--p);
+            border:1px solid var(--p);
+            box-shadow:0 0 15px rgba(0,240,255,0.08);
+        }
         .btn-o:hover { background:var(--p-d); box-shadow:0 0 25px rgba(0,240,255,0.2); transform:translateY(-2px) }
 
-        /* SECTION */
+        /* ===== SECTIONS ===== */
         section { position:relative; padding:6rem 1.5rem; max-width:1200px; margin:0 auto }
         .sec-head { text-align:center; margin-bottom:3.5rem }
-        .sec-tag { display:inline-block; padding:.5rem 1.5rem; background:var(--p-d); border:1px solid var(--border); border-radius:50px; color:var(--p); font-size:.75rem; font-weight:600; letter-spacing:3px; text-transform:uppercase; margin-bottom:1rem }
+        .sec-tag {
+            display:inline-block; padding:.5rem 1.5rem;
+            background:var(--p-d); border:1px solid var(--border);
+            border-radius:50px; color:var(--p);
+            font-size:.75rem; font-weight:600;
+            letter-spacing:3px; text-transform:uppercase;
+            margin-bottom:1rem;
+        }
         .sec-title { font-family:'Space Grotesk',sans-serif; font-size:clamp(2rem,5vw,3.5rem); font-weight:700; line-height:1.1; margin-bottom:.8rem }
         .grad { background:linear-gradient(135deg,var(--p),var(--s),var(--a)); -webkit-background-clip:text; -webkit-text-fill-color:transparent }
         .sec-sub { color:var(--muted); font-size:1.05rem; max-width:550px; margin:0 auto }
 
-        /* HERO */
-        .hero { min-height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; padding-top:70px }
+        /* ===== HERO ===== */
+        .hero {
+            min-height:100vh; display:flex;
+            align-items:center; justify-content:center;
+            text-align:center; padding-top:70px;
+            opacity:0;
+            animation:heroFade 1s ease 2.5s forwards;
+        }
+        @keyframes heroFade {
+            0% { opacity:0; transform:translateY(30px); }
+            100% { opacity:1; transform:translateY(0); }
+        }
         .hero-c { max-width:850px }
-        .hero-badge { display:inline-flex; align-items:center; gap:.5rem; padding:.7rem 1.5rem; background:var(--card); border:1px solid var(--border); border-radius:50px; font-size:.85rem; color:var(--p); margin-bottom:2rem; animation:glowPulse 2.5s ease-in-out infinite }
-        @keyframes glowPulse { 0%,100%{box-shadow:0 0 15px rgba(0,240,255,0.1)} 50%{box-shadow:0 0 30px rgba(0,240,255,0.2)} }
+        .hero-badge {
+            display:inline-flex; align-items:center; gap:.5rem;
+            padding:.7rem 1.5rem; background:var(--card);
+            border:1px solid var(--border); border-radius:50px;
+            font-size:.85rem; color:var(--p); margin-bottom:2rem;
+            animation:glowPulse 2.5s ease-in-out infinite;
+        }
+        @keyframes glowPulse {
+            0%,100%{box-shadow:0 0 15px rgba(0,240,255,0.1)}
+            50%{box-shadow:0 0 30px rgba(0,240,255,0.2)}
+        }
         .hero h1 { font-family:'Space Grotesk',sans-serif; font-size:clamp(2.5rem,7vw,5rem); font-weight:800; line-height:1.05; margin-bottom:1.2rem }
         .hero p { font-size:1.15rem; color:var(--muted); max-width:550px; margin:0 auto 2rem }
         .hero-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap }
         .hero-stats { display:flex; justify-content:center; gap:2.5rem; margin-top:3.5rem; flex-wrap:wrap }
-        .stat-item { text-align:center; padding:1.2rem; background:var(--card); border:1px solid var(--border); border-radius:14px; min-width:140px; transition:all .3s }
+        .stat-item {
+            text-align:center; padding:1.2rem;
+            background:var(--card); border:1px solid var(--border);
+            border-radius:14px; min-width:140px;
+            transition:all .3s;
+        }
         .stat-item:hover { transform:translateY(-4px); border-color:var(--p); box-shadow:0 10px 30px rgba(0,240,255,0.08) }
         .stat-num { font-family:'Space Grotesk',sans-serif; font-size:2.2rem; font-weight:800; background:linear-gradient(135deg,var(--p),var(--s)); -webkit-background-clip:text; -webkit-text-fill-color:transparent }
         .stat-lbl { color:var(--muted); font-size:.8rem; margin-top:.2rem; letter-spacing:1px; text-transform:uppercase }
 
-        /* SERVICES */
+        /* ===== SERVICES ===== */
         .svc-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem }
-        .svc-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:2rem; transition:all .35s; position:relative; overflow:hidden }
-        .svc-card::before { content:''; position:absolute; top:0; left:0; width:100%; height:2px; background:linear-gradient(90deg,var(--p),var(--s)); transform:scaleX(0); transform-origin:left; transition:transform .4s }
+        .svc-card {
+            background:var(--card); border:1px solid var(--border);
+            border-radius:16px; padding:2rem;
+            transition:all .35s; position:relative; overflow:hidden;
+        }
+        .svc-card::before {
+            content:''; position:absolute; top:0; left:0;
+            width:100%; height:2px;
+            background:linear-gradient(90deg,var(--p),var(--s));
+            transform:scaleX(0); transform-origin:left;
+            transition:transform .4s;
+        }
         .svc-card:hover::before { transform:scaleX(1) }
         .svc-card:hover { transform:translateY(-6px); border-color:rgba(0,240,255,0.2); box-shadow:0 15px 40px rgba(0,240,255,0.06) }
-        .svc-icon { width:55px; height:55px; background:linear-gradient(135deg,var(--p-d),var(--s-d)); border:1px solid var(--border); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; color:var(--p); margin-bottom:1.2rem; box-shadow:0 0 20px var(--p-d); transition:all .3s }
+        .svc-icon {
+            width:55px; height:55px;
+            background:linear-gradient(135deg,var(--p-d),var(--s-d));
+            border:1px solid var(--border); border-radius:12px;
+            display:flex; align-items:center; justify-content:center;
+            font-size:1.4rem; color:var(--p); margin-bottom:1.2rem;
+            box-shadow:0 0 20px var(--p-d); transition:all .3s;
+        }
         .svc-card:hover .svc-icon { box-shadow:0 0 30px rgba(0,240,255,0.2); transform:scale(1.08) }
         .svc-card h3 { font-family:'Space Grotesk',sans-serif; font-size:1.15rem; font-weight:600; margin-bottom:.5rem }
         .svc-card p { color:var(--muted); font-size:.9rem; line-height:1.6 }
 
-        /* PORTFOLIO */
+        /* ===== PORTFOLIO ===== */
         .port-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1.5rem }
-        .port-card { position:relative; border-radius:16px; overflow:hidden; aspect-ratio:16/10; background:var(--card); border:1px solid var(--border); cursor:pointer; transition:all .35s }
+        .port-card {
+            position:relative; border-radius:16px; overflow:hidden;
+            aspect-ratio:16/10; background:var(--card);
+            border:1px solid var(--border); cursor:pointer;
+            transition:all .35s;
+        }
         .port-card img { width:100%; height:100%; object-fit:cover; transition:transform .5s, filter .4s; filter:grayscale(25%) }
         .port-card:hover img { transform:scale(1.1); filter:grayscale(0%) }
         .port-card:hover { border-color:rgba(0,240,255,0.15) }
-        .port-over { position:absolute; bottom:0; left:0; right:0; padding:1.8rem; background:linear-gradient(transparent,rgba(3,3,8,0.95)); transform:translateY(100%); transition:transform .4s cubic-bezier(.4,0,.2,1) }
+        .port-over {
+            position:absolute; bottom:0; left:0; right:0;
+            padding:1.8rem;
+            background:linear-gradient(transparent,rgba(3,3,8,0.95));
+            transform:translateY(100%);
+            transition:transform .4s cubic-bezier(.4,0,.2,1);
+        }
         .port-card:hover .port-over { transform:translateY(0) }
-        .port-tag { display:inline-block; padding:.3rem 1rem; background:linear-gradient(135deg,var(--p),var(--s)); color:var(--bg); border-radius:50px; font-size:.7rem; font-weight:700; margin-bottom:.6rem }
+        .port-tag {
+            display:inline-block; padding:.3rem 1rem;
+            background:linear-gradient(135deg,var(--p),var(--s));
+            color:var(--bg); border-radius:50px;
+            font-size:.7rem; font-weight:700; margin-bottom:.6rem;
+        }
         .port-over h3 { font-family:'Space Grotesk',sans-serif; font-size:1.2rem; margin-bottom:.3rem }
         .port-over p { color:var(--muted); font-size:.85rem }
 
-        /* PROCESS */
+        /* ===== PROCESS ===== */
         .proc-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1.5rem }
-        .proc-step { text-align:center; padding:2rem 1rem; background:var(--card); border:1px solid var(--border); border-radius:16px; transition:all .3s }
+        .proc-step {
+            text-align:center; padding:2rem 1rem;
+            background:var(--card); border:1px solid var(--border);
+            border-radius:16px; transition:all .3s;
+        }
         .proc-step:hover { border-color:var(--p); box-shadow:0 10px 30px rgba(0,240,255,0.06); transform:translateY(-4px) }
-        .proc-num { width:65px; height:65px; background:linear-gradient(135deg,var(--p),var(--s)); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk',sans-serif; font-size:1.4rem; font-weight:800; color:var(--bg); margin:0 auto 1.2rem; box-shadow:0 0 25px rgba(0,240,255,0.3) }
+        .proc-num {
+            width:65px; height:65px;
+            background:linear-gradient(135deg,var(--p),var(--s));
+            border-radius:50%; display:flex;
+            align-items:center; justify-content:center;
+            font-family:'Space Grotesk',sans-serif;
+            font-size:1.4rem; font-weight:800;
+            color:var(--bg); margin:0 auto 1.2rem;
+            box-shadow:0 0 25px rgba(0,240,255,0.3);
+            transition:all .3s;
+        }
+        .proc-step:hover .proc-num { transform:scale(1.1); box-shadow:0 0 35px rgba(0,240,255,0.5) }
         .proc-step h3 { font-family:'Space Grotesk',sans-serif; font-size:1.1rem; margin-bottom:.5rem }
         .proc-step p { color:var(--muted); font-size:.85rem; line-height:1.6 }
 
-        /* PRICING */
+        /* ===== PRICING ===== */
         .price-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; align-items:start }
-        .price-card { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:2.5rem 1.8rem; transition:all .35s; position:relative; overflow:hidden }
-        .price-card.feat { border-color:rgba(0,240,255,0.2); transform:scale(1.03); box-shadow:0 0 40px rgba(0,240,255,0.08) }
-        .price-card.feat::before { content:'MOST POPULAR'; position:absolute; top:0; left:50%; transform:translateX(-50%); background:linear-gradient(90deg,var(--p),var(--s)); color:var(--bg); padding:.4rem 1.5rem; border-radius:0 0 10px 10px; font-size:.65rem; font-weight:800; letter-spacing:1.5px }
+        .price-card {
+            background:var(--card); border:1px solid var(--border);
+            border-radius:20px; padding:2.5rem 1.8rem;
+            transition:all .35s; position:relative; overflow:hidden;
+        }
+        .price-card.feat {
+            border-color:rgba(0,240,255,0.2);
+            transform:scale(1.03);
+            box-shadow:0 0 40px rgba(0,240,255,0.08);
+        }
+        .price-card.feat::before {
+            content:'MOST POPULAR'; position:absolute;
+            top:0; left:50%; transform:translateX(-50%);
+            background:linear-gradient(90deg,var(--p),var(--s));
+            color:var(--bg); padding:.4rem 1.5rem;
+            border-radius:0 0 10px 10px;
+            font-size:.65rem; font-weight:800; letter-spacing:1.5px;
+        }
         .price-card:hover { transform:translateY(-6px); border-color:rgba(0,240,255,0.15); box-shadow:0 15px 40px rgba(0,240,255,0.08) }
         .price-card.feat:hover { transform:scale(1.03) translateY(-6px) }
         .price-name { font-family:'Space Grotesk',sans-serif; font-size:1.3rem; font-weight:700; margin-bottom:.3rem }
@@ -137,9 +416,13 @@
         .price-feat li { display:flex; align-items:center; gap:.7rem; padding:.7rem 0; border-bottom:1px solid rgba(255,255,255,0.04); color:var(--muted); font-size:.88rem }
         .price-feat li i { color:var(--p); font-size:.75rem }
 
-        /* REVIEWS */
+        /* ===== REVIEWS ===== */
         .rev-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1.5rem }
-        .rev-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:2rem; transition:all .35s }
+        .rev-card {
+            background:var(--card); border:1px solid var(--border);
+            border-radius:16px; padding:2rem;
+            transition:all .35s;
+        }
         .rev-card:hover { transform:translateY(-5px); border-color:rgba(0,240,255,0.12); box-shadow:0 15px 40px rgba(0,240,255,0.05) }
         .rev-stars { color:#ffd700; font-size:.85rem; margin-bottom:1rem; letter-spacing:2px }
         .rev-text { color:var(--text); font-size:.95rem; line-height:1.7; margin-bottom:1.5rem; font-style:italic }
@@ -149,7 +432,7 @@
         .rev-user p { color:var(--muted); font-size:.8rem }
         .rev-loc { display:inline-flex; align-items:center; gap:.3rem; color:var(--p); font-size:.75rem; font-weight:600; margin-top:.15rem }
 
-        /* FAQ */
+        /* ===== FAQ ===== */
         .faq-wrap { max-width:750px; margin:0 auto }
         .faq-item { background:var(--card); border:1px solid var(--border); border-radius:14px; margin-bottom:.8rem; overflow:hidden; transition:all .3s }
         .faq-item:hover { border-color:rgba(0,240,255,0.1) }
@@ -160,7 +443,7 @@
         .faq-item.active .faq-a { max-height:300px }
         .faq-a p { padding:0 1.5rem 1.3rem; color:var(--muted); line-height:1.7; font-size:.9rem }
 
-        /* CONTACT */
+        /* ===== CONTACT ===== */
         .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start }
         .contact-info h3 { font-family:'Space Grotesk',sans-serif; font-size:2rem; margin-bottom:.8rem }
         .contact-info > p { color:var(--muted); margin-bottom:2rem; font-size:1rem }
@@ -177,12 +460,17 @@
         .form-g input:focus, .form-g textarea:focus, .form-g select:focus { outline:none; border-color:var(--p); box-shadow:0 0 20px rgba(0,240,255,0.08) }
         .form-g textarea { min-height:120px; resize:vertical }
 
-        /* CTA */
-        .cta-box { background:linear-gradient(135deg,rgba(0,240,255,0.08),rgba(112,0,255,0.08)); border:1px solid var(--border); border-radius:20px; padding:4rem 2rem; text-align:center; position:relative; overflow:hidden }
+        /* ===== CTA ===== */
+        .cta-box {
+            background:linear-gradient(135deg,rgba(0,240,255,0.08),rgba(112,0,255,0.08));
+            border:1px solid var(--border); border-radius:20px;
+            padding:4rem 2rem; text-align:center;
+            position:relative; overflow:hidden;
+        }
         .cta-box h2 { font-family:'Space Grotesk',sans-serif; font-size:clamp(1.5rem,4vw,2.5rem); font-weight:800; margin-bottom:.8rem }
         .cta-box p { color:var(--muted); font-size:1.05rem; max-width:550px; margin:0 auto 1.5rem }
 
-        /* FOOTER */
+        /* ===== FOOTER ===== */
         footer { background:var(--bg2); border-top:1px solid var(--border); padding:4rem 1.5rem 1.5rem }
         .foot-c { max-width:1200px; margin:0 auto }
         .foot-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:2.5rem; margin-bottom:3rem }
@@ -199,25 +487,31 @@
         .social a { width:40px; height:40px; background:var(--card); border:1px solid var(--border); border-radius:10px; display:flex; align-items:center; justify-content:center; color:var(--muted); text-decoration:none; transition:all .3s }
         .social a:hover { background:var(--p); color:var(--bg); border-color:var(--p); transform:translateY(-3px) }
 
-        /* MOBILE MENU */
+        /* ===== MOBILE MENU ===== */
         .mob-menu { display:none; position:fixed; inset:0; background:var(--bg); z-index:999; flex-direction:column; justify-content:center; align-items:center; gap:2rem }
         .mob-menu.active { display:flex }
         .mob-menu a { color:var(--text); text-decoration:none; font-size:1.5rem; font-weight:700; letter-spacing:1px }
         .mob-menu a:hover { color:var(--p) }
         .mob-close { position:absolute; top:1.5rem; right:1.5rem; background:none; border:none; color:var(--p); font-size:1.8rem; cursor:pointer }
 
-        /* RESPONSIVE */
+        /* ===== RESPONSIVE ===== */
         @media(max-width:1024px){ .contact-grid{grid-template-columns:1fr} .foot-grid{grid-template-columns:1fr 1fr} }
-        @media(max-width:768px){ .nav-links{display:none} .mob-btn{display:block} .hero-btns{flex-direction:column;align-items:center} .hero-stats{gap:1rem} .price-card.feat{transform:scale(1)} .price-card.feat:hover{transform:scale(1) translateY(-6px)} .foot-grid{grid-template-columns:1fr;gap:2rem} section{padding:4rem 1rem} }
-        @media(max-width:480px){ .port-grid,.svc-grid{grid-template-columns:1fr} .hero-stats{flex-direction:column;align-items:center} .stat-item{width:100%;max-width:260px} }
+        @media(max-width:768px){ .nav-links{display:none} .mob-btn{display:block} .hero-btns{flex-direction:column;align-items:center} .hero-stats{gap:1rem} .price-card.feat{transform:scale(1)} .price-card.feat:hover{transform:scale(1) translateY(-6px)} .foot-grid{grid-template-columns:1fr;gap:2rem} section{padding:4rem 1rem} .loader-yrm,.loader-media{font-size:3rem} .loader-media{width:0} }
+        @media(max-width:480px){ .port-grid,.svc-grid{grid-template-columns:1fr} .hero-stats{flex-direction:column;align-items:center} .stat-item{width:100%;max-width:260px} .loader-yrm,.loader-media{font-size:2.2rem} }
     </style>
 <base target="_blank">
 </head>
 <body>
-    <!-- LOADER -->
+    <!-- ===== LOADER - UPWORK STYLE ===== -->
     <div id="loader">
-        <div class="loader-logo">YRM<span style="font-weight:300;-webkit-text-fill-color:var(--muted)"> MEDIA</span></div>
-        <div class="loader-bar"></div>
+        <div class="loader-glow"></div>
+        <div class="loader-text-container">
+            <span class="loader-yrm">YRM</span>
+            <span class="loader-media"><span>MEDIA</span></span>
+        </div>
+        <div class="loader-bar-container">
+            <div class="loader-bar-fill"></div>
+        </div>
     </div>
 
     <!-- BG -->
@@ -258,14 +552,14 @@
     <!-- HERO -->
     <section class="hero" id="home">
         <div class="hero-c">
-            <div class="hero-badge"> <i class="fas fa-rocket"></i> Premium Website Development Agency </div>
-            <h1>We Build <span class="grad">Digital Experiences</span><br>That Drive Results</h1>
-            <p>Transform your business with stunning, high-performance websites crafted by India's leading web development experts.</p>
-            <div class="hero-btns">
+            <div class="hero-badge reveal"> <i class="fas fa-rocket"></i> Premium Website Development Agency </div>
+            <h1 class="reveal delay-1">We Build <span class="grad">Digital Experiences</span><br>That Drive Results</h1>
+            <p class="reveal delay-2">Transform your business with stunning, high-performance websites crafted by India's leading web development experts.</p>
+            <div class="hero-btns reveal delay-3">
                 <a href="#contact" class="btn btn-p"><i class="fas fa-paper-plane"></i> Start Your Project</a>
                 <a href="#portfolio" class="btn btn-o"><i class="fas fa-eye"></i> View Our Work</a>
             </div>
-            <div class="hero-stats">
+            <div class="hero-stats reveal delay-4">
                 <div class="stat-item"><div class="stat-num">1250+</div><div class="stat-lbl">Projects</div></div>
                 <div class="stat-item"><div class="stat-num">1100+</div><div class="stat-lbl">Happy Clients</div></div>
                 <div class="stat-item"><div class="stat-num">99%</div><div class="stat-lbl">Satisfaction</div></div>
@@ -277,37 +571,37 @@
     <!-- SERVICES -->
     <section id="services">
         <div class="sec-head">
-            <div class="sec-tag">What We Do</div>
-            <h2 class="sec-title">Our <span class="grad">Services</span></h2>
-            <p class="sec-sub">Comprehensive web solutions tailored to elevate your brand and accelerate your business growth.</p>
+            <div class="sec-tag reveal">What We Do</div>
+            <h2 class="sec-title reveal delay-1">Our <span class="grad">Services</span></h2>
+            <p class="sec-sub reveal delay-2">Comprehensive web solutions tailored to elevate your brand and accelerate your business growth.</p>
         </div>
         <div class="svc-grid">
-            <div class="svc-card">
+            <div class="svc-card reveal">
                 <div class="svc-icon"><i class="fas fa-laptop-code"></i></div>
                 <h3>Custom Website Development</h3>
                 <p>Bespoke websites built from scratch with cutting-edge technologies, optimized for performance, SEO, and user experience.</p>
             </div>
-            <div class="svc-card">
+            <div class="svc-card reveal delay-1">
                 <div class="svc-icon"><i class="fas fa-shopping-cart"></i></div>
                 <h3>E-Commerce Solutions</h3>
                 <p>Powerful online stores with secure payment gateways, inventory management, and conversion-optimized designs.</p>
             </div>
-            <div class="svc-card">
+            <div class="svc-card reveal delay-2">
                 <div class="svc-icon"><i class="fas fa-mobile-alt"></i></div>
                 <h3>Responsive Design</h3>
                 <p>Pixel-perfect designs that adapt seamlessly across all devices - mobile, tablet, and desktop.</p>
             </div>
-            <div class="svc-card">
+            <div class="svc-card reveal delay-3">
                 <div class="svc-icon"><i class="fas fa-search"></i></div>
                 <h3>SEO Optimization</h3>
                 <p>Strategic SEO implementation to boost your rankings, drive organic traffic, and increase visibility.</p>
             </div>
-            <div class="svc-card">
+            <div class="svc-card reveal delay-4">
                 <div class="svc-icon"><i class="fas fa-paint-brush"></i></div>
                 <h3>UI/UX Design</h3>
                 <p>Stunning, intuitive interfaces designed to captivate users and maximize engagement and conversions.</p>
             </div>
-            <div class="svc-card">
+            <div class="svc-card reveal delay-5">
                 <div class="svc-icon"><i class="fas fa-tools"></i></div>
                 <h3>Website Maintenance</h3>
                 <p>Reliable ongoing support, updates, security monitoring, and performance optimization for your website.</p>
@@ -318,32 +612,32 @@
     <!-- PORTFOLIO -->
     <section id="portfolio">
         <div class="sec-head">
-            <div class="sec-tag">Our Work</div>
-            <h2 class="sec-title">Featured <span class="grad">Projects</span></h2>
-            <p class="sec-sub">Explore our portfolio of successful projects delivered for clients across India.</p>
+            <div class="sec-tag reveal">Our Work</div>
+            <h2 class="sec-title reveal delay-1">Featured <span class="grad">Projects</span></h2>
+            <p class="sec-sub reveal delay-2">Explore our portfolio of successful projects delivered for clients across India.</p>
         </div>
         <div class="port-grid">
-            <div class="port-card">
+            <div class="port-card reveal">
                 <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" alt="E-Commerce" loading="lazy">
                 <div class="port-over"><span class="port-tag">E-Commerce</span><h3>Luxury Fashion Store</h3><p>Premium fashion brand in Mumbai</p></div>
             </div>
-            <div class="port-card">
+            <div class="port-card reveal delay-1">
                 <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80" alt="SaaS" loading="lazy">
                 <div class="port-over"><span class="port-tag">SaaS</span><h3>Analytics Dashboard</h3><p>Bangalore fintech startup</p></div>
             </div>
-            <div class="port-card">
+            <div class="port-card reveal delay-2">
                 <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80" alt="Corporate" loading="lazy">
                 <div class="port-over"><span class="port-tag">Corporate</span><h3>Real Estate Portal</h3><p>Leading Delhi real estate firm</p></div>
             </div>
-            <div class="port-card">
+            <div class="port-card reveal">
                 <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80" alt="Hospitality" loading="lazy">
                 <div class="port-over"><span class="port-tag">Hospitality</span><h3>Fine Dining Experience</h3><p>5-star restaurant chain</p></div>
             </div>
-            <div class="port-card">
+            <div class="port-card reveal delay-1">
                 <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80" alt="Healthcare" loading="lazy">
                 <div class="port-over"><span class="port-tag">Healthcare</span><h3>Medical Clinic Portal</h3><p>Multi-city clinic chain</p></div>
             </div>
-            <div class="port-card">
+            <div class="port-card reveal delay-2">
                 <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80" alt="EdTech" loading="lazy">
                 <div class="port-over"><span class="port-tag">EdTech</span><h3>Online Learning Platform</h3><p>Coaching institute LMS</p></div>
             </div>
@@ -353,28 +647,28 @@
     <!-- PROCESS -->
     <section id="process">
         <div class="sec-head">
-            <div class="sec-tag">How We Work</div>
-            <h2 class="sec-title">Our <span class="grad">Process</span></h2>
-            <p class="sec-sub">A streamlined workflow designed to deliver exceptional results on time, every time.</p>
+            <div class="sec-tag reveal">How We Work</div>
+            <h2 class="sec-title reveal delay-1">Our <span class="grad">Process</span></h2>
+            <p class="sec-sub reveal delay-2">A streamlined workflow designed to deliver exceptional results on time, every time.</p>
         </div>
         <div class="proc-grid">
-            <div class="proc-step"><div class="proc-num">1</div><h3>Discovery</h3><p>We understand your business goals and requirements through detailed consultation.</p></div>
-            <div class="proc-step"><div class="proc-num">2</div><h3>Strategy</h3><p>Our team crafts a comprehensive plan including sitemap and wireframes.</p></div>
-            <div class="proc-step"><div class="proc-num">3</div><h3>Design</h3><p>We create stunning visual designs with interactive prototypes for approval.</p></div>
-            <div class="proc-step"><div class="proc-num">4</div><h3>Development</h3><p>Clean, efficient code ensuring speed, security, and scalability.</p></div>
-            <div class="proc-step"><div class="proc-num">5</div><h3>Launch</h3><p>Thorough testing, deployment, and post-launch support.</p></div>
+            <div class="proc-step reveal"><div class="proc-num">1</div><h3>Discovery</h3><p>We understand your business goals and requirements through detailed consultation.</p></div>
+            <div class="proc-step reveal delay-1"><div class="proc-num">2</div><h3>Strategy</h3><p>Our team crafts a comprehensive plan including sitemap and wireframes.</p></div>
+            <div class="proc-step reveal delay-2"><div class="proc-num">3</div><h3>Design</h3><p>We create stunning visual designs with interactive prototypes for approval.</p></div>
+            <div class="proc-step reveal delay-3"><div class="proc-num">4</div><h3>Development</h3><p>Clean, efficient code ensuring speed, security, and scalability.</p></div>
+            <div class="proc-step reveal delay-4"><div class="proc-num">5</div><h3>Launch</h3><p>Thorough testing, deployment, and post-launch support.</p></div>
         </div>
     </section>
 
     <!-- PRICING -->
     <section id="pricing">
         <div class="sec-head">
-            <div class="sec-tag">Investment</div>
-            <h2 class="sec-title">Transparent <span class="grad">Pricing</span></h2>
-            <p class="sec-sub">Choose a package that fits your business needs. No hidden fees, complete transparency.</p>
+            <div class="sec-tag reveal">Investment</div>
+            <h2 class="sec-title reveal delay-1">Transparent <span class="grad">Pricing</span></h2>
+            <p class="sec-sub reveal delay-2">Choose a package that fits your business needs. No hidden fees, complete transparency.</p>
         </div>
         <div class="price-grid">
-            <div class="price-card">
+            <div class="price-card reveal">
                 <div class="price-name">Starter</div>
                 <div class="price-desc">Perfect for small businesses</div>
                 <div class="price-amt">Rs 14,999<span>/one-time</span></div>
@@ -388,7 +682,7 @@
                 </ul>
                 <a href="https://wa.me/918433432480?text=Hi%20YRM%20MEDIA%2C%0A%0AI%20am%20interested%20in%20your%20*Starter%20Package*%20(Rs%2014%2C999).%0A%0APlease%20share%20more%20details%20about%3A%0A-%205-Page%20Responsive%20Website%0A-%20Mobile%20%26%20Tablet%20Optimized%0A-%20Basic%20SEO%20Setup%0A-%20Contact%20Form%20Integration%0A-%201%20Month%20Free%20Support%0A-%20Social%20Media%20Links%0A%0ALooking%20forward%20to%20hearing%20from%20you!" target="_blank" class="btn btn-o" style="width:100%"><i class="fab fa-whatsapp"></i> Get Quote on WhatsApp</a>
             </div>
-            <div class="price-card feat">
+            <div class="price-card feat reveal delay-1">
                 <div class="price-name">Business</div>
                 <div class="price-desc">Best for growing businesses</div>
                 <div class="price-amt">Rs 19,999<span>/one-time</span></div>
@@ -403,7 +697,7 @@
                 </ul>
                 <a href="https://wa.me/918433432480?text=Hi%20YRM%20MEDIA%2C%0A%0AI%20am%20interested%20in%20your%20*Business%20Package*%20(Rs%2019%2C999).%0A%0APlease%20share%20more%20details%20about%3A%0A-%2010-Page%20Responsive%20Website%0A-%20Custom%20UI%2FUX%20Design%0A-%20Advanced%20SEO%20Optimization%0A-%20Blog%20%26%20CMS%20Integration%0A-%20Google%20Analytics%20Setup%0A-%20WhatsApp%20Chat%20Integration%0A-%203%20Months%20Free%20Support%0A%0ALooking%20forward%20to%20hearing%20from%20you!" target="_blank" class="btn btn-p" style="width:100%"><i class="fab fa-whatsapp"></i> Get Quote on WhatsApp</a>
             </div>
-            <div class="price-card">
+            <div class="price-card reveal delay-2">
                 <div class="price-name">Enterprise</div>
                 <div class="price-desc">For large-scale projects</div>
                 <div class="price-amt">Rs 25,999<span>/one-time</span></div>
@@ -423,37 +717,37 @@
     <!-- REVIEWS -->
     <section id="reviews">
         <div class="sec-head">
-            <div class="sec-tag">Testimonials</div>
-            <h2 class="sec-title">Client <span class="grad">Reviews</span></h2>
-            <p class="sec-sub">Hear what our Indian clients say about working with YRM MEDIA.</p>
+            <div class="sec-tag reveal">Testimonials</div>
+            <h2 class="sec-title reveal delay-1">Client <span class="grad">Reviews</span></h2>
+            <p class="sec-sub reveal delay-2">Hear what our Indian clients say about working with YRM MEDIA.</p>
         </div>
         <div class="rev-grid">
-            <div class="rev-card">
+            <div class="rev-card reveal">
                 <div class="rev-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
                 <p class="rev-text">"YRM MEDIA transformed our online presence completely. Our website traffic increased by 300% within 3 months. The team is incredibly professional."</p>
                 <div class="rev-user"><div class="rev-av">RK</div><div><h4>Rajesh Kumar</h4><p>CEO, TechSolutions Pvt Ltd</p><span class="rev-loc"><i class="fas fa-map-marker-alt"></i> Bangalore</span></div></div>
             </div>
-            <div class="rev-card">
+            <div class="rev-card reveal delay-1">
                 <div class="rev-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
                 <p class="rev-text">"The e-commerce website they built for us is phenomenal. Sales have doubled since launch. Their understanding of Indian market is unmatched."</p>
                 <div class="rev-user"><div class="rev-av">PS</div><div><h4>Priya Sharma</h4><p>Founder, EthnicWear Boutique</p><span class="rev-loc"><i class="fas fa-map-marker-alt"></i> Jaipur</span></div></div>
             </div>
-            <div class="rev-card">
+            <div class="rev-card reveal delay-2">
                 <div class="rev-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
                 <p class="rev-text">"Best web development agency in India! They delivered our real estate portal ahead of schedule with features we did not even know we needed."</p>
                 <div class="rev-user"><div class="rev-av">AP</div><div><h4>Amit Patel</h4><p>Director, Metro Properties</p><span class="rev-loc"><i class="fas fa-map-marker-alt"></i> Mumbai</span></div></div>
             </div>
-            <div class="rev-card">
+            <div class="rev-card reveal">
                 <div class="rev-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
                 <p class="rev-text">"Our coaching institute LMS is running flawlessly. Students love the interface. YRM MEDIA understood our educational needs perfectly."</p>
                 <div class="rev-user"><div class="rev-av">SG</div><div><h4>Dr. Suresh Gupta</h4><p>Founder, BrightFuture Academy</p><span class="rev-loc"><i class="fas fa-map-marker-alt"></i> Delhi</span></div></div>
             </div>
-            <div class="rev-card">
+            <div class="rev-card reveal delay-1">
                 <div class="rev-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
                 <p class="rev-text">"From design to deployment, the entire experience was seamless. Our restaurant online ordering system has increased revenue by 40%."</p>
                 <div class="rev-user"><div class="rev-av">VR</div><div><h4>Vikram Reddy</h4><p>Owner, Spice Garden Restaurants</p><span class="rev-loc"><i class="fas fa-map-marker-alt"></i> Hyderabad</span></div></div>
             </div>
-            <div class="rev-card">
+            <div class="rev-card reveal delay-2">
                 <div class="rev-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
                 <p class="rev-text">"Exceptional work on our fintech dashboard. The UI is intuitive, performance is blazing fast, and the team provided outstanding support."</p>
                 <div class="rev-user"><div class="rev-av">KN</div><div><h4>Karthik Nair</h4><p>CTO, PaySwift Technologies</p><span class="rev-loc"><i class="fas fa-map-marker-alt"></i> Chennai</span></div></div>
@@ -464,40 +758,40 @@
     <!-- FAQ -->
     <section id="faq">
         <div class="sec-head">
-            <div class="sec-tag">Got Questions?</div>
-            <h2 class="sec-title">Frequently Asked <span class="grad">Questions</span></h2>
-            <p class="sec-sub">Find answers to common questions about our web development services.</p>
+            <div class="sec-tag reveal">Got Questions?</div>
+            <h2 class="sec-title reveal delay-1">Frequently Asked <span class="grad">Questions</span></h2>
+            <p class="sec-sub reveal delay-2">Find answers to common questions about our web development services.</p>
         </div>
         <div class="faq-wrap">
-            <div class="faq-item">
+            <div class="faq-item reveal">
                 <button class="faq-q" onclick="toggleFaq(this)">How long does it take to build a website?<i class="fas fa-chevron-down"></i></button>
                 <div class="faq-a"><p>Typically, a standard business website takes 2-4 weeks from concept to launch. E-commerce sites may take 4-6 weeks, and complex custom projects can take 8-12 weeks.</p></div>
             </div>
-            <div class="faq-item">
+            <div class="faq-item reveal delay-1">
                 <button class="faq-q" onclick="toggleFaq(this)">Do you provide hosting and domain services?<i class="fas fa-chevron-down"></i></button>
                 <div class="faq-a"><p>Yes! We offer complete hosting solutions with SSL certificates, CDN integration, and regular backups. Our hosting packages start at Rs 2,999/year with 99.9% uptime guarantee.</p></div>
             </div>
-            <div class="faq-item">
+            <div class="faq-item reveal delay-2">
                 <button class="faq-q" onclick="toggleFaq(this)">Will my website be mobile-friendly?<i class="fas fa-chevron-down"></i></button>
                 <div class="faq-a"><p>Absolutely! Every website we build is fully responsive and mobile-optimized. We test across all major devices and screen sizes.</p></div>
             </div>
-            <div class="faq-item">
+            <div class="faq-item reveal">
                 <button class="faq-q" onclick="toggleFaq(this)">Can I update content myself after launch?<i class="fas fa-chevron-down"></i></button>
                 <div class="faq-a"><p>Yes, we integrate user-friendly CMS like WordPress or custom admin panels that allow you to easily update content without any coding knowledge.</p></div>
             </div>
-            <div class="faq-item">
+            <div class="faq-item reveal delay-1">
                 <button class="faq-q" onclick="toggleFaq(this)">What technologies do you use?<i class="fas fa-chevron-down"></i></button>
                 <div class="faq-a"><p>We use modern technologies including React, Next.js, Node.js, PHP, WordPress, Shopify, and custom HTML/CSS/JS.</p></div>
             </div>
-            <div class="faq-item">
+            <div class="faq-item reveal delay-2">
                 <button class="faq-q" onclick="toggleFaq(this)">Do you offer post-launch support?<i class="fas fa-chevron-down"></i></button>
                 <div class="faq-a"><p>Yes, we provide comprehensive maintenance packages including security updates, performance monitoring, and technical support.</p></div>
             </div>
-            <div class="faq-item">
+            <div class="faq-item reveal">
                 <button class="faq-q" onclick="toggleFaq(this)">How do we get started?<i class="fas fa-chevron-down"></i></button>
                 <div class="faq-a"><p>Simply reach out via WhatsApp, email, or the contact form. We will schedule a free consultation to discuss your requirements.</p></div>
             </div>
-            <div class="faq-item">
+            <div class="faq-item reveal delay-1">
                 <button class="faq-q" onclick="toggleFaq(this)">What is your payment structure?<i class="fas fa-chevron-down"></i></button>
                 <div class="faq-a"><p>We typically work with 50% advance, 25% upon design approval, and 25% before final delivery. We accept UPI, bank transfer, and all major payment methods.</p></div>
             </div>
@@ -507,12 +801,12 @@
     <!-- CONTACT -->
     <section id="contact">
         <div class="sec-head">
-            <div class="sec-tag">Get In Touch</div>
-            <h2 class="sec-title">Let's Build Something <span class="grad">Amazing</span></h2>
-            <p class="sec-sub">Ready to transform your digital presence? Reach out and let's discuss your project.</p>
+            <div class="sec-tag reveal">Get In Touch</div>
+            <h2 class="sec-title reveal delay-1">Let's Build Something <span class="grad">Amazing</span></h2>
+            <p class="sec-sub reveal delay-2">Ready to transform your digital presence? Reach out and let's discuss your project.</p>
         </div>
         <div class="contact-grid">
-            <div class="contact-info">
+            <div class="contact-info reveal">
                 <h3>Start Your Project Today</h3>
                 <p>Whether you need a simple business website or a complex web application, we are here to help.</p>
                 <div class="contact-ways">
@@ -530,7 +824,7 @@
                     </a>
                 </div>
             </div>
-            <div class="contact-form">
+            <div class="contact-form reveal delay-1">
                 <form action="https://api.web3forms.com/submit" method="POST">
                     <input type="hidden" name="access_key" value="bdb207a9-d24f-41c9-b43a-93f01c2b0dab">
                     <input type="hidden" name="subject" value="New Lead from YRM MEDIA Website">
@@ -559,7 +853,7 @@
 
     <!-- CTA -->
     <section style="padding:3rem 1rem">
-        <div class="cta-box">
+        <div class="cta-box reveal">
             <h2>Ready to Launch Your Dream Website?</h2>
             <p>Join 1100+ satisfied Indian businesses who trusted YRM MEDIA for their digital transformation.</p>
             <a href="https://wa.me/918433432480" target="_blank" class="btn" style="background:#fff;color:var(--bg);font-weight:700"><i class="fab fa-whatsapp"></i> Chat on WhatsApp Now</a>
@@ -615,7 +909,7 @@
     <script>
         // Loader
         window.addEventListener('load', () => {
-            setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1800);
+            setTimeout(() => document.getElementById('loader').classList.add('hidden'), 2800);
         });
 
         // Navbar
@@ -637,6 +931,19 @@
             if (!active) item.classList.add('active');
         }
 
+        // Scroll reveal animations
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+            revealObserver.observe(el);
+        });
+
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(a => {
             a.addEventListener('click', function(e) {
@@ -647,4 +954,4 @@
         });
     </script>
 </body>
-</html>
+                                                                                                                                                                             </html>
